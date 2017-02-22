@@ -13,16 +13,26 @@ namespace UnitTests
     public class ModelTests
     {
         [Test]
-        public void LoadConfig_WhenValidFileIsProvided_ShouldReplaceWindowsHostsFile()
+        public void LoadConfig_WhenValidConfigIsProvided_ShouldReplaceWindowsHostsFile()
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
             var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var configuration = new EConfiguration()
+            {
+                Name = "file",
+                Content = "#File content \\n 192.28.129.100\tsomepage.com"
+            };
+            var expectedFilePath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, Path.ChangeExtension(configuration.Name, ".host"));
             fileManagerMoq.Setup(fm => fm.Exists(It.IsAny<string>())).Returns(true).Verifiable();
-            fileManagerMoq.Setup(fm => fm.Copy(It.Is<string>(s => s== "D:\\file.host"),It.Is<string>(s => s == "C:\\Windows\\system32\\drivers\\etc\\hosts"), It.Is<bool>(t => t))).Verifiable();
+            fileManagerMoq.Setup(
+                fm => fm.WriteAllText(It.Is<string>(s => s == "C:\\Windows\\system32\\drivers\\etc\\hosts"), 
+                It.Is<string>(s => s == configuration.Content)))
+                .Verifiable();
 
             // act
-            model.LoadConfig("D:\\file.host");
+            model.LoadConfig(configuration);
 
             // assert
             fileManagerMoq.Verify();
@@ -40,7 +50,7 @@ namespace UnitTests
             var model = new HostManagerFileDal(fileManagerMoq.Object);
             
             // act
-            model.LoadConfig("D:\\file.host");
+            model.LoadConfig(new EConfiguration());
 
             // assert
             fileManagerMoq.Verify();
@@ -126,7 +136,7 @@ namespace UnitTests
             var configuration = new EConfiguration()
             {
                 Content = "#File content \\n 192.28.129.100\tsomepage.com",
-                Path = filePath
+                Name = "test"
             };
             
             var fileManagerMoq = new Mock<IFileHelper>();
@@ -167,9 +177,9 @@ namespace UnitTests
             // arrange
             var expectedConfigurations = new List<EConfiguration>()
             {
-                new EConfiguration() {Path = "D:\\file.host", Content = "TestContent"},
-                new EConfiguration() {Path = "D:\\file2.host", Content = "TestContent"},
-                new EConfiguration() {Path = "D:\\file3.host", Content = "TestContent"}
+                new EConfiguration() {Name = "file", Content = "TestContent"},
+                new EConfiguration() {Name = "file2", Content = "TestContent"},
+                new EConfiguration() {Name = "file3", Content = "TestContent"}
             };
 
             var fileManagerMoq = new Mock<IFileHelper>();
@@ -203,7 +213,7 @@ namespace UnitTests
         {
             // arrange
             var expectedConfiguration = new EConfiguration()
-            { Path = "D:\\file.host", Content = "TestContent"};
+            { Name = "file", Content = "TestContent"};
             
             var fileManagerMoq = new Mock<IFileHelper>();
             var model = new HostManagerFileDal(fileManagerMoq.Object);
@@ -247,11 +257,11 @@ namespace UnitTests
             var configuration = new EConfiguration()
             {
                 Content = "#File content \\n 192.28.129.100\tsomepage.com",
-                Path = "c:\\test.host"
+                Name = "test"
             };
 
             fileManagerMoq.Setup(
-                fm => fm.Delete(It.Is<string>(s => s ==configuration.Path))
+                fm => fm.Delete(It.Is<string>(s => s ==configuration.Name))
                 ).Verifiable();
 
             // act

@@ -18,13 +18,13 @@ namespace Model
             _fileHelper = fileHelper;
         }
 
-        public void LoadConfig(string path)
+        public void LoadConfig(EConfiguration configuration)
         {
-            if (!_fileHelper.Exists(path))
-                throw new FileNotFoundException("El archivo especificado no existe.", path);
+            if (string.IsNullOrWhiteSpace(configuration.Content))
+                throw new ArgumentNullException("El contenido de la configuración no puede ser nulo");
 
-            _fileHelper.Copy(path,
-                _hostsFilePath, true);
+            _fileHelper.WriteAllText(_hostsFilePath,
+                configuration.Content);
         }
 
         public void AddConfig(string name, string content)
@@ -38,7 +38,7 @@ namespace Model
                                                 "un contenido para la nueva " +
                                                 "configuración");
 
-            var fileName = Path.Combine(_programBaseDirectory,
+            string fileName = Path.Combine(_programBaseDirectory,
                 Path.ChangeExtension(name,_extension));
 
             _fileHelper.WriteAllText(fileName, content);
@@ -58,7 +58,7 @@ namespace Model
         {
             return _fileHelper.GetFiles(Path.Combine(_programBaseDirectory, "*.host")).Select(file => new EConfiguration()
             {
-                Path = file, Content = _fileHelper.ReadAllText(file)
+                Name = Path.GetFileNameWithoutExtension(file), Content = _fileHelper.ReadAllText(file)
             }).ToList();
         }
 
@@ -69,7 +69,7 @@ namespace Model
 
             return new EConfiguration()
             {
-                Path = path,
+                Name = Path.GetFileNameWithoutExtension(path),
                 Content = _fileHelper.ReadAllText(path)
             };
         }
@@ -81,7 +81,9 @@ namespace Model
 
         public void DeleteConfig(EConfiguration configuration)
         {
-            _fileHelper.Delete(configuration.Path);
+            string fileName = Path.Combine(_programBaseDirectory,
+                Path.ChangeExtension(configuration.Name, _extension));
+            _fileHelper.Delete(configuration.Name);
         }
     }
 }
