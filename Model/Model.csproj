@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="FileHelper.cs" />
-    <Compile Include="FileManager.cs" />
     <Compile Include="HostManagerFileDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

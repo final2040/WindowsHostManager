@@ -4,8 +4,8 @@ namespace Entities
 {
     public class EConfiguration
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = "";
+        public string Name => System.IO.Path.GetFileNameWithoutExtension(Path);
+        public string Path { get; set; }
         public string Content { get; set; } = "";
 
         public override bool Equals(object obj)
@@ -14,14 +14,13 @@ namespace Entities
                 return false;
 
             var toCompare = obj as EConfiguration;
-            return toCompare.Content.Equals(Content)
-                   && toCompare.Id.Equals(Id)
-                   && toCompare.Name.Equals(Name);
+            return toCompare.Path.Equals(Path)
+                   && toCompare.Content.Equals(Content);
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode() ^ Content.GetHashCode() ^ Name.GetHashCode();
+            return Path.GetHashCode() ^ Content.GetHashCode();
         }
     }
 }

@@ -2,39 +2,50 @@
 
 namespace Model
 {
-    public class FileHelper
+    public interface IFileHelper
     {
-        public virtual void Copy(string sourceFileName, string destFileName)
+        void Copy(string sourceFileName, string destFileName);
+        void Copy(string sourceFileName, string destFileName, bool overwrite);
+        bool Exists(string path);
+        void WriteAllText(string path, string contents);
+        string[] GetFiles(string path);
+        string ReadAllText(string path);
+        void Delete(string path);
+    }
+
+    public class FileHelper : IFileHelper
+    {
+        public void Copy(string sourceFileName, string destFileName)
         {
             File.Copy(sourceFileName, destFileName);
         }
 
-        public virtual void Copy(string sourceFileName, string destFileName, bool overwrite)
+        public void Copy(string sourceFileName, string destFileName, bool overwrite)
         {
             File.Copy(sourceFileName, destFileName, overwrite);
         }
 
-        public virtual bool Exists(string path)
+        public bool Exists(string path)
         {
             return File.Exists(path);
         }
 
-        public virtual void WriteAllText(string path, string contents)
+        public void WriteAllText(string path, string contents)
         {
             File.WriteAllText(path,contents);
         }
 
-        public virtual string[] GetFiles(string path)
+        public string[] GetFiles(string path)
         {
             return Directory.GetFiles(path);
         }
 
-        public virtual string ReadAllText(string path)
+        public string ReadAllText(string path)
         {
             return File.ReadAllText(path);
         }
 
-        public virtual void Delete(string path)
+        public void Delete(string path)
         {
             File.Delete(path);
         }
