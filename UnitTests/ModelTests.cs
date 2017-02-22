@@ -23,9 +23,7 @@ namespace UnitTests
                 Name = "file",
                 Content = "#File content \\n 192.28.129.100\tsomepage.com"
             };
-            var expectedFilePath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory, Path.ChangeExtension(configuration.Name, ".host"));
-            fileManagerMoq.Setup(fm => fm.Exists(It.IsAny<string>())).Returns(true).Verifiable();
+            
             fileManagerMoq.Setup(
                 fm => fm.WriteAllText(It.Is<string>(s => s == "C:\\Windows\\system32\\drivers\\etc\\hosts"), 
                 It.Is<string>(s => s == configuration.Content)))
@@ -39,18 +37,25 @@ namespace UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
-        public void LoadConfig_WhenNoExistFileIsProvided_ShouldThrowFileNotFoundException()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void LoadConfig_WhenConfigurationContentIsEmptyOrNull_ShouldThrowArgumentNullException()
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
-            fileManagerMoq.Setup(fm => fm.Exists(It.IsAny<string>())).Returns(false).Verifiable();
-            fileManagerMoq.Setup(fm => fm.Copy(It.Is<string>(s => s == "D:\\file.host"), It.Is<string>(s => s == "C:\\Windows\\system32\\drivers\\etc\\hosts"), It.Is<bool>(t => t))).Verifiable();
-
             var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var configuration = new EConfiguration()
+            {
+                Name = "file",
+                Content = ""
+            };
             
+            fileManagerMoq.Setup(
+                fm => fm.WriteAllText(It.Is<string>(s => s == "C:\\Windows\\system32\\drivers\\etc\\hosts"),
+                It.Is<string>(s => s == configuration.Content)))
+                .Verifiable();
+
             // act
-            model.LoadConfig(new EConfiguration());
+            model.LoadConfig(configuration);
 
             // assert
             fileManagerMoq.Verify();
