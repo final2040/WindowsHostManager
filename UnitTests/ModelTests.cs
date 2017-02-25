@@ -37,7 +37,7 @@ namespace UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void LoadConfig_WhenConfigurationContentIsEmptyOrNull_ShouldThrowArgumentNullException()
         {
             // arrange
@@ -62,118 +62,38 @@ namespace UnitTests
         }
 
         [Test]
-        public void AddConfig_WhenValidTextIsProvided_ShouldCopyFileToProgramFolder()
-        {
-            // arrange
-            var hostContent = "#File content \\n 192.28.129.100\tsomepage.com";
-            var contentName = "Test"; 
-            var expectedPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Path.ChangeExtension(contentName, ".host"));
-            var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
-            fileManagerMoq.Setup(
-                fm => fm.WriteAllText(
-                        It.Is<string>(s => s == expectedPath),
-                        It.Is<string>(s => s == hostContent))
-                ).Verifiable();
-
-            // act
-            model.AddConfig(contentName, hostContent);
-
-            // assert
-            fileManagerMoq.Verify();
-        }
-
-        [Test]
-        [TestCase("", "Some")]
-        [TestCase(" ", "Some")]
-        [TestCase(null, "Some")]
-        [TestCase("Some", "")]
-        [TestCase("Some", " ")]
-        [TestCase("Some", null)]
-        [TestCase(null, null)]
-        [TestCase(" ", " ")]
-        [TestCase("", "")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void AddConfig_WhenContentOrNameIsNullOrEmpty_ShouldThrowNullArgumentException(string hostContent, string contentName)
+        public void LoadConfig_WhenIsNull_ShouldThrowArgumentNullException()
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
             var model = new HostManagerFileDal(fileManagerMoq.Object);
+            EConfiguration configuration = null;
             
             // act
-            model.AddConfig(contentName, hostContent);
+            model.LoadConfig(configuration);
+            
         }
 
         [Test]
-        public void AddConfig_WhenValidFileIsProvided_ShouldAddFileToProgramFolder()
+        public void AddConfig_WhenValidConfigurationIsProvided_ShouldSaveConfigurationIntoFile()
         {
-            // arrange
-            var expectedSource = "D:\\file.txt";
-            var expectedDestination = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                Path.ChangeExtension(Path.GetFileName(expectedSource),"host"));
-
             var fileManagerMoq = new Mock<IFileHelper>();
             var model = new HostManagerFileDal(fileManagerMoq.Object);
-
-            fileManagerMoq.Setup(
-                fm => fm.Exists(It.IsAny<string>()))
-                .Returns(true);
-
-            fileManagerMoq.Setup(
-                fm => fm.Copy(
-                    It.Is<string>(s => s == expectedSource), 
-                    It.Is<string>(s => s == expectedDestination), 
-                    It.Is<bool>(t => t)))
-                .Verifiable();
-
-            // act
-            model.AddConfig(expectedSource);
-
-            // assert
-            fileManagerMoq.Verify();
-        }
-
-        [Test]
-        public void AddConfig_WhenConfigurationIsProvided_ShouldCopyFileToProgramFolder()
-        {
-            // arrange
-            var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Path.ChangeExtension("test", ".host"));
             var configuration = new EConfiguration()
             {
                 Content = "#File content \\n 192.28.129.100\tsomepage.com",
                 Name = "test"
             };
-            
-            var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
-            fileManagerMoq.Setup(
-                fm => fm.WriteAllText(
-                        It.Is<string>(s => s == filePath),
-                        It.Is<string>(s => s == "#File content \\n 192.28.129.100\tsomepage.com"))
-                ).Verifiable();
+            string expectedFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                Path.ChangeExtension(configuration.Name, ".host"));
+            fileManagerMoq.Setup(fm => fm.WriteAllText(expectedFilename, configuration.Content)).Verifiable();
 
             // act
             model.AddConfig(configuration);
 
             // assert
             fileManagerMoq.Verify();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
-        public void AddConfig_WhenNoExistentFileIsProvided_ShouldThrowFileNotFoundExcepetion()
-        {
-            // arrange
-            var expectedSource = "D:\\file.txt";
-            var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
-
-            fileManagerMoq.Setup(
-                fm => fm.Exists(It.IsAny<string>())
-                ).Returns(false);
-
-            // act
-            model.AddConfig(expectedSource);
         }
 
         [Test]
@@ -264,9 +184,10 @@ namespace UnitTests
                 Content = "#File content \\n 192.28.129.100\tsomepage.com",
                 Name = "test"
             };
-
+            string expectedFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                Path.ChangeExtension(configuration.Name, ".host"));
             fileManagerMoq.Setup(
-                fm => fm.Delete(It.Is<string>(s => s ==configuration.Name))
+                fm => fm.Delete(It.Is<string>(s => s ==expectedFilename))
                 ).Verifiable();
 
             // act

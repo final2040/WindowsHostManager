@@ -6,7 +6,7 @@ using Entities;
 
 namespace Model
 {
-    public class HostManagerFileDal
+    public class HostManagerFileDal : IHostManager
     {
         private readonly IFileHelper _fileHelper;
         private readonly string _hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers\\etc\\hosts");
@@ -20,45 +20,25 @@ namespace Model
 
         public void LoadConfig(EConfiguration configuration)
         {
+            if (configuration == null)
+                throw new ArgumentNullException("configuration", "La configuración no puede ser nula");
+            if (string.IsNullOrWhiteSpace(configuration.Name))
+                throw new ArgumentException("Se debe especificar" +
+                                                " un nombre para la nueva " +
+                                                "configuración", "configuration");
             if (string.IsNullOrWhiteSpace(configuration.Content))
-                throw new ArgumentNullException("El contenido de la configuración no puede ser nulo");
+                throw new ArgumentException("El contenido de la configuración no puede ser nulo", "configuration");
 
             _fileHelper.WriteAllText(_hostsFilePath,
                 configuration.Content);
-        }
-
-        public void AddConfig(string name, string content)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException("name", "Se debe especificar" +
-                                                " un nombre para la nueva " +
-                                                "configuración");
-            if (string.IsNullOrWhiteSpace(content))
-                throw new ArgumentNullException("content","Debe de especificar " +
-                                                "un contenido para la nueva " +
-                                                "configuración");
-
-            string fileName = Path.Combine(_programBaseDirectory,
-                Path.ChangeExtension(name,_extension));
-
-            _fileHelper.WriteAllText(fileName, content);
-        }
-
-        public void AddConfig(string path)
-        {
-            if (!_fileHelper.Exists(path))
-                throw new FileNotFoundException("No se pudo encontrar el archivo origen", path);
-
-            var fileName = Path.GetFileName(path);
-            var destinationFile = Path.Combine(_programBaseDirectory, Path.ChangeExtension(fileName, _extension));
-            _fileHelper.Copy(path, destinationFile, true);
         }
 
         public List<EConfiguration> GetAll()
         {
             return _fileHelper.GetFiles(Path.Combine(_programBaseDirectory, "*.host")).Select(file => new EConfiguration()
             {
-                Name = Path.GetFileNameWithoutExtension(file), Content = _fileHelper.ReadAllText(file)
+                Name = Path.GetFileNameWithoutExtension(file),
+                Content = _fileHelper.ReadAllText(file)
             }).ToList();
         }
 
@@ -76,14 +56,17 @@ namespace Model
 
         public void AddConfig(EConfiguration configuration)
         {
-            AddConfig(configuration.Name, configuration.Content);
+            string fileName = Path.Combine(_programBaseDirectory,
+            Path.ChangeExtension(configuration.Name, _extension));
+
+            _fileHelper.WriteAllText(fileName, configuration.Content);
         }
 
         public void DeleteConfig(EConfiguration configuration)
         {
             string fileName = Path.Combine(_programBaseDirectory,
                 Path.ChangeExtension(configuration.Name, _extension));
-            _fileHelper.Delete(configuration.Name);
+            _fileHelper.Delete(fileName);
         }
     }
 }
