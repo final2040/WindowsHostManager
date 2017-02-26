@@ -34,6 +34,16 @@ namespace View
             this.btnSetConfig = new System.Windows.Forms.Button();
             this.btnImportConfig = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.menuStripMain = new System.Windows.Forms.MenuStrip();
+            this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSet = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // listBoxConfiguration
@@ -74,18 +84,98 @@ namespace View
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // menuStripMain
+            // 
+            this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuFile,
+            this.menuEdit,
+            this.menuHelp});
+            this.menuStripMain.Location = new System.Drawing.Point(0, 0);
+            this.menuStripMain.Name = "menuStripMain";
+            this.menuStripMain.Size = new System.Drawing.Size(326, 24);
+            this.menuStripMain.TabIndex = 4;
+            this.menuStripMain.Text = "Main Menú";
+            this.menuStripMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
+            // 
+            // menuFile
+            // 
+            this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuExit});
+            this.menuFile.Name = "menuFile";
+            this.menuFile.Size = new System.Drawing.Size(143, 20);
+            this.menuFile.Text = "Interface_FileMenuItem";
+            this.menuFile.Click += new System.EventHandler(this.archivoToolStripMenuItem_Click);
+            // 
+            // menuExit
+            // 
+            this.menuExit.Name = "menuExit";
+            this.menuExit.Size = new System.Drawing.Size(198, 22);
+            this.menuExit.Text = "Interface_ExitMenuItem";
+            this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
+            // 
+            // menuEdit
+            // 
+            this.menuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuSet,
+            this.menuImport,
+            this.menuDelete});
+            this.menuEdit.Name = "menuEdit";
+            this.menuEdit.Size = new System.Drawing.Size(145, 20);
+            this.menuEdit.Text = "Interface_EditMenuItem";
+            // 
+            // menuSet
+            // 
+            this.menuSet.Name = "menuSet";
+            this.menuSet.Size = new System.Drawing.Size(218, 22);
+            this.menuSet.Text = "Interface_SetCommand";
+            this.menuSet.Click += new System.EventHandler(this.btnSetConfig_Click);
+            // 
+            // menuImport
+            // 
+            this.menuImport.Name = "menuImport";
+            this.menuImport.Size = new System.Drawing.Size(218, 22);
+            this.menuImport.Text = "Interface_ImportCommand";
+            this.menuImport.Click += new System.EventHandler(this.btnImportConfig_Click);
+            // 
+            // menuDelete
+            // 
+            this.menuDelete.Name = "menuDelete";
+            this.menuDelete.Size = new System.Drawing.Size(218, 22);
+            this.menuDelete.Text = "Interface_DeleteCommand";
+            this.menuDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // menuHelp
+            // 
+            this.menuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuAbout});
+            this.menuHelp.Name = "menuHelp";
+            this.menuHelp.Size = new System.Drawing.Size(150, 20);
+            this.menuHelp.Text = "Interface_HelpMenuItem";
+            // 
+            // menuAbout
+            // 
+            this.menuAbout.Name = "menuAbout";
+            this.menuAbout.Size = new System.Drawing.Size(213, 22);
+            this.menuAbout.Text = "Interface_AboutMenuItem";
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(327, 261);
+            this.ClientSize = new System.Drawing.Size(326, 261);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnImportConfig);
             this.Controls.Add(this.btnSetConfig);
             this.Controls.Add(this.listBoxConfiguration);
+            this.Controls.Add(this.menuStripMain);
+            this.MainMenuStrip = this.menuStripMain;
             this.Name = "MainView";
             this.Text = ".:: Windows Host Manager ::.";
+            this.Load += new System.EventHandler(this.MainView_Load);
+            this.menuStripMain.ResumeLayout(false);
+            this.menuStripMain.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -95,6 +185,15 @@ namespace View
         private System.Windows.Forms.Button btnSetConfig;
         private System.Windows.Forms.Button btnImportConfig;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.MenuStrip menuStripMain;
+        private System.Windows.Forms.ToolStripMenuItem menuFile;
+        private System.Windows.Forms.ToolStripMenuItem menuExit;
+        private System.Windows.Forms.ToolStripMenuItem menuEdit;
+        private System.Windows.Forms.ToolStripMenuItem menuHelp;
+        private System.Windows.Forms.ToolStripMenuItem menuAbout;
+        private System.Windows.Forms.ToolStripMenuItem menuSet;
+        private System.Windows.Forms.ToolStripMenuItem menuImport;
+        private System.Windows.Forms.ToolStripMenuItem menuDelete;
     }
 }
 

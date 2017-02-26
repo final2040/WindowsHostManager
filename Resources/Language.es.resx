@@ -145,9 +145,29 @@
     <value>El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo</value>
     <comment>Message when the name contains illegal characteres</comment>
   </data>
+  <data name="Interface_AboutMenuItem" xml:space="preserve">
+    <value>Acerca de...</value>
+    <comment>About Menu Item Text</comment>
+  </data>
   <data name="Interface_DeleteCommand" xml:space="preserve">
     <value>Eliminar</value>
     <comment>Text of Delete Button</comment>
+  </data>
+  <data name="Interface_EditMenuItem" xml:space="preserve">
+    <value>Editar</value>
+    <comment>Edit Menu Item Text</comment>
+  </data>
+  <data name="Interface_ExitMenuItem" xml:space="preserve">
+    <value>Salir</value>
+    <comment>Exit Menu Item Text</comment>
+  </data>
+  <data name="Interface_FileMenuItem" xml:space="preserve">
+    <value>Archivo</value>
+    <comment>File Menu Item Text</comment>
+  </data>
+  <data name="Interface_HelpMenuItem" xml:space="preserve">
+    <value>Ayuda</value>
+    <comment>Help Menu Item Text</comment>
   </data>
   <data name="Interface_ImportCommand" xml:space="preserve">
     <value>Importar...</value>
