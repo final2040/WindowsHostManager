@@ -4,7 +4,7 @@
     {
         Info,
         Error,
-        Alert,
+        Warning,
         Retry,
         YesNo
     }

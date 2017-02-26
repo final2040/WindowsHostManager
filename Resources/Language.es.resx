@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DeleteConfirmation_Text" xml:space="preserve">
+    <value>Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?</value>
+    <comment>Message when a user try to delete a configuration file</comment>
+  </data>
   <data name="FileImportInvalidData_Text" xml:space="preserve">
     <value>La información introducida es incorrecta</value>
     <comment>Message when a file introduced in Import Dialog is Invalid</comment>
@@ -140,6 +144,10 @@
   <data name="ImportDialog_InvalidNameFormat_Text" xml:space="preserve">
     <value>El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo</value>
     <comment>Message when the name contains illegal characteres</comment>
+  </data>
+  <data name="Interface_DeleteCommand" xml:space="preserve">
+    <value>Eliminar</value>
+    <comment>Text of Delete Button</comment>
   </data>
   <data name="Interface_ImportCommand" xml:space="preserve">
     <value>Importar...</value>
@@ -174,7 +182,7 @@
     <comment>Text of LoadCommand</comment>
   </data>
   <data name="InvalidConfigurationError_Text" xml:space="preserve">
-    <value>La configuración seleccionada es inválida</value>
+    <value>Debe de seleccionar una configuración</value>
     <comment>Message when a null or empty configuration is provided</comment>
   </data>
   <data name="InvalidConfigurationError_Tittle" xml:space="preserve">
@@ -197,11 +205,15 @@
     <value>Confirmación</value>
     <comment>Message when user is trying to overwrite a existent configuration</comment>
   </data>
+  <data name="SuccessImport_Text" xml:space="preserve">
+    <value>Se ha importado la configuración satisfactoriamente</value>
+    <comment>Message when a configuration was imported succesfuly</comment>
+  </data>
   <data name="SuccessSetConfiguration_Text" xml:space="preserve">
     <value>Se ha cargado la configuración {0} en el sistema operativo</value>
     <comment>Message when a config is loaded Succefully in the system - Parametrized 0.- Config Name</comment>
   </data>
-  <data name="SuccessSetConfiguration_Tittle" xml:space="preserve">
+  <data name="Success_Tittle" xml:space="preserve">
     <value>Exito</value>
     <comment>Message when a config is loaded Succefully in the system</comment>
   </data>
@@ -212,5 +224,9 @@
   <data name="UnexpectedError_Tittle" xml:space="preserve">
     <value>Error Inesperado</value>
     <comment>Message when an unexpected exception is thrown</comment>
+  </data>
+  <data name="Warning_Tittle" xml:space="preserve">
+    <value>Advertencia</value>
+    <comment>Message when a warning is thrown</comment>
   </data>
 </root>

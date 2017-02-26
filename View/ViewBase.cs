@@ -3,14 +3,14 @@ using Entities;
 
 namespace View
 {
-    public abstract class ViewBase:Form, IView
+    public class ViewBase:Form, IView
     {
 
         public virtual DialogResult ShowMessage(MessageType type, string title, string message)
         {
             switch (type)
             {
-                case MessageType.Alert:
+                case MessageType.Warning:
                     return MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 case MessageType.Error:
                     return MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);

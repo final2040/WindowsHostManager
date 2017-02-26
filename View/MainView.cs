@@ -15,6 +15,7 @@ namespace View
 {
     public partial class MainView : ViewBase, IMainView
     {
+        // TODO: Crear un mecanismo para deshabilitar botones de borrado actualizado y edición cuando no hay items
         private PMain _presenter;
         public MainView()
         {
@@ -34,6 +35,7 @@ namespace View
         {
             btnSetConfig.Text = LocalizableStringHelper.GetLocalizableString("Interface_SetCommand");
             btnImportConfig.Text = LocalizableStringHelper.GetLocalizableString("Interface_ImportCommand");
+            btnDelete.Text = LocalizableStringHelper.GetLocalizableString("Interface_DeleteCommand");
         }
 
         public List<EConfiguration> Configurations
@@ -50,6 +52,11 @@ namespace View
         private void btnImportConfig_Click(object sender, EventArgs e)
         {
             _presenter.ImportConfig();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            _presenter.Delete((EConfiguration)listBoxConfiguration.SelectedItem);
         }
     }
 }

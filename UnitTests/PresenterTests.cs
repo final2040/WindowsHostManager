@@ -135,7 +135,7 @@ namespace UnitTests
             EConfiguration configToLoad = null;
             var mainPresenter = new PMain(mainViewMock.Object,null, modelMock.Object);
             mainViewMock.Setup(
-                mv => mv.ShowMessage(MessageType.Error, "Valor inválido", "La configuración seleccionada es inválida")).Verifiable();
+                mv => mv.ShowMessage(MessageType.Error, "Valor inválido", "Debe de seleccionar una configuración")).Verifiable();
             // Act
             mainPresenter.SetConfig(configToLoad);
 
@@ -152,7 +152,7 @@ namespace UnitTests
             EConfiguration configToLoad = new EConfiguration();
             var mainPresenter = new PMain(mainViewMock.Object,null, modelMock.Object);
             mainViewMock.Setup(
-                mv => mv.ShowMessage(MessageType.Error, "Valor inválido", "La configuración seleccionada es inválida")).Verifiable();
+                mv => mv.ShowMessage(MessageType.Error, "Valor inválido", "Debe de seleccionar una configuración")).Verifiable();
             // Act
             mainPresenter.SetConfig(configToLoad);
 
@@ -270,6 +270,38 @@ namespace UnitTests
         }
 
         [Test]
+        public void ImportConfiguration_ShouldShowSuccessMessage()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var importViewDialog = new Mock<IImportFileView>();
+
+            EConfiguration configToImport = new EConfiguration() { Id = 0, Name = "Test", Content = "test" };
+            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
+
+            mainViewMock.Setup(
+                mv => mv.ShowMessage(
+                    MessageType.Info,
+                    "Exito",
+                    "Se ha importado la configuración satisfactoriamente"));
+
+            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
+            modelMock.Setup(mm => mm.AddConfig(It.Is<EConfiguration>(c => c.Equals(configToImport)))).Verifiable();
+
+            importViewDialog.Setup(iv => iv.Path).Returns("C:\\test.txt").Verifiable();
+            importViewDialog.Setup(iv => iv.ConfigName).Returns("Test").Verifiable();
+            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
+            // Act
+            mainPresenter.ImportConfig();
+
+            // assert
+            mainViewMock.Verify();
+            modelMock.Verify();
+            importViewDialog.Verify();
+        }
+
+        [Test]
         public void ImportConfiguration_WhenConfigurationExists_ShouldShowConfirmationMessage()
         {
             // arrange
@@ -364,38 +396,137 @@ namespace UnitTests
             mainViewMock.Verify();
             modelMock.Verify(mm => mm.AddConfig(configToImport), Times.Never);
         }
-        //[Test]
-        //public void ImportConfiguration_WhenDialogIsInvalid_ShouldThrowErrorMessageAndRetry()
-        //{
-        //    // arrange
-        //    var mainViewMock = new Mock<IMainView>();
-        //    var modelMock = new Mock<IHostManager>();
-        //    var importViewDialog = new Mock<IImportFileView>();
-        //    EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
 
-        //    var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
-        //    modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
+        [Test]
+        public void ImportConfiguration_OnUnexpectedException_ShouldShowMessage()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var importViewDialog = new Mock<IImportFileView>();
+            EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
+            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
 
-        //    mainViewMock.Setup(
-        //        mv => mv.ShowMessage(MessageType.Error, "Error", "La información introducida es incorrecta")).Verifiable();
+            modelMock.Setup(mm => mm.Exists(configToImport)).Returns(false);
+            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Throws(new Exception("Error desconocido")).Verifiable();
 
-        //    importViewDialog.SetupSequence(iv => iv.Path)
-        //        .Returns("")
-        //        .Returns("C:\\test.txt");
-        //    importViewDialog.SetupSequence(iv => iv.ConfigName)
-        //        .Returns("")
-        //        .Returns("test");
-        //    importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
-        //    // Act
-        //    mainPresenter.ImportConfig();
+            mainViewMock.Setup(
+                 mv => mv.ShowMessage(
+                     MessageType.Error,
+                     "Error Inesperado", 
+                     "Ocurrio un error inesperado: Error desconocido")).Verifiable();
 
-        //    // assert
-        //    importViewDialog.Verify(iv => iv.ConfigName, Times.Exactly(2));
-        //    importViewDialog.Verify(iv => iv.Path, Times.Exactly(2));
-        //    mainViewMock.Verify();
-        //}
+            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
+            importViewDialog.Setup(iv => iv.Path).Returns("C:\\test.txt").Verifiable();
+            importViewDialog.Setup(iv => iv.ConfigName).Returns("Test").Verifiable();
 
-        // TODO: Crear test para cuando el archivo no existe
-        // TODO: Crear test para cuando se lanza una excepcion inesperada
+            // Act
+            mainPresenter.ImportConfig();
+
+            // assert
+            mainViewMock.Verify();
+            modelMock.Verify(mm => mm.AddConfig(configToImport), Times.Never);
+        }
+        
+        [Test]
+        public void DeleteConfiguration_ShouldShowConfirmationDialog()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            
+            EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
+            var mainPresenter = new PMain(mainViewMock.Object, null, modelMock.Object);
+            
+            mainViewMock.Setup(
+                mv => mv.ShowMessage(
+                    MessageType.YesNo,
+                    "Advertencia",
+                    "Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?")).Verifiable();
+
+            // act
+            mainPresenter.Delete(configToDelete);
+
+            // assert
+            mainViewMock.Verify();
+        }
+
+        [Test]
+        public void DeleteConfiguration_WhenUserSelectYes_ShouldDeleteConfiguration()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+
+            EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
+            var mainPresenter = new PMain(mainViewMock.Object, null, modelMock.Object);
+
+            modelMock.Setup(mm => mm.DeleteConfig(configToDelete)).Verifiable();
+
+            mainViewMock.Setup(
+                mv => mv.ShowMessage(
+                    MessageType.YesNo,
+                    "Advertencia",
+                    "Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?"))
+                    .Returns(DialogResult.Yes)
+                    .Verifiable();
+
+            // act
+            mainPresenter.Delete(configToDelete);
+
+            // assert
+            modelMock.Verify();
+            mainViewMock.Verify();
+        }
+
+        [Test]
+        public void DeleteConfiguration_WhenUserSelectNo_ShouldDoNothing()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+
+            EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
+            var mainPresenter = new PMain(mainViewMock.Object, null, modelMock.Object);
+            
+            mainViewMock.Setup(
+                mv => mv.ShowMessage(
+                    MessageType.YesNo,
+                    "Advertencia",
+                    "Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?"))
+                    .Returns(DialogResult.No)
+                    .Verifiable();
+
+            // act
+            mainPresenter.Delete(configToDelete);
+
+            // assert
+            modelMock.Verify(mm => mm.DeleteConfig(configToDelete),Times.Never);
+            mainViewMock.Verify();
+        }
+
+        [Test]
+        public void DeleteConfiguration_WhenNullConfiguration_ShouldShowErrorMessage()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            
+            var mainPresenter = new PMain(mainViewMock.Object, null, modelMock.Object);
+
+            mainViewMock.Setup(
+                mv => mv.ShowMessage(
+                    MessageType.Error,
+                    "Valor inválido",
+                    "Debe de seleccionar una configuración")).Verifiable();
+
+            // act
+            mainPresenter.Delete(null);
+
+            // assert
+            mainViewMock.Verify();
+        }
+
+
     }
 }

@@ -47,6 +47,7 @@
             // 
             // txtPath
             // 
+            this.txtPath.Enabled = false;
             this.txtPath.Location = new System.Drawing.Point(129, 33);
             this.txtPath.Name = "txtPath";
             this.txtPath.Size = new System.Drawing.Size(277, 20);
@@ -57,18 +58,18 @@
             this.lblName.AutoSize = true;
             this.lblName.Location = new System.Drawing.Point(12, 13);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(35, 13);
+            this.lblName.Size = new System.Drawing.Size(144, 13);
             this.lblName.TabIndex = 2;
-            this.lblName.Text = "label1";
+            this.lblName.Text = "Interface_Import_NameLabel";
             // 
             // lblPath
             // 
             this.lblPath.AutoSize = true;
             this.lblPath.Location = new System.Drawing.Point(12, 36);
             this.lblPath.Name = "lblPath";
-            this.lblPath.Size = new System.Drawing.Size(35, 13);
+            this.lblPath.Size = new System.Drawing.Size(138, 13);
             this.lblPath.TabIndex = 3;
-            this.lblPath.Text = "label2";
+            this.lblPath.Text = "Interface_Import_PathLabel";
             // 
             // btnCancel
             // 
@@ -77,16 +78,17 @@
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 4;
-            this.btnCancel.Text = "cancel";
+            this.btnCancel.Text = "Interface_Impot_CancelCommand";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOk
             // 
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOk.Location = new System.Drawing.Point(412, 59);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 5;
-            this.btnOk.Text = "button2";
+            this.btnOk.Text = "Interface_Impot_OkCommand";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
@@ -96,7 +98,7 @@
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 23);
             this.btnBrowse.TabIndex = 6;
-            this.btnBrowse.Text = "button3";
+            this.btnBrowse.Text = "Interface_Impot_BrowseCommand";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
@@ -122,7 +124,7 @@
             this.Controls.Add(this.txtName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ImportView";
-            this.Text = "Importar";
+            this.Text = "Interface_Import_WindowTittle";
             this.Load += new System.EventHandler(this.ImportView_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

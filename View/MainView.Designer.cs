@@ -33,6 +33,7 @@ namespace View
             this.listBoxConfiguration = new System.Windows.Forms.ListBox();
             this.btnSetConfig = new System.Windows.Forms.Button();
             this.btnImportConfig = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxConfiguration
@@ -49,7 +50,7 @@ namespace View
             this.btnSetConfig.Name = "btnSetConfig";
             this.btnSetConfig.Size = new System.Drawing.Size(92, 23);
             this.btnSetConfig.TabIndex = 1;
-            this.btnSetConfig.Text = "TextButton";
+            this.btnSetConfig.Text = "Interface_SetCommand";
             this.btnSetConfig.UseVisualStyleBackColor = true;
             this.btnSetConfig.Click += new System.EventHandler(this.btnSetConfig_Click);
             // 
@@ -59,15 +60,26 @@ namespace View
             this.btnImportConfig.Name = "btnImportConfig";
             this.btnImportConfig.Size = new System.Drawing.Size(92, 23);
             this.btnImportConfig.TabIndex = 2;
-            this.btnImportConfig.Text = "text";
+            this.btnImportConfig.Text = "Interface_ImportCommand";
             this.btnImportConfig.UseVisualStyleBackColor = true;
             this.btnImportConfig.Click += new System.EventHandler(this.btnImportConfig_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(223, 97);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(92, 23);
+            this.btnDelete.TabIndex = 3;
+            this.btnDelete.Text = "Interface_DeleteCommand";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(327, 261);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnImportConfig);
             this.Controls.Add(this.btnSetConfig);
             this.Controls.Add(this.listBoxConfiguration);
@@ -82,6 +94,7 @@ namespace View
         private System.Windows.Forms.ListBox listBoxConfiguration;
         private System.Windows.Forms.Button btnSetConfig;
         private System.Windows.Forms.Button btnImportConfig;
+        private System.Windows.Forms.Button btnDelete;
     }
 }
 
