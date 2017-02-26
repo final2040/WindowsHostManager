@@ -35,14 +35,14 @@ namespace Model
 
         public List<EConfiguration> GetAll()
         {
-            return _fileHelper.GetFiles(Path.Combine(_programBaseDirectory, "*.host")).Select(file => new EConfiguration()
+            return _fileHelper.GetFiles(_programBaseDirectory).Where(f => Path.GetExtension(f) == _extension).Select(file => new EConfiguration()
             {
                 Name = Path.GetFileNameWithoutExtension(file),
                 Content = _fileHelper.ReadAllText(file)
             }).ToList();
         }
 
-        public EConfiguration GetConfig(string path)
+        public EConfiguration ReadExternalConfig(string path)
         {
             if (!_fileHelper.Exists(path))
                 throw new FileNotFoundException("El archivo especificado no existe", path);
@@ -56,17 +56,23 @@ namespace Model
 
         public void AddConfig(EConfiguration configuration)
         {
-            string fileName = Path.Combine(_programBaseDirectory,
-            Path.ChangeExtension(configuration.Name, _extension));
-
-            _fileHelper.WriteAllText(fileName, configuration.Content);
+            _fileHelper.WriteAllText(GetFileName(configuration), configuration.Content);
         }
 
         public void DeleteConfig(EConfiguration configuration)
         {
-            string fileName = Path.Combine(_programBaseDirectory,
+            _fileHelper.Delete(GetFileName(configuration));
+        }
+
+        private string GetFileName(EConfiguration configuration)
+        {
+            return Path.Combine(_programBaseDirectory,
                 Path.ChangeExtension(configuration.Name, _extension));
-            _fileHelper.Delete(fileName);
+        }
+
+        public bool Exists(EConfiguration configuration)
+        {
+            return _fileHelper.Exists(GetFileName(configuration));
         }
     }
 }

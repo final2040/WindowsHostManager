@@ -5,6 +5,7 @@
         Info,
         Error,
         Alert,
-        Retry
+        Retry,
+        YesNo
     }
 }

@@ -6,8 +6,9 @@ namespace Entities
     {
         void LoadConfig(EConfiguration configuration);
         List<EConfiguration> GetAll();
-        EConfiguration GetConfig(string path);
+        EConfiguration ReadExternalConfig(string path);
         void AddConfig(EConfiguration configuration);
         void DeleteConfig(EConfiguration configuration);
+        bool Exists(EConfiguration configuration);
     }
 }

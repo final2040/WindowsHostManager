@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,9 +52,9 @@
       <Project>{23a651da-8fd1-4fb1-92fc-2aecdebe9ca3}</Project>
       <Name>Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\View\View.csproj">
-      <Project>{1b83eceb-bb7d-4bce-838d-79a073c12f5d}</Project>
-      <Name>View</Name>
+    <ProjectReference Include="..\Resources\AppResources.csproj">
+      <Project>{184e52a5-a43c-4466-add5-1cb8e2e65cce}</Project>
+      <Name>AppResources</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

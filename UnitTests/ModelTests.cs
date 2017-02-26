@@ -152,7 +152,7 @@ namespace UnitTests
 
 
             // act
-            var configuration = model.GetConfig("D:\\file.host");
+            var configuration = model.ReadExternalConfig("D:\\file.host");
 
             // assert
            Assert.AreEqual(configuration, expectedConfiguration);
@@ -170,7 +170,7 @@ namespace UnitTests
                 fm => fm.Exists(It.IsAny<string>())).Returns(false);
             
             // act
-            var configuration = model.GetConfig("D:\\file.host");
+            var configuration = model.ReadExternalConfig("D:\\file.host");
         }
 
         [Test]
@@ -196,5 +196,56 @@ namespace UnitTests
             // assert
             fileManagerMoq.Verify();
         }
+
+        [Test]
+        public void Exist_WhenConfigurationExists_ShouldReturnTrue()
+        {
+            // arrange
+            var fileManagerMoq = new Mock<IFileHelper>();
+            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var configuration = new EConfiguration()
+            {
+                Content = "#File content \\n 192.28.129.100\tsomepage.com",
+                Name = "test"
+            };
+            string expectedFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                Path.ChangeExtension(configuration.Name, ".host"));
+            fileManagerMoq.Setup(
+                fm => fm.Exists(It.Is<string>(s => s == expectedFilename))
+                ).Returns(true).Verifiable();
+
+            // act
+            var result = model.Exists(configuration);
+
+            // assert
+            fileManagerMoq.Verify();
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void Exist_WhenConfigurationDontExists_ShouldReturnFalse()
+        {
+            // arrange
+            var fileManagerMoq = new Mock<IFileHelper>();
+            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var configuration = new EConfiguration()
+            {
+                Content = "#File content \\n 192.28.129.100\tsomepage.com",
+                Name = "test"
+            };
+            string expectedFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                Path.ChangeExtension(configuration.Name, ".host"));
+            fileManagerMoq.Setup(
+                fm => fm.Exists(It.Is<string>(s => s == expectedFilename))
+                ).Returns(false).Verifiable();
+
+            // act
+            var result = model.Exists(configuration);
+
+            // assert
+            fileManagerMoq.Verify();
+            Assert.IsFalse(result);
+        }
+
     }
 }

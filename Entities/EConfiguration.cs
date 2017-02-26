@@ -5,6 +5,14 @@ namespace Entities
 {
     public class EConfiguration
     {
+        public EConfiguration(){}
+
+        public EConfiguration(uint id, string name, string content)
+        {
+            Id = id;
+            Name = name;
+            Content = content;
+        }
         public uint Id { get; set; }
         [Required]
         [StringLength(20,ErrorMessage = "El nombre de la configuración no puede ser mayor a 20 carácteres")]
