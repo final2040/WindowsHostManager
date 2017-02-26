@@ -8,14 +8,17 @@ using System.Text;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
+using Presenter;
 
 namespace View
 {
-    public partial class ImportView : Form, IImportFileView
+    public partial class ImportView : ViewBase, IImportFileView
     {
+        private PImport _presenter;
         public ImportView()
         {
             InitializeComponent();
+            _presenter = new PImport(this);
             InitializeLanguage();
         }
 
@@ -41,8 +44,7 @@ namespace View
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
-            Close();
+            _presenter.Submit();
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -56,5 +58,6 @@ namespace View
             
             
         }
+        
     }
 }

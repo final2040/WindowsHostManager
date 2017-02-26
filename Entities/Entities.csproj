@@ -51,6 +51,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Resources\AppResources.csproj">
+      <Project>{184e52a5-a43c-4466-add5-1cb8e2e65cce}</Project>
+      <Name>AppResources</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

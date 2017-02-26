@@ -89,30 +89,39 @@ namespace Presenter
 
         public void ImportConfig()
         {
-            bool exit = false;
-            while (!exit)
+            if (_importFileView.ShowDialog() == DialogResult.OK)
             {
-                if (_importFileView.ShowDialog() == DialogResult.OK)
-                {
-                    string configName = _importFileView.ConfigName;
-                    string path = _importFileView.Path;
-                    if (!string.IsNullOrWhiteSpace(configName) && !string.IsNullOrWhiteSpace(path))
-                    {
-                        var config = new EConfiguration(0, configName, _model.ReadExternalConfig(path).Content);
-                        exit = ImportConfig(config);
-                    }
-                    else
-                        _view.ShowMessage(MessageType.Error,
-                            LocalizableStringHelper.GetLocalizableString("FileImportInvalidData_Tittle"),
-                            LocalizableStringHelper.GetLocalizableString("FileImportInvalidData_Text"));
-                }
-                else
-                {
-                    exit = true;
-                }
+                ImportConfig(new EConfiguration(0, _importFileView.ConfigName,
+                    _model.ReadExternalConfig(_importFileView.Path).Content));
             }
+        }
+
+        //public void ImportConfig()
+        //{
+        //    bool exit = false;
+        //    while (!exit)
+        //    {
+        //        if (_importFileView.ShowDialog() == DialogResult.OK)
+        //        {
+        //            string configName = _importFileView.ConfigName;
+        //            string path = _importFileView.Path;
+        //            if (!string.IsNullOrWhiteSpace(configName) && !string.IsNullOrWhiteSpace(path))
+        //            {
+        //                var config = new EConfiguration(0, configName, _model.ReadExternalConfig(path).Content);
+        //                exit = ImportConfig(config);
+        //            }
+        //            else
+        //                _view.ShowMessage(MessageType.Error,
+        //                    LocalizableStringHelper.GetLocalizableString("FileImportInvalidData_Tittle"),
+        //                    LocalizableStringHelper.GetLocalizableString("FileImportInvalidData_Text"));
+        //        }
+        //        else
+        //        {
+        //            exit = true;
+        //        }
+        //    }
 
             // TODO: Crear metodo para validar configuración del formulario de caracteres no validos para el nombre del archivo
-        }
+        //}
     }
 }

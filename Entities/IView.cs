@@ -7,6 +7,9 @@ namespace Entities
     {
         DialogResult ShowDialog();
         void Show();
-        DialogResult DialogResult { get; }
+        void Close();
+        DialogResult DialogResult { get; set; }
+        DialogResult ShowMessage(MessageType type, string title, string message);
+
     }
 }

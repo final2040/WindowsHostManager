@@ -180,6 +180,70 @@ namespace UnitTests
         }
 
         [Test]
+        public void ImportConfiguration_ShouldShowImportDialog()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var importViewDialog = new Mock<IImportFileView>();
+            EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
+
+            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
+
+            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
+
+            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.Cancel).Verifiable();
+            
+            // Act
+            mainPresenter.ImportConfig();
+
+            // assert
+           importViewDialog.Verify();
+        }
+
+        [Test]
+        public void ImportConfiguration_WhenUserAcceptDialog_ShouldSaveConfig()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var importViewDialog = new Mock<IImportFileView>();
+            EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
+
+            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
+            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
+            importViewDialog.Setup(iv => iv.Path).Returns("C:\\test.txt").Verifiable();
+            importViewDialog.Setup(iv => iv.ConfigName).Returns("test").Verifiable();
+            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
+            // Act
+            mainPresenter.ImportConfig();
+
+            // assert
+            importViewDialog.Verify();
+        }
+
+        [Test]
+        public void ImportConfiguration_WhenUserCancelDialog_ShouldDoNothing()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var importViewDialog = new Mock<IImportFileView>();
+            EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
+
+            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
+            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
+            
+            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.Cancel).Verifiable();
+            // Act
+            mainPresenter.ImportConfig();
+
+            // assert
+            importViewDialog.Verify();
+            modelMock.Verify(mm => mm.AddConfig(configToImport), Times.Never);
+        }
+
+        [Test]
         public void ImportConfiguration_ShouldImportConfiguration()
         {
             // arrange
@@ -187,7 +251,7 @@ namespace UnitTests
             var modelMock = new Mock<IHostManager>();
             var importViewDialog = new Mock<IImportFileView>();
 
-            EConfiguration configToImport = new EConfiguration() {Id = 0,Name = "Test", Content = "test" };
+            EConfiguration configToImport = new EConfiguration() { Id = 0, Name = "Test", Content = "test" };
             var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
 
             modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
@@ -214,7 +278,7 @@ namespace UnitTests
             var importViewDialog = new Mock<IImportFileView>();
 
             EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
-            var mainPresenter = new PMain(mainViewMock.Object,importViewDialog.Object, modelMock.Object);
+            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
             mainViewMock.Setup(
                 mv =>
                     mv.ShowMessage(MessageType.YesNo, "Confirmación",
@@ -227,7 +291,7 @@ namespace UnitTests
             importViewDialog.Setup(iv => iv.Path).Returns("C:\\test.txt").Verifiable();
             importViewDialog.Setup(iv => iv.ConfigName).Returns("Test").Verifiable();
             importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
-            
+
             // Act
             mainPresenter.ImportConfig();
 
@@ -268,7 +332,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void ImportConfiguration_OnExistingConfigWhenUserSelectNo_ShouldShowDialogAgain()
+        public void ImportConfiguration_OnExistingConfigWhenUserSelectNo_ShouldDoNothing()
         {
             // arrange
             var mainViewMock = new Mock<IMainView>();
@@ -278,105 +342,58 @@ namespace UnitTests
             var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
 
             modelMock.Setup(mm => mm.Exists(configToImport)).Returns(true);
-            mainViewMock.SetupSequence(
+            mainViewMock.Setup(
                 mv =>
                     mv.ShowMessage(MessageType.YesNo, "Confirmación",
                         "Ya existe una configuración con ese nombre ¿Desea sobreescribirla?"))
-                .Returns(DialogResult.No).Returns(DialogResult.Yes);
+                .Returns(DialogResult.No);
 
             modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
 
             importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
             importViewDialog.Setup(iv => iv.Path).Returns("C:\\test.txt").Verifiable();
             importViewDialog.Setup(iv => iv.ConfigName).Returns("Test").Verifiable();
-            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
 
             // Act
             mainPresenter.ImportConfig();
             mainViewMock.Verify(mv =>
                     mv.ShowMessage(MessageType.YesNo, "Confirmación",
                         "Ya existe una configuración con ese nombre ¿Desea sobreescribirla?"),
-                        Times.Exactly(2));
+                        Times.Exactly(1));
             // assert
             mainViewMock.Verify();
-            modelMock.Verify(mm => mm.AddConfig(configToImport), Times.Exactly(1));
+            modelMock.Verify(mm => mm.AddConfig(configToImport), Times.Never);
         }
+        //[Test]
+        //public void ImportConfiguration_WhenDialogIsInvalid_ShouldThrowErrorMessageAndRetry()
+        //{
+        //    // arrange
+        //    var mainViewMock = new Mock<IMainView>();
+        //    var modelMock = new Mock<IHostManager>();
+        //    var importViewDialog = new Mock<IImportFileView>();
+        //    EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
 
-        [Test]
-        public void ImportConfiguration_ShouldShowImportDialog()
-        {
-            // arrange
-            var mainViewMock = new Mock<IMainView>();
-            var modelMock = new Mock<IHostManager>();
-            var importViewDialog = new Mock<IImportFileView>();
-            EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
+        //    var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
+        //    modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
 
-            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
+        //    mainViewMock.Setup(
+        //        mv => mv.ShowMessage(MessageType.Error, "Error", "La información introducida es incorrecta")).Verifiable();
 
-            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
+        //    importViewDialog.SetupSequence(iv => iv.Path)
+        //        .Returns("")
+        //        .Returns("C:\\test.txt");
+        //    importViewDialog.SetupSequence(iv => iv.ConfigName)
+        //        .Returns("")
+        //        .Returns("test");
+        //    importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
+        //    // Act
+        //    mainPresenter.ImportConfig();
 
-            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
-            importViewDialog.Setup(iv => iv.Path).Returns("C:\\test.txt").Verifiable();
-            importViewDialog.Setup(iv => iv.ConfigName).Returns("Test").Verifiable();
-            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
-            // Act
-            mainPresenter.ImportConfig();
-
-            // assert
-           importViewDialog.Verify();
-        }
-        
-        [Test]
-        public void ImportConfiguration_WhenUserAcceptDialog_ShouldSaveConfig()
-        {
-            // arrange
-            var mainViewMock = new Mock<IMainView>();
-            var modelMock = new Mock<IHostManager>();
-            var importViewDialog = new Mock<IImportFileView>();
-            EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
-
-            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
-            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
-            importViewDialog.Setup(iv => iv.Path).Returns("C:\\test.txt").Verifiable();
-            importViewDialog.Setup(iv => iv.ConfigName).Returns("test").Verifiable();
-            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
-            // Act
-            mainPresenter.ImportConfig();
-
-            // assert
-            importViewDialog.Verify();
-        }
-
-        [Test]
-        public void ImportConfiguration_WhenDialogIsInvalid_ShouldThrowErrorMessageAndRetry()
-        {
-            // arrange
-            var mainViewMock = new Mock<IMainView>();
-            var modelMock = new Mock<IHostManager>();
-            var importViewDialog = new Mock<IImportFileView>();
-            EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
-
-            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
-            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
-
-            mainViewMock.Setup(
-                mv => mv.ShowMessage(MessageType.Error, "Error", "La información introducida es incorrecta")).Verifiable();
-
-            importViewDialog.SetupSequence(iv => iv.Path)
-                .Returns("")
-                .Returns("C:\\test.txt");
-            importViewDialog.SetupSequence(iv => iv.ConfigName)
-                .Returns("")
-                .Returns("test");
-            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
-            // Act
-            mainPresenter.ImportConfig();
-
-            // assert
-            importViewDialog.Verify(iv => iv.ConfigName, Times.Exactly(2));
-            importViewDialog.Verify(iv => iv.Path, Times.Exactly(2));
-            mainViewMock.Verify();
-        }
+        //    // assert
+        //    importViewDialog.Verify(iv => iv.ConfigName, Times.Exactly(2));
+        //    importViewDialog.Verify(iv => iv.Path, Times.Exactly(2));
+        //    mainViewMock.Verify();
+        //}
 
         // TODO: Crear test para cuando el archivo no existe
         // TODO: Crear test para cuando se lanza una excepcion inesperada
