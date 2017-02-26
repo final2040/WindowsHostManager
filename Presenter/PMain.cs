@@ -12,7 +12,7 @@ namespace Presenter
         private IMainView _view;
         private readonly IImportFileView _importFileView;
         private IHostManager _model;
-        
+
 
         public PMain(IMainView view, IImportFileView importFileView, IHostManager model)
         {
@@ -33,7 +33,7 @@ namespace Presenter
             }
             catch (Exception exception)
             {
-                _view.ShowMessage(MessageType.Error, LocalizableStringHelper.GetLocalizableString("UnexpectedError_Tittle"), LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text") + exception.Message + Environment.NewLine + exception.StackTrace);
+                _view.ShowMessage(MessageType.Error, LocalizableStringHelper.GetLocalizableString("UnexpectedError_Tittle"), LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text") + exception.Message);
             }
 
             if (configurationList == null || configurationList.Count == 0)
@@ -59,7 +59,7 @@ namespace Presenter
                 {
                     _view.ShowMessage(MessageType.Error,
                         LocalizableStringHelper.GetLocalizableString("UnexpectedError_Tittle"),
-                        LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text") 
+                        LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text")
                         + exception.Message);
                 }
         }
@@ -89,14 +89,30 @@ namespace Presenter
 
         public void ImportConfig()
         {
-            if (_importFileView.ShowDialog() == DialogResult.OK)
+            bool exit = false;
+            while (!exit)
             {
-                var config = new EConfiguration(0, _importFileView.ConfigName, _model.ReadExternalConfig(_importFileView.Path).Content);
-                if (!ImportConfig(config))
+                if (_importFileView.ShowDialog() == DialogResult.OK)
                 {
-                    ImportConfig();
+                    string configName = _importFileView.ConfigName;
+                    string path = _importFileView.Path;
+                    if (!string.IsNullOrWhiteSpace(configName) && !string.IsNullOrWhiteSpace(path))
+                    {
+                        var config = new EConfiguration(0, configName, _model.ReadExternalConfig(path).Content);
+                        exit = ImportConfig(config);
+                    }
+                    else
+                        _view.ShowMessage(MessageType.Error,
+                            LocalizableStringHelper.GetLocalizableString("FileImportInvalidData_Tittle"),
+                            LocalizableStringHelper.GetLocalizableString("FileImportInvalidData_Text"));
+                }
+                else
+                {
+                    exit = true;
                 }
             }
+
+            // TODO: Crear metodo para validar configuración del formulario de caracteres no validos para el nombre del archivo
         }
     }
 }

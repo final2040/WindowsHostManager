@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FileImportInvalidData_Text" xml:space="preserve">
+    <value>La información introducida es incorrecta</value>
+    <comment>Message when a file introduced in Import Dialog is Invalid</comment>
+  </data>
+  <data name="FileImportInvalidData_Tittle" xml:space="preserve">
+    <value>Error</value>
+    <comment>Message when a file introduced in Import Dialog is Invalid</comment>
+  </data>
   <data name="Interface_ImportCommand" xml:space="preserve">
     <value>Importar...</value>
     <comment>Text to Import Command</comment>

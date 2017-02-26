@@ -268,7 +268,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void ImportConfiguration_OnExistingConfigWhenUserSelectNo_ShouldDoNothing()
+        public void ImportConfiguration_OnExistingConfigWhenUserSelectNo_ShouldShowDialogAgain()
         {
             // arrange
             var mainViewMock = new Mock<IMainView>();
@@ -278,12 +278,11 @@ namespace UnitTests
             var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
 
             modelMock.Setup(mm => mm.Exists(configToImport)).Returns(true);
-            mainViewMock.Setup(
+            mainViewMock.SetupSequence(
                 mv =>
                     mv.ShowMessage(MessageType.YesNo, "Confirmación",
                         "Ya existe una configuración con ese nombre ¿Desea sobreescribirla?"))
-                        .Returns(DialogResult.No)
-                        .Verifiable();
+                .Returns(DialogResult.No).Returns(DialogResult.Yes);
 
             modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
 
@@ -294,10 +293,13 @@ namespace UnitTests
 
             // Act
             mainPresenter.ImportConfig();
-
+            mainViewMock.Verify(mv =>
+                    mv.ShowMessage(MessageType.YesNo, "Confirmación",
+                        "Ya existe una configuración con ese nombre ¿Desea sobreescribirla?"),
+                        Times.Exactly(2));
             // assert
             mainViewMock.Verify();
-            modelMock.Verify(mm => mm.AddConfig(configToImport), Times.Never);
+            modelMock.Verify(mm => mm.AddConfig(configToImport), Times.Exactly(1));
         }
 
         [Test]
@@ -323,7 +325,7 @@ namespace UnitTests
             // assert
            importViewDialog.Verify();
         }
-
+        
         [Test]
         public void ImportConfiguration_WhenUserAcceptDialog_ShouldSaveConfig()
         {
@@ -344,5 +346,39 @@ namespace UnitTests
             // assert
             importViewDialog.Verify();
         }
+
+        [Test]
+        public void ImportConfiguration_WhenDialogIsInvalid_ShouldThrowErrorMessageAndRetry()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var importViewDialog = new Mock<IImportFileView>();
+            EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
+
+            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, modelMock.Object);
+            modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
+
+            mainViewMock.Setup(
+                mv => mv.ShowMessage(MessageType.Error, "Error", "La información introducida es incorrecta")).Verifiable();
+
+            importViewDialog.SetupSequence(iv => iv.Path)
+                .Returns("")
+                .Returns("C:\\test.txt");
+            importViewDialog.SetupSequence(iv => iv.ConfigName)
+                .Returns("")
+                .Returns("test");
+            importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.OK).Verifiable();
+            // Act
+            mainPresenter.ImportConfig();
+
+            // assert
+            importViewDialog.Verify(iv => iv.ConfigName, Times.Exactly(2));
+            importViewDialog.Verify(iv => iv.Path, Times.Exactly(2));
+            mainViewMock.Verify();
+        }
+
+        // TODO: Crear test para cuando el archivo no existe
+        // TODO: Crear test para cuando se lanza una excepcion inesperada
     }
 }
