@@ -92,10 +92,9 @@ namespace View
             this.menuHelp});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(326, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(323, 24);
             this.menuStripMain.TabIndex = 4;
             this.menuStripMain.Text = "Main Menú";
-            this.menuStripMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // menuFile
             // 
@@ -104,7 +103,6 @@ namespace View
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(143, 20);
             this.menuFile.Text = "Interface_FileMenuItem";
-            this.menuFile.Click += new System.EventHandler(this.archivoToolStripMenuItem_Click);
             // 
             // menuExit
             // 
@@ -157,12 +155,13 @@ namespace View
             this.menuAbout.Name = "menuAbout";
             this.menuAbout.Size = new System.Drawing.Size(213, 22);
             this.menuAbout.Text = "Interface_AboutMenuItem";
+            this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(326, 261);
+            this.ClientSize = new System.Drawing.Size(323, 261);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnImportConfig);
             this.Controls.Add(this.btnSetConfig);
@@ -171,7 +170,6 @@ namespace View
             this.MainMenuStrip = this.menuStripMain;
             this.Name = "MainView";
             this.Text = ".:: Windows Host Manager ::.";
-            this.Load += new System.EventHandler(this.MainView_Load);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
             this.ResumeLayout(false);

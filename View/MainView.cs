@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
@@ -16,7 +11,8 @@ namespace View
     public partial class MainView : ViewBase, IMainView
     {
         // TODO: Crear un mecanismo para deshabilitar botones de borrado actualizado y edición cuando no hay items
-        private PMain _presenter;
+        private readonly PMain _presenter;
+        private readonly About _about = new About();
         public MainView()
         {
             InitializeComponent();
@@ -67,24 +63,14 @@ namespace View
             _presenter.Delete((EConfiguration)listBoxConfiguration.SelectedItem);
         }
 
-        private void archivoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void MainView_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void menuExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void menuAbout_Click(object sender, EventArgs e)
+        {
+            _about.ShowDialog();
         }
     }
 }
