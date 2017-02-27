@@ -53,6 +53,12 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditView.Designer.cs">
+      <DependentUpon>EditView.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +79,9 @@
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EditView.resx">
+      <DependentUpon>EditView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ImportView.resx">
       <DependentUpon>ImportView.cs</DependentUpon>
     </EmbeddedResource>
@@ -87,6 +96,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ViewBase.resx">
       <DependentUpon>ViewBase.cs</DependentUpon>
@@ -121,6 +131,17 @@
       <Project>{184e52a5-a43c-4466-add5-1cb8e2e65cce}</Project>
       <Name>AppResources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

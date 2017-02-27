@@ -9,15 +9,17 @@ namespace Presenter
 {
     public class PMain
     {
-        private IMainView _view;
+        private readonly IMainView _view;
         private readonly IImportFileView _importFileView;
-        private IHostManager _model;
+        private readonly IEditView _editView;
+        private readonly IHostManager _model;
 
 
-        public PMain(IMainView view, IImportFileView importFileView, IHostManager model)
+        public PMain(IMainView view, IImportFileView importFileView, IEditView editView ,IHostManager model)
         {
             _view = view;
             _importFileView = importFileView;
+            _editView = editView;
             _model = model;
 
             LocalizableStringHelper.SetCulture("es");
@@ -125,6 +127,31 @@ namespace Presenter
                     UpdateView();
                 }
             }
+        }
+
+        public void Edit(EConfiguration configuration)
+        {
+            if (configuration != null)
+            {
+                _editView.Configuration = configuration;
+                _editView.EditMode = EditMode.Edit;
+                if (_editView.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        _model.AddConfig(_editView.Configuration);
+                    }
+                    catch (Exception exception)
+                    {
+                        ShowExceptionErrorMessage(exception);
+                    }
+                }
+            }
+            else
+                _view.ShowMessage(MessageType.Error,
+                    LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Tittle"),
+                    LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Text"));
+
         }
     }
 }

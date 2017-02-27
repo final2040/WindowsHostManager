@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using AppResources;
@@ -8,11 +6,11 @@ using Entities;
 
 namespace Presenter
 {
-    public class PImport
+    public class PEdit
     {
-        private IImportFileView _view;
+        private IEditView _view;
 
-        public PImport(IImportFileView view)
+        public PEdit(IEditView view)
         {
             this._view = view;
         }
@@ -20,38 +18,34 @@ namespace Presenter
         public void Submit()
         {
             string error = ValidateView();
-            if (error.Length > 0)
-            {
-                _view.ShowMessage(MessageType.Error,
-                    LocalizableStringHelper.GetLocalizableString("Error_Data_Tittle"), error);
-            }
-            else
+            if (error.Length == 0)
             {
                 _view.DialogResult = DialogResult.OK;
                 _view.Close();
             }
-
+            else
+                _view.ShowMessage(MessageType.Error,
+                        LocalizableStringHelper.GetLocalizableString("Error_Data_Tittle"),
+                        error);
         }
 
         private string ValidateView()
         {
             StringBuilder errorMessage = new StringBuilder();
-
-            if (string.IsNullOrWhiteSpace(_view.ConfigName))
+            if (string.IsNullOrWhiteSpace(_view.Configuration.Name))
             {
                 errorMessage.AppendLine(LocalizableStringHelper.GetLocalizableString("Error_EmptyName_Text"));
             }
-            if (!string.IsNullOrWhiteSpace(_view.ConfigName) 
-                && !Regex.IsMatch(_view.ConfigName, "^[a-zA-Z0-9-_áéíóúÁÉÍÓÚ ]+$"))
+            if (!string.IsNullOrWhiteSpace(_view.Configuration.Name)
+               && !Regex.IsMatch(_view.Configuration.Name, "^[a-zA-Z0-9-_áéíóúÁÉÍÓÚ ]+$"))
             {
                 errorMessage.AppendLine(
                     LocalizableStringHelper.GetLocalizableString("Error_InvalidNameFormat_Text"));
             }
-            if (string.IsNullOrWhiteSpace(_view.Path))
+            if (string.IsNullOrWhiteSpace(_view.Configuration.Content))
             {
-                errorMessage.AppendLine(LocalizableStringHelper.GetLocalizableString("Error_EmptyPath_Text"));
+                errorMessage.AppendLine(LocalizableStringHelper.GetLocalizableString("Error_EmptyContent_Text"));
             }
-            
             return errorMessage.ToString();
         }
     }

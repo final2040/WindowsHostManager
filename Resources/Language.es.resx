@@ -121,6 +121,26 @@
     <value>Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?</value>
     <comment>Message when a user try to delete a configuration file</comment>
   </data>
+  <data name="Error_Data_Tittle" xml:space="preserve">
+    <value>Datos Inválidos</value>
+    <comment>Message when an error occured</comment>
+  </data>
+  <data name="Error_EmptyContent_Text" xml:space="preserve">
+    <value>El contenido de la configuración no puede estar vacio</value>
+    <comment>Text shown when configuration content is empty</comment>
+  </data>
+  <data name="Error_EmptyName_Text" xml:space="preserve">
+    <value>El nombre de la configuración es requerido</value>
+    <comment>Message when the config name is empty</comment>
+  </data>
+  <data name="Error_EmptyPath_Text" xml:space="preserve">
+    <value>La ruta del archivo es requerida</value>
+    <comment>Message when the config path is empty</comment>
+  </data>
+  <data name="Error_InvalidNameFormat_Text" xml:space="preserve">
+    <value>El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo</value>
+    <comment>Message when the name contains illegal characteres</comment>
+  </data>
   <data name="FileImportInvalidData_Text" xml:space="preserve">
     <value>La información introducida es incorrecta</value>
     <comment>Message when a file introduced in Import Dialog is Invalid</comment>
@@ -128,22 +148,6 @@
   <data name="FileImportInvalidData_Tittle" xml:space="preserve">
     <value>Error</value>
     <comment>Message when a file introduced in Import Dialog is Invalid</comment>
-  </data>
-  <data name="ImportDialog_EmptyName_Text" xml:space="preserve">
-    <value>El nombre de la configuración es requerido</value>
-    <comment>Message when the config name is empty</comment>
-  </data>
-  <data name="ImportDialog_EmptyPath_Text" xml:space="preserve">
-    <value>La ruta del archivo es requerida</value>
-    <comment>Message when the config path is empty</comment>
-  </data>
-  <data name="ImportDialog_Error_Tittle" xml:space="preserve">
-    <value>Datos Invalidos</value>
-    <comment>Message when an error occured</comment>
-  </data>
-  <data name="ImportDialog_InvalidNameFormat_Text" xml:space="preserve">
-    <value>El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo</value>
-    <comment>Message when the name contains illegal characteres</comment>
   </data>
   <data name="Interface_AboutMenuItem" xml:space="preserve">
     <value>Acerca de...</value>
@@ -153,9 +157,33 @@
     <value>Eliminar</value>
     <comment>Text of Delete Button</comment>
   </data>
+  <data name="Interface_EditCommand" xml:space="preserve">
+    <value>Editar</value>
+    <comment>Text of MainView Edit Button</comment>
+  </data>
   <data name="Interface_EditMenuItem" xml:space="preserve">
     <value>Editar</value>
     <comment>Edit Menu Item Text</comment>
+  </data>
+  <data name="Interface_Edit_CancelBtn" xml:space="preserve">
+    <value>Cancelar</value>
+    <comment>Text of Edit Cancel Button</comment>
+  </data>
+  <data name="Interface_Edit_ContentLabel" xml:space="preserve">
+    <value>Contenido:</value>
+    <comment>Text of Edit Content Label</comment>
+  </data>
+  <data name="Interface_Edit_FormTittle" xml:space="preserve">
+    <value>Editar</value>
+    <comment>Edit Form Tittle</comment>
+  </data>
+  <data name="Interface_Edit_NameLabel" xml:space="preserve">
+    <value>Nombre:</value>
+    <comment>Text of Edit Name Label</comment>
+  </data>
+  <data name="Interface_Edit_SaveBtn" xml:space="preserve">
+    <value>Guardar</value>
+    <comment>Text of Edit Save Button</comment>
   </data>
   <data name="Interface_ExitMenuItem" xml:space="preserve">
     <value>Salir</value>

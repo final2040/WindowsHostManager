@@ -35,7 +35,8 @@ namespace View
 
         private void ImportView_Load(object sender, EventArgs e)
         {
-
+            txtName.Text = "";
+            txtPath.Text = "";
         }
 
         public string ConfigName { get { return txtName.Text; } }

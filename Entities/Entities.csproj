@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EConfiguration.cs" />
+    <Compile Include="EditMode.cs" />
+    <Compile Include="IEditView.cs" />
     <Compile Include="IFileHelper.cs" />
     <Compile Include="IHostManager.cs" />
     <Compile Include="IImportFileView.cs" />

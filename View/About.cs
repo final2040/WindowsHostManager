@@ -18,7 +18,7 @@ namespace View
             this.labelVersion.Text = String.Format("Versión {0}", AssemblyVersion);
             this.labelCopyright.Text = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.";
             this.labelCompanyName.Text = "DreamSoft";
-            this.textBoxDescription.Text = "Administrador de Configuraciones de host de Windows";
+            this.textBoxDescription.Text = System.IO.File.ReadAllText("license.txt");
         }
 
         #region Descriptores de acceso de atributos de ensamblado
