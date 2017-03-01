@@ -8,15 +8,16 @@ namespace Model
 {
     public class HostManagerFileDal : IHostManager
     {
-        private readonly IFileHelper _fileHelper;
+        protected IFileHelper FileHelper;
         private readonly string _hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers\\etc\\hosts");
         private readonly string _programBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         private readonly string _extension = ".host";
 
-        public HostManagerFileDal(IFileHelper fileHelper)
+        public HostManagerFileDal()
         {
-            _fileHelper = fileHelper;
+            FileHelper = new FileHelper();
         }
+
 
         public void LoadConfig(EConfiguration configuration)
         {
@@ -29,39 +30,39 @@ namespace Model
             if (string.IsNullOrWhiteSpace(configuration.Content))
                 throw new ArgumentException("El contenido de la configuración no puede ser nulo", "configuration");
 
-            _fileHelper.WriteAllText(_hostsFilePath,
+            FileHelper.WriteAllText(_hostsFilePath,
                 configuration.Content);
         }
 
         public List<EConfiguration> GetAll()
         {
-            return _fileHelper.GetFiles(_programBaseDirectory).Where(f => Path.GetExtension(f) == _extension).Select(file => new EConfiguration()
+            return FileHelper.GetFiles(_programBaseDirectory).Where(f => Path.GetExtension(f) == _extension).Select(file => new EConfiguration()
             {
                 Name = Path.GetFileNameWithoutExtension(file),
-                Content = _fileHelper.ReadAllText(file)
+                Content = FileHelper.ReadAllText(file)
             }).ToList();
         }
 
         public EConfiguration ReadExternalConfig(string path)
         {
-            if (!_fileHelper.Exists(path))
+            if (!FileHelper.Exists(path))
                 throw new FileNotFoundException("El archivo especificado no existe", path);
 
             return new EConfiguration()
             {
                 Name = Path.GetFileNameWithoutExtension(path),
-                Content = _fileHelper.ReadAllText(path)
+                Content = FileHelper.ReadAllText(path)
             };
         }
 
         public void AddConfig(EConfiguration configuration)
         {
-            _fileHelper.WriteAllText(GetFileName(configuration), configuration.Content);
+            FileHelper.WriteAllText(GetFileName(configuration), configuration.Content);
         }
 
         public void DeleteConfig(EConfiguration configuration)
         {
-            _fileHelper.Delete(GetFileName(configuration));
+            FileHelper.Delete(GetFileName(configuration));
         }
 
         private string GetFileName(EConfiguration configuration)
@@ -72,7 +73,7 @@ namespace Model
 
         public bool Exists(EConfiguration configuration)
         {
-            return _fileHelper.Exists(GetFileName(configuration));
+            return FileHelper.Exists(GetFileName(configuration));
         }
     }
 }

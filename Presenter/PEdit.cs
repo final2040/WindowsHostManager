@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using AppResources;
@@ -9,10 +10,15 @@ namespace Presenter
     public class PEdit
     {
         private IEditView _view;
+        private readonly Dictionary<string, string> _errorTable = new Dictionary<string, string>();
 
         public PEdit(IEditView view)
         {
             this._view = view;
+            _errorTable.Add("ErrorCaption", LocalizableStringHelper.GetLocalizableString("Error_Data_Tittle"));
+            _errorTable.Add("EmptyText", LocalizableStringHelper.GetLocalizableString("Error_EmptyName_Text"));
+            _errorTable.Add("InvalidFormat", LocalizableStringHelper.GetLocalizableString("Error_InvalidNameFormat_Text"));
+            _errorTable.Add("EmptyContent", LocalizableStringHelper.GetLocalizableString("Error_EmptyContent_Text"));
         }
 
         public void Submit()
@@ -24,8 +30,7 @@ namespace Presenter
                 _view.Close();
             }
             else
-                _view.ShowMessage(MessageType.Error,
-                        LocalizableStringHelper.GetLocalizableString("Error_Data_Tittle"),
+                _view.ShowMessage(MessageType.Error, _errorTable["ErrorCaption"],
                         error);
         }
 
@@ -34,17 +39,16 @@ namespace Presenter
             StringBuilder errorMessage = new StringBuilder();
             if (string.IsNullOrWhiteSpace(_view.Configuration.Name))
             {
-                errorMessage.AppendLine(LocalizableStringHelper.GetLocalizableString("Error_EmptyName_Text"));
+                errorMessage.AppendLine(_errorTable["EmptyText"]);
             }
             if (!string.IsNullOrWhiteSpace(_view.Configuration.Name)
                && !Regex.IsMatch(_view.Configuration.Name, "^[a-zA-Z0-9-_áéíóúÁÉÍÓÚ ]+$"))
             {
-                errorMessage.AppendLine(
-                    LocalizableStringHelper.GetLocalizableString("Error_InvalidNameFormat_Text"));
+                errorMessage.AppendLine(_errorTable["InvalidFormat"]);
             }
             if (string.IsNullOrWhiteSpace(_view.Configuration.Content))
             {
-                errorMessage.AppendLine(LocalizableStringHelper.GetLocalizableString("Error_EmptyContent_Text"));
+                errorMessage.AppendLine(_errorTable["EmptyContent"]);
             }
             return errorMessage.ToString();
         }

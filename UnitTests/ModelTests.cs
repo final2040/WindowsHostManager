@@ -9,6 +9,14 @@ using NUnit.Framework;
 
 namespace UnitTests
 {
+    public class ModelStub : HostManagerFileDal
+    {
+        public ModelStub(IFileHelper fileHelper)
+        {
+            base.FileHelper = fileHelper;
+        }
+    }
+
     [TestFixture]
     public class ModelTests
     {
@@ -17,7 +25,7 @@ namespace UnitTests
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
             var configuration = new EConfiguration()
             {
                 Name = "file",
@@ -42,7 +50,7 @@ namespace UnitTests
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
             var configuration = new EConfiguration()
             {
                 Name = "file",
@@ -67,7 +75,7 @@ namespace UnitTests
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
             EConfiguration configuration = null;
             
             // act
@@ -79,7 +87,7 @@ namespace UnitTests
         public void AddConfig_WhenValidConfigurationIsProvided_ShouldSaveConfigurationIntoFile()
         {
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
             var configuration = new EConfiguration()
             {
                 Content = "#File content \\n 192.28.129.100\tsomepage.com",
@@ -108,7 +116,7 @@ namespace UnitTests
             };
 
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
             fileManagerMoq.Setup(
                 fm => fm.GetFiles(
                     It.Is<string>(s => s == Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"*.host"))))
@@ -141,7 +149,7 @@ namespace UnitTests
             { Name = "file", Content = "TestContent"};
             
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
            
             fileManagerMoq.Setup(
                 fm => fm.Exists(It.IsAny<string>())).Returns(true);
@@ -164,7 +172,7 @@ namespace UnitTests
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
 
             fileManagerMoq.Setup(
                 fm => fm.Exists(It.IsAny<string>())).Returns(false);
@@ -178,7 +186,7 @@ namespace UnitTests
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
             var configuration = new EConfiguration()
             {
                 Content = "#File content \\n 192.28.129.100\tsomepage.com",
@@ -202,7 +210,7 @@ namespace UnitTests
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
             var configuration = new EConfiguration()
             {
                 Content = "#File content \\n 192.28.129.100\tsomepage.com",
@@ -227,7 +235,7 @@ namespace UnitTests
         {
             // arrange
             var fileManagerMoq = new Mock<IFileHelper>();
-            var model = new HostManagerFileDal(fileManagerMoq.Object);
+            var model = new ModelStub(fileManagerMoq.Object);
             var configuration = new EConfiguration()
             {
                 Content = "#File content \\n 192.28.129.100\tsomepage.com",

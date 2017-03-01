@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
+using Microsoft.Practices.Unity;
 using Model;
 using Presenter;
 
@@ -16,7 +17,12 @@ namespace View
         public MainView()
         {
             InitializeComponent();
-            _presenter = new PMain(this, new ImportView(),new EditView(), new HostManagerFileDal(new FileHelper()));
+            UnityContainer container  = new UnityContainer();
+            container.RegisterInstance<IMainView>(this);
+            container.RegisterType<IImportFileView, ImportView>();
+            container.RegisterType<IEditView, EditView>();
+            container.RegisterType<IHostManager, HostManagerFileDal>();
+            _presenter = container.Resolve<PMain>();
             listBoxConfiguration.DisplayMember = "Name";
             InitializeLanguaje();
             UpdateView();

@@ -26,7 +26,7 @@ namespace UnitTests
             viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
-                    "Datos Invalidos",
+                    "Datos Inválidos",
                     "El nombre de la configuración es requerido\r\n"), Times.Once);
         }
 
@@ -47,7 +47,7 @@ namespace UnitTests
             viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error, 
-                    "Datos Invalidos", 
+                    "Datos Inválidos", 
                     "La ruta del archivo es requerida\r\n"), Times.Once);
         }
 
@@ -68,7 +68,7 @@ namespace UnitTests
             viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error, 
-                    "Datos Invalidos", 
+                    "Datos Inválidos", 
                     "El nombre de la configuración es requerido\r\n" +
                     "La ruta del archivo es requerida\r\n"),
                 Times.Once);
@@ -91,7 +91,7 @@ namespace UnitTests
             viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
-                    "Datos Invalidos",
+                    "Datos Inválidos",
                     "El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo\r\n"),
                 Times.Once);
         }
