@@ -30,6 +30,7 @@ namespace View
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             this.listBoxConfiguration = new System.Windows.Forms.ListBox();
             this.btnSetConfig = new System.Windows.Forms.Button();
             this.btnImportConfig = new System.Windows.Forms.Button();
@@ -40,12 +41,12 @@ namespace View
             this.menuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSet = new System.Windows.Forms.ToolStripMenuItem();
             this.menuImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuEditCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.btnEdit = new System.Windows.Forms.Button();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -140,6 +141,11 @@ namespace View
             this.menuImport.Text = "Interface_ImportCommand";
             this.menuImport.Click += new System.EventHandler(this.ImportConfigClick);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
+            // 
             // menuEditCommand
             // 
             this.menuEditCommand.Name = "menuEditCommand";
@@ -179,11 +185,6 @@ namespace View
             this.btnEdit.UseVisualStyleBackColor = true;
             this.btnEdit.Click += new System.EventHandler(this.EditClick);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
-            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,8 +197,8 @@ namespace View
             this.Controls.Add(this.listBoxConfiguration);
             this.Controls.Add(this.menuStripMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripMain;
-            this.MaximizeBox = false;
             this.Name = "MainView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = ".:: Windows Host Manager ::.";

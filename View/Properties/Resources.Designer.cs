@@ -69,5 +69,15 @@ namespace View.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
+        /// </summary>
+        internal static System.Drawing.Icon cog_edit {
+            get {
+                object obj = ResourceManager.GetObject("cog_edit", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
