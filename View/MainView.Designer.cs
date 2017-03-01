@@ -196,9 +196,10 @@ namespace View
             this.Controls.Add(this.btnSetConfig);
             this.Controls.Add(this.listBoxConfiguration);
             this.Controls.Add(this.menuStripMain);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripMain;
+            this.MaximizeBox = false;
             this.Name = "MainView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = ".:: Windows Host Manager ::.";
