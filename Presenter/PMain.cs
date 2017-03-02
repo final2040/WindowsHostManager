@@ -63,42 +63,11 @@ namespace Presenter
                 }
         }
 
-        private void ImportConfig(EConfiguration configuration)
-        {
-
-            if (_model.Exists(configuration))
-            {
-                var result = _view.ShowMessage(MessageType.YesNo,
-                    LocalizableStringHelper.GetLocalizableString("OverwriteMessage_Tittle"),
-                    LocalizableStringHelper.GetLocalizableString("OverWriteMessage_Text"));
-                if (result == DialogResult.Yes)
-                {
-                    _model.AddConfig(configuration);
-                    UpdateView();
-                }
-            }
-            else
-            {
-                _model.AddConfig(configuration);
-                UpdateView();
-            }
-        }
-
         public void ImportConfig()
         {
             if (_importFileView.ShowDialog() == DialogResult.OK)
             {
-                try
-                {
-                    ImportConfig(new EConfiguration(0, _importFileView.ConfigName,
-                        _model.ReadExternalConfig(_importFileView.Path).Content));
-                    _view.ShowMessage(MessageType.Info, LocalizableStringHelper.GetLocalizableString("Success_Tittle"),
-                        LocalizableStringHelper.GetLocalizableString("SuccessImport_Text"));
-                }
-                catch (Exception exception)
-                {
-                    ShowExceptionErrorMessage(exception);
-                }
+                UpdateView();
             }
         }
 

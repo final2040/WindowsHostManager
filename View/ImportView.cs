@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -8,20 +9,33 @@ using System.Text;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
+using Model;
 using Presenter;
 
 namespace View
 {
     public partial class ImportView : ViewBase, IImportFileView
     {
-        private PImport _presenter;
+        private readonly PImport _presenter;
+
+        #region Properties
+        public string ConfigName
+        {
+            get { return txtName.Text; }
+        }
+        public string Path
+        {
+            get { return txtPath.Text; }
+        }
+        #endregion
+
+        #region Initialize
         public ImportView()
         {
             InitializeComponent();
-            _presenter = new PImport(this);
+            _presenter = new PImport(this, new HostManagerFileDal());
             InitializeLanguage();
         }
-
         private void InitializeLanguage()
         {
             lblName.Text = LocalizableStringHelper.GetLocalizableString("Interface_Import_NameLabel");
@@ -32,6 +46,9 @@ namespace View
             Text = LocalizableStringHelper.GetLocalizableString("Interface_Import_WindowTittle");
 
         }
+        #endregion
+
+        #region Methods
 
         private void ImportView_Load(object sender, EventArgs e)
         {
@@ -39,13 +56,9 @@ namespace View
             txtPath.Text = "";
         }
 
-        public string ConfigName { get { return txtName.Text; } }
-
-        public string Path { get { return txtPath.Text; } }
-
         private void btnOk_Click(object sender, EventArgs e)
         {
-            _presenter.Submit();
+            _presenter.Import();
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -56,9 +69,9 @@ namespace View
                 if (string.IsNullOrWhiteSpace(txtName.Text))
                     txtName.Text = System.IO.Path.GetFileNameWithoutExtension(txtPath.Text);
             }
-            
-            
         }
-        
+
+        #endregion
+
     }
 }
