@@ -53,7 +53,7 @@ namespace Presenter
                     {
                         if (_view.ShowMessage(MessageType.YesNo, _messageTable["RewriteCaption"], _messageTable["RewriteMessage"]) == DialogResult.Yes)
                         {
-                           _model.AddConfig(config);
+                           SaveConfig(config);
                         }
                     }
                     else
