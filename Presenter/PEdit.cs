@@ -28,6 +28,7 @@ namespace Presenter
             string error = ValidateView();
             if (error.Length == 0)
             {
+                _model.AddConfig(_view.Configuration);
                 _view.DialogResult = DialogResult.OK;
                 _view.Close();
             }

@@ -19,7 +19,8 @@ namespace UnitTests
             // arrange
             PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0,"", "Test");
-            _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
+            _viewMock.Setup(vm => vm.Name).Returns("");
+            _viewMock.Setup(vm => vm.Content).Returns("Test");
 
             // act
             presenter.Save();

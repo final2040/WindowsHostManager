@@ -83,6 +83,7 @@
             this.txtContent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtContent.Size = new System.Drawing.Size(676, 339);
             this.txtContent.TabIndex = 4;
+            this.txtContent.Validating += new System.ComponentModel.CancelEventHandler(this.txtContent_Validating);
             // 
             // txtName
             // 
@@ -90,6 +91,8 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(676, 20);
             this.txtName.TabIndex = 5;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
+            this.txtName.Validating += new System.ComponentModel.CancelEventHandler(this.txtName_Validating);
             // 
             // EditView
             // 

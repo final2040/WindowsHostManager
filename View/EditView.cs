@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
+using Model;
 using Presenter;
 
 namespace View
@@ -19,7 +20,7 @@ namespace View
         {
             InitializeComponent();
             InitializeLanguage();
-            _presenter = new PEdit(this);
+            _presenter = new PEdit(this, new HostManagerFileDal());
         }
 
         private void InitializeLanguage()
@@ -32,6 +33,7 @@ namespace View
         }
 
         public EConfiguration Configuration { get; set; }
+        public string Content { get; set; }
         public EditMode EditMode { get; set; }
 
         private void EditView_Load(object sender, EventArgs e)
@@ -50,9 +52,17 @@ namespace View
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Configuration.Name = txtName.Text;
-            Configuration.Content = txtContent.Text;
             _presenter.Save();
+        }
+
+        private void txtContent_Validating(object sender, CancelEventArgs e)
+        {
+            Configuration.Content = ((TextBox) sender).Text;
+        }
+       
+        private void txtName_Validating(object sender, CancelEventArgs e)
+        {
+            Configuration.Name = ((TextBox)sender).Text;
         }
     }
 }
