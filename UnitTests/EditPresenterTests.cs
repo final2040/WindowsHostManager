@@ -10,20 +10,22 @@ namespace UnitTests
     [TestFixture]
     public class EditPresenterTests
     {
+        private readonly Mock<IEditView> _viewMock = new Mock<IEditView>();
+        private readonly Mock<IHostManager> _modelMock = new Mock<IHostManager>();
+
         [Test]
-        public void Submit_WhenNameIsEmpty_ShoulDisplayErrorMessage()
+        public void Save_WhenNameIsEmpty_ShoulDisplayErrorMessage()
         {
             // arrange
-            var viewMock = new Mock<IEditView>();
-            PEdit presenter = new PEdit(viewMock.Object);
+            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0,"", "Test");
-            viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
+            _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
 
             // act
-            presenter.Submit();
+            presenter.Save();
 
             // assert
-            viewMock.Verify(
+            _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
@@ -32,19 +34,18 @@ namespace UnitTests
         }
 
         [Test]
-        public void Submit_WhenContentIsEmpty_ShoulDisplayErrorMessage()
+        public void Save_WhenContentIsEmpty_ShoulDisplayErrorMessage()
         {
             // arrange
-            var viewMock = new Mock<IEditView>();
-            PEdit presenter = new PEdit(viewMock.Object);
+            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "");
-            viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
+            _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
 
             // act
-            presenter.Submit();
+            presenter.Save();
 
             // assert
-            viewMock.Verify(
+            _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
@@ -53,19 +54,18 @@ namespace UnitTests
         }
         
         [Test]
-        public void Submit_WhenNameContainsIlegalCharacters_ShoulDisplayErrorMessage()
+        public void Save_WhenNameContainsIlegalCharacters_ShoulDisplayErrorMessage()
         {
             // arrange
-            var viewMock = new Mock<IEditView>();
-            PEdit presenter = new PEdit(viewMock.Object);
+            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, ">?te<st", "test");
-            viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
+            _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
 
             // act
-            presenter.Submit();
+            presenter.Save();
 
             // assert
-            viewMock.Verify(
+            _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
@@ -74,19 +74,18 @@ namespace UnitTests
         }
 
         [Test]
-        public void Submit_WhenContentIsEmptyAndNameIsEmpty_ShoulDisplayCombinedErrorMessage()
+        public void Save_WhenContentIsEmptyAndNameIsEmpty_ShoulDisplayCombinedErrorMessage()
         {
             // arrange
-            var viewMock = new Mock<IEditView>();
-            PEdit presenter = new PEdit(viewMock.Object);
+            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "", "");
-            viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
+            _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
 
             // act
-            presenter.Submit();
+            presenter.Save();
 
             // assert
-            viewMock.Verify(
+            _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
@@ -96,27 +95,49 @@ namespace UnitTests
         }
 
         [Test]
-        public void Submit_WhenConfigurationIsCorrect_ShouldCloseViewAndSetDialogResultToOk()
+        public void Save_WhenConfigurationIsCorrect_ShouldCloseViewAndSetDialogResultToOk()
         {
             // arrange
-            var viewMock = new Mock<IEditView>();
-            var importPresenter = new PEdit(viewMock.Object);
+            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
-            viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
+            _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
 
 
             // act
-            importPresenter.Submit();
+            presenter.Save();
 
             // assert
-            viewMock.VerifySet(vm => vm.DialogResult = DialogResult.OK);
-            viewMock.Verify(vm => vm.Close());
+            _viewMock.VerifySet(vm => vm.DialogResult = DialogResult.OK);
+            _viewMock.Verify(vm => vm.Close());
+        }
+
+        [Test]
+        public void EditConfig_WhenUserHitOk_ShouldSaveConfig()
+        {
+            // arrange
+            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            var editedConfiguration = new EConfiguration(0, "test", "Test");
+
+            _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
+            
+
+            // act
+            presenter.Save();
+
+            // assert
+            _viewMock.VerifySet(vm => vm.DialogResult = DialogResult.OK);
+            _viewMock.Verify(vm => vm.Close());
+            _modelMock.Verify(
+                mm => mm.AddConfig(editedConfiguration),
+                Times.Once
+                );
         }
 
         // TODO: crear mostrar alerta al usuario cuando se cancela
         // TODO: crear mecanismo que detecte si ha habido cambios
         // TODO: si no ha habido cambios no guardar archivo
+        // TODO: implementar sintaxis highligth
 
     }
 }

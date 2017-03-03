@@ -10,18 +10,20 @@ namespace Presenter
     public class PEdit
     {
         private IEditView _view;
+        private readonly IHostManager _model;
         private readonly Dictionary<string, string> _errorTable = new Dictionary<string, string>();
 
-        public PEdit(IEditView view)
+        public PEdit(IEditView view, IHostManager model)
         {
-            this._view = view;
+            _view = view;
+            _model = model;
             _errorTable.Add("ErrorCaption", LocalizableStringHelper.GetLocalizableString("Error_Data_Tittle"));
             _errorTable.Add("EmptyText", LocalizableStringHelper.GetLocalizableString("Error_EmptyName_Text"));
             _errorTable.Add("InvalidFormat", LocalizableStringHelper.GetLocalizableString("Error_InvalidNameFormat_Text"));
             _errorTable.Add("EmptyContent", LocalizableStringHelper.GetLocalizableString("Error_EmptyContent_Text"));
         }
 
-        public void Submit()
+        public void Save()
         {
             string error = ValidateView();
             if (error.Length == 0)

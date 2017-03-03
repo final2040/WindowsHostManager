@@ -52,7 +52,7 @@ namespace View
         {
             Configuration.Name = txtName.Text;
             Configuration.Content = txtContent.Text;
-            _presenter.Submit();
+            _presenter.Save();
         }
     }
 }
