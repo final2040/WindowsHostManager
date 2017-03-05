@@ -163,6 +163,14 @@
     <Content Include="license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\door_out.png" />
+    <None Include="Resources\cog_add.png" />
+    <None Include="Resources\cog_go.png" />
+    <None Include="Resources\cog_error.png" />
+    <None Include="Resources\cog_edit.png" />
+    <None Include="Resources\cog_delete.png" />
+    <None Include="Resources\cog.png" />
+    <None Include="Resources\add.png" />
     <None Include="Resources\cog_edit.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
