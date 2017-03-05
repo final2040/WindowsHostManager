@@ -31,7 +31,7 @@ namespace UnitTests
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
-                    "El nombre de la configuración es requerido\r\n"), Times.Once);
+                    "El nombre de la configuración es requerido"), Times.Once);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace UnitTests
             var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("Test").Verifiable();
-            _viewMock.Setup(vm => vm.Path).Returns("");
+            _viewMock.Setup(vm => vm.Path).Returns("").Verifiable();
 
             // act
             importPresenter.Import();
@@ -51,7 +51,7 @@ namespace UnitTests
                 vm => vm.ShowMessage(
                     MessageType.Error, 
                     "Datos Inválidos", 
-                    "La ruta del archivo es requerida\r\n"), Times.Once);
+                    "La ruta del archivo es requerida"), Times.Once);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace UnitTests
                     MessageType.Error, 
                     "Datos Inválidos", 
                     "El nombre de la configuración es requerido\r\n" +
-                    "La ruta del archivo es requerida\r\n"),
+                    "La ruta del archivo es requerida"),
                 Times.Once);
         }
 
@@ -93,7 +93,7 @@ namespace UnitTests
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
-                    "El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo\r\n"),
+                    "El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo"),
                 Times.Once);
         }
         

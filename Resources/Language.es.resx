@@ -141,6 +141,10 @@
     <value>El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo</value>
     <comment>Message when the name contains illegal characteres</comment>
   </data>
+  <data name="Error_NameTooLong_Text" xml:space="preserve">
+    <value>El nombre no puede tener mas de {1} caracteres</value>
+    <comment>Message when configuration name is too long</comment>
+  </data>
   <data name="FileImportInvalidData_Text" xml:space="preserve">
     <value>La información introducida es incorrecta</value>
     <comment>Message when a file introduced in Import Dialog is Invalid</comment>
