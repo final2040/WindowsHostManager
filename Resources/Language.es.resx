@@ -162,7 +162,7 @@
     <comment>Text of Delete Button</comment>
   </data>
   <data name="Interface_EditCommand" xml:space="preserve">
-    <value>Editar</value>
+    <value>Editar...</value>
     <comment>Text of MainView Edit Button</comment>
   </data>
   <data name="Interface_EditMenuItem" xml:space="preserve">

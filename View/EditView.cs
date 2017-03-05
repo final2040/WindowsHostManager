@@ -13,8 +13,9 @@ namespace View
     public partial class EditView : ViewBase, IEditView
     {
         private readonly PEdit _presenter;
-        private readonly string _commentPattern = "^#.*$";
+        private readonly string _commentPattern = "(^#.*$)|(#.*$)";
         private readonly string _ipPattern = @"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b";
+        private SyntaxHighlighter _highlighter;
 
         public EditView()
         {
@@ -26,10 +27,10 @@ namespace View
 
         private void InitializeSyntaxHighLight()
         {
-            SyntaxHighlighter highlighter = new SyntaxHighlighter(txtContent);
-            highlighter.AddPattern(new PatternDefinition(new Regex(_commentPattern, RegexOptions.Multiline)),
+            _highlighter = new SyntaxHighlighter(txtContent);
+            _highlighter.AddPattern(new PatternDefinition(new Regex(_commentPattern, RegexOptions.Multiline)),
                 new SyntaxStyle(Color.DarkGreen));
-            highlighter.AddPattern(new PatternDefinition(new Regex(_ipPattern)),
+            _highlighter.AddPattern(new PatternDefinition(new Regex(_ipPattern)),
                 new SyntaxStyle(Color.Blue, true, false));
         }
 
@@ -61,6 +62,7 @@ namespace View
             }
             txtName.Text = Configuration.Name;
             txtContent.Text = Configuration.Content;
+            _highlighter.ReHighlight();
         }
 
         private void btnSave_Click(object sender, EventArgs e)

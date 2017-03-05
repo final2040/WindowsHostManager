@@ -44,6 +44,7 @@ namespace View
             this.menuSet = new System.Windows.Forms.ToolStripMenuItem();
             this.menuImport = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuNewCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +54,7 @@ namespace View
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(223, 42);
+            this.btnNew.Location = new System.Drawing.Point(223, 71);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(92, 23);
             this.btnNew.TabIndex = 6;
@@ -63,7 +64,7 @@ namespace View
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(223, 71);
+            this.btnEdit.Location = new System.Drawing.Point(223, 100);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(92, 23);
             this.btnEdit.TabIndex = 5;
@@ -93,7 +94,7 @@ namespace View
             // 
             // btnSetConfig
             // 
-            this.btnSetConfig.Location = new System.Drawing.Point(223, 100);
+            this.btnSetConfig.Location = new System.Drawing.Point(223, 39);
             this.btnSetConfig.Name = "btnSetConfig";
             this.btnSetConfig.Size = new System.Drawing.Size(92, 23);
             this.btnSetConfig.TabIndex = 1;
@@ -108,6 +109,7 @@ namespace View
             this.listBoxConfiguration.Name = "listBoxConfiguration";
             this.listBoxConfiguration.Size = new System.Drawing.Size(205, 186);
             this.listBoxConfiguration.TabIndex = 0;
+            this.listBoxConfiguration.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxConfiguration_MouseDoubleClick);
             // 
             // menuStripMain
             // 
@@ -142,6 +144,7 @@ namespace View
             this.menuSet,
             this.menuImport,
             this.toolStripSeparator1,
+            this.menuNewCommand,
             this.menuEditCommand,
             this.menuDelete});
             this.menuEdit.Name = "menuEdit";
@@ -166,6 +169,12 @@ namespace View
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
+            // 
+            // menuNewCommand
+            // 
+            this.menuNewCommand.Name = "menuNewCommand";
+            this.menuNewCommand.Size = new System.Drawing.Size(218, 22);
+            this.menuNewCommand.Text = "Interface_NewCommand";
             // 
             // menuEditCommand
             // 
@@ -241,6 +250,7 @@ namespace View
         private System.Windows.Forms.ToolStripMenuItem menuEditCommand;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Button btnNew;
+        private System.Windows.Forms.ToolStripMenuItem menuNewCommand;
     }
 }
 
