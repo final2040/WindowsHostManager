@@ -20,15 +20,9 @@ namespace Entities
             Content = content;
         }
 
-        public uint Id { get; set; }
-
-        [Required(ErrorMessage = "Debe especificar un nombre para la configuración")]
-        [RegularExpression("([A-Za-z0-9])", ErrorMessage = "El nombre de la configuración solo puede contener carácteres alfanúmericos, guión medio y guión bajo")]
-        [StringLength(20,ErrorMessage = "El nombre de la configuración no puede ser mayor a 20 carácteres")]
-        public string Name { get; set; } = "";
-
-        [Required(ErrorMessage = "Debe de especificar un contenido para la configuración")]
-        public string Content { get; set; } = "";
+        public virtual uint Id { get; set; }
+        public virtual string Name { get; set; } = "";
+        public virtual string Content { get; set; } = "";
 
         public override bool Equals(object obj)
         {

@@ -43,6 +43,14 @@ namespace Presenter
             _messageTable.Add("RewriteMessage", LocalizableStringHelper.GetLocalizableString("OverWriteMessage_Text"));
             _messageTable.Add("NameTooLong", LocalizableStringHelper.GetLocalizableString("Error_NameTooLong_Text"));
         }
+        private void InitializeValidator()
+        {
+            _validator.AddRule(new RequiredRule("ConfigName", _messageTable["EmptyName"], true));
+            _validator.AddRule(new RegexRule("ConfigName", _messageTable["InvalidNameFormat"], "^[a-zA-Z0-9-_áéíóúÁÉÍÓÚ ]+$",
+                true));
+            _validator.AddRule(new MaxLengthRule("ConfigName", 25, _messageTable["NameTooLong"]));
+            _validator.AddRule(new RequiredRule("Path", _messageTable["EmptyPath"], true));
+        }
 
         public void Import()
         {
@@ -78,14 +86,7 @@ namespace Presenter
 
         }
 
-        private void InitializeValidator()
-        {
-            _validator.AddRule(new RequiredRule("ConfigName", _messageTable["EmptyName"], true));
-            _validator.AddRule(new RegexRule("ConfigName", _messageTable["InvalidNameFormat"], "^[a-zA-Z0-9-_áéíóúÁÉÍÓÚ ]+$",
-                true));
-            _validator.AddRule(new MaxLengthRule("ConfigName", 25, _messageTable["NameTooLong"]));
-            _validator.AddRule(new RequiredRule("Path", _messageTable["EmptyPath"], true));
-        }
+       
 
         private void SaveConfig(EConfiguration config)
         {

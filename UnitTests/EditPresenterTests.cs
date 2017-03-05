@@ -19,8 +19,8 @@ namespace UnitTests
             // arrange
             PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0,"", "Test");
-            //_viewMock.Setup(vm => vm.Name).Returns("");
-            //_viewMock.Setup(vm => vm.Content).Returns("Test");
+            _viewMock.Setup(vm => vm.Configuration.Name).Returns("");
+            _viewMock.Setup(vm => vm.Configuration.Content).Returns("Test");
 
             // act
             presenter.Save();
@@ -30,7 +30,7 @@ namespace UnitTests
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
-                    "El nombre de la configuración es requerido\r\n"), 
+                    "El nombre de la configuración es requerido"), 
                 Times.Once);
         }
 
