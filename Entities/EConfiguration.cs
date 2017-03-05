@@ -7,7 +7,6 @@ namespace Entities
 {
     public class EConfiguration
     {
-        // TODO: Encontrar una forma de parametrizar los mensajes de error
 
         public EConfiguration()
         {
