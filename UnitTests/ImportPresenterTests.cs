@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using AppResources;
 using Entities;
 using Moq;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ namespace UnitTests
             
             // act
             importPresenter.Import();
-
+            
             // assert
             _viewMock.Verify(
                 vm => vm.ShowMessage(
@@ -129,10 +130,11 @@ namespace UnitTests
             // arrange
             var filePath = "C:\\test.host";
             var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var exceptionToThrow = new Exception("Error desconocido");
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("Test");
             _viewMock.Setup(vm => vm.Path).Returns(filePath);
-            _modelMock.Setup(mm => mm.ReadExternalConfig(filePath)).Throws(new Exception("Error desconocido"));
+            _modelMock.Setup(mm => mm.ReadExternalConfig(filePath)).Throws(exceptionToThrow);
 
             // act
             importPresenter.Import();
@@ -144,8 +146,8 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
-                    "Error Inesperado", 
-                    "Ocurrio un error inesperado: Error desconocido")
+                    Language.UnexpectedError_Tittle, 
+                    string.Format(Language.UnexpectedError_Text, exceptionToThrow.Message))
                 );
         }
 

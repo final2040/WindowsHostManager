@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
@@ -12,19 +10,20 @@ using ObjectValidator.Rules;
 
 namespace Presenter
 {
-    public class PImport
+    public class PImport:PresenterBase
     {
 
         private readonly Dictionary<string, string> _messageTable = new Dictionary<string, string>();
-        private readonly IImportFileView _view;
+        private readonly IImportFileView _importView;
         private readonly IHostManager _model;
         private readonly Validator<IImportFileView> _validator = new Validator<IImportFileView>();
 
         public PImport(IImportFileView view, IHostManager model)
         {
-            this._view = view;
-            this._model = model;
-            this._view = view;
+            _view = view;
+            _importView = view;
+            _model = model;
+            _importView = view;
             InitializeMessageTable();
             InitializeValidator();
         }
@@ -57,9 +56,9 @@ namespace Presenter
             List<ValidationError> errors = new List<ValidationError>();
             try
             {
-                if (!_validator.TryValidate(_view, errors))
+                if (!_validator.TryValidate(_importView, errors))
                 {
-                    _view.ShowMessage(MessageType.Error, _messageTable["ErrorCaption"],
+                    _importView.ShowMessage(MessageType.Error, _messageTable["ErrorCaption"],
                         string.Join(Environment.NewLine, errors.Select(e => e.ErrorMessage)));
                 }
                 else
@@ -68,7 +67,7 @@ namespace Presenter
                     EConfiguration config = GetConfig();
                     if (_model.Exists(config))
                     {
-                        if (_view.ShowMessage(MessageType.YesNo, _messageTable["RewriteCaption"], _messageTable["RewriteMessage"]) == DialogResult.Yes)
+                        if (_importView.ShowMessage(MessageType.YesNo, _messageTable["RewriteCaption"], _messageTable["RewriteMessage"]) == DialogResult.Yes)
                         {
                             SaveConfig(config);
                         }
@@ -79,9 +78,7 @@ namespace Presenter
             }
             catch (Exception exception)
             {
-                _view.ShowMessage(MessageType.Error,
-                    _messageTable["UnexpectedErrorCaption"],
-                    _messageTable["UnexpectedErrorMessage"] + exception.Message);
+                ShowExceptionErrorMessage(exception);
             }
 
         }
@@ -91,17 +88,17 @@ namespace Presenter
         private void SaveConfig(EConfiguration config)
         {
             _model.AddConfig(config);
-            _view.ShowMessage(MessageType.Info,
+            _importView.ShowMessage(MessageType.Info,
                 _messageTable["SuccessImportCaption"],
                 _messageTable["SuccessImportMessage"]);
-            _view.DialogResult = DialogResult.OK;
-            _view.Close();
+            _importView.DialogResult = DialogResult.OK;
+            _importView.Close();
         }
 
         private EConfiguration GetConfig()
         {
-            EConfiguration config = _model.ReadExternalConfig(_view.Path);
-            config.Name = _view.ConfigName;
+            EConfiguration config = _model.ReadExternalConfig(_importView.Path);
+            config.Name = _importView.ConfigName;
             return config;
         }
     }

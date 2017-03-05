@@ -6,5 +6,6 @@ namespace Entities
     {
         EConfiguration Configuration { get; set; }
         EditMode EditMode { get; set; }
+        bool IsDirty { get; set; }
     }
 }

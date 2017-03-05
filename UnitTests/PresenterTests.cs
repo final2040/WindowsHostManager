@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using AppResources;
 using Entities;
 using Moq;
 using NUnit.Framework;
@@ -43,12 +44,12 @@ namespace UnitTests
             var configurations = new List<EConfiguration>();
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
-            var mainPresenter = new PMain(mainViewMock.Object,null,null, modelMock.Object);
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
             modelMock.Setup(mm => mm.GetAll()).Returns(configurations).Verifiable();
             mainViewMock.Setup(
                 mv =>
-                    mv.ShowMessage(MessageType.Error, "Sin Resultados",
-                        "No hay configuraciones para cargar, por favor cree o importe configuraciones de Arhivo Host")).Verifiable();
+                    mv.ShowMessage(MessageType.Error, Language.NoConfigurationFoundError_Tittle,
+                        Language.NoConfigurationFoundError_Text)).Verifiable();
 
             // act
             mainPresenter.UpdateView();
@@ -64,12 +65,12 @@ namespace UnitTests
             // arrange
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
-            var mainPresenter = new PMain(mainViewMock.Object, null,null, modelMock.Object);
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
             modelMock.Setup(mm => mm.GetAll()).Throws(new IOException("Acceso Denegado")).Verifiable();
             mainViewMock.Setup(
                 mv =>
-                    mv.ShowMessage(MessageType.Error, "Error Inesperado",
-                        "Ocurrio un error inesperado: " + "Acceso Denegado")).Verifiable();
+                    mv.ShowMessage(MessageType.Error, Language.UnexpectedError_Tittle,
+                        string.Format(Language.UnexpectedError_Text, "Acceso Denegado"))).Verifiable();
 
             // act
             mainPresenter.UpdateView();
@@ -90,7 +91,7 @@ namespace UnitTests
                 Name = "Test",
                 Content = "#Example\r\n127.0.0.1\tlocalhost"
             };
-            var mainPresenter = new PMain(mainViewMock.Object,null,null, modelMock.Object);
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
             modelMock.Setup(mm => mm.LoadConfig(configToLoad)).Verifiable();
 
             // Act
@@ -111,12 +112,13 @@ namespace UnitTests
                 Name = "Test",
                 Content = "#Example\r\n127.0.0.1\tlocalhost"
             };
-            var mainPresenter = new PMain(mainViewMock.Object, null,null, modelMock.Object);
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
             modelMock.Setup(mm => mm.LoadConfig(configToLoad)).Verifiable();
             mainViewMock.Setup(
                 mv =>
-                    mv.ShowMessage(MessageType.Info, "Exito",
-                        "Se ha cargado la configuración Test en el sistema operativo")).Verifiable();
+                    mv.ShowMessage(MessageType.Info, Language.Success_Tittle,
+                       string.Format(Language.SuccessSetConfiguration_Text, configToLoad.Name)))
+                       .Verifiable();
             // Act
             mainPresenter.SetConfig(configToLoad);
 
@@ -132,9 +134,12 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             EConfiguration configToLoad = null;
-            var mainPresenter = new PMain(mainViewMock.Object,null,null, modelMock.Object);
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
             mainViewMock.Setup(
-                mv => mv.ShowMessage(MessageType.Error, "Valor inválido", "Debe de seleccionar una configuración")).Verifiable();
+                mv => mv.ShowMessage(
+                    MessageType.Error,
+                    Language.InvalidConfigurationError_Tittle,
+                    Language.InvalidConfigurationError_Text)).Verifiable();
             // Act
             mainPresenter.SetConfig(configToLoad);
 
@@ -149,9 +154,11 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             EConfiguration configToLoad = new EConfiguration();
-            var mainPresenter = new PMain(mainViewMock.Object,null,null, modelMock.Object);
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
             mainViewMock.Setup(
-                mv => mv.ShowMessage(MessageType.Error, "Valor inválido", "Debe de seleccionar una configuración")).Verifiable();
+                mv => mv.ShowMessage(
+                    MessageType.Error, Language.InvalidConfigurationError_Tittle,
+                    Language.InvalidConfigurationError_Text)).Verifiable();
             // Act
             mainPresenter.SetConfig(configToLoad);
 
@@ -165,12 +172,19 @@ namespace UnitTests
             // arrange
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
-            EConfiguration configToLoad = new EConfiguration() {Name = "Test", Content="test"};
-            var mainPresenter = new PMain(mainViewMock.Object,null,null, modelMock.Object);
-            mainViewMock.Setup(
-                mv => mv.ShowMessage(MessageType.Error, "Error Inesperado", "Ocurrio un error inesperado: La configuración no puede ser nula\r\nNombre del parámetro: configuration")).Verifiable();
+            var exceptionToThrow = new ArgumentNullException("configuration", "La configuración no puede ser nula");
+            var configToLoad = new EConfiguration() { Name = "Test", Content = "test" };
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
+
             modelMock.Setup(mm => mm.LoadConfig(configToLoad))
-                .Throws(new ArgumentNullException("configuration","La configuración no puede ser nula"));
+               .Throws(exceptionToThrow);
+            mainViewMock.Setup(
+                mv => mv.ShowMessage(
+                    MessageType.Error,
+                    Language.UnexpectedError_Tittle,
+                    string.Format(Language.UnexpectedError_Text, exceptionToThrow.Message )))
+                    .Verifiable();
+           
             // Act
             mainPresenter.SetConfig(configToLoad);
 
@@ -187,17 +201,17 @@ namespace UnitTests
             var importViewDialog = new Mock<IImportFileView>();
             EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
 
-            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object,null, modelMock.Object);
+            var mainPresenter = new PMain(mainViewMock.Object, importViewDialog.Object, null, modelMock.Object);
 
             modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
 
             importViewDialog.Setup(iv => iv.ShowDialog()).Returns(DialogResult.Cancel).Verifiable();
-            
+
             // Act
             mainPresenter.ImportConfig();
 
             // assert
-           importViewDialog.Verify();
+            importViewDialog.Verify();
         }
 
         [Test]
@@ -206,15 +220,16 @@ namespace UnitTests
             // arrange
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
-            
+
             EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
             var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
-            
+
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.YesNo,
-                    "Advertencia",
-                    "Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?")).Verifiable();
+                    Language.Warning_Tittle,
+                    Language.DeleteConfirmation_Text))
+                    .Verifiable();
 
             // act
             mainPresenter.Delete(configToDelete);
@@ -260,7 +275,7 @@ namespace UnitTests
 
             EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
             var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
-            
+
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.YesNo,
@@ -273,7 +288,7 @@ namespace UnitTests
             mainPresenter.Delete(configToDelete);
 
             // assert
-            modelMock.Verify(mm => mm.DeleteConfig(configToDelete),Times.Never);
+            modelMock.Verify(mm => mm.DeleteConfig(configToDelete), Times.Never);
             mainViewMock.Verify();
         }
 
@@ -283,14 +298,14 @@ namespace UnitTests
             // arrange
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
-            
+
             var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
 
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.Error,
-                    "Valor inválido",
-                    "Debe de seleccionar una configuración")).Verifiable();
+                    Language.InvalidConfigurationError_Tittle,
+                    Language.InvalidConfigurationError_Text)).Verifiable();
 
             // act
             mainPresenter.Delete(null);
@@ -298,7 +313,35 @@ namespace UnitTests
             // assert
             mainViewMock.Verify();
         }
-        //TODO: Crear prueba para error inesperado para delete configuration
+
+        [Test]
+        public void DeleteConfiguration_WhenUnexpectedExceptionIsThrown_ShouldShowErrorMessage()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var exceptionToThrow = new Exception("Error Desconocido");
+
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
+            modelMock.Setup(mm => mm.DeleteConfig(It.IsAny<EConfiguration>())).Throws(exceptionToThrow);
+            mainViewMock.Setup(mv => mv.ShowMessage(
+                MessageType.YesNo,
+                It.IsAny<string>(),
+                It.IsAny<string>()))
+                .Returns(DialogResult.Yes);
+            // act
+            mainPresenter.Delete(new EConfiguration());
+
+            // assert
+            mainViewMock.Verify(
+                mv => mv.ShowMessage(
+                    MessageType.Error,
+                    Language.UnexpectedError_Tittle,
+                    string.Format(Language.UnexpectedError_Text, exceptionToThrow.Message)), 
+                Times.Once);
+                    
+        }
+
         [Test]
         public void EditConfig_ShouldDisplayEditDialog()
         {
@@ -306,14 +349,14 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var editViewMock = new Mock<IEditView>();
-            var configurationToEdit = new EConfiguration(0,"Test","Test");
-            var mainPresenter = new PMain(mainViewMock.Object, null, editViewMock.Object ,modelMock.Object);
-            
+            var configurationToEdit = new EConfiguration(0, "Test", "Test");
+            var mainPresenter = new PMain(mainViewMock.Object, null, editViewMock.Object, modelMock.Object);
+
             //act
             mainPresenter.Edit(configurationToEdit);
 
             //assert
-            editViewMock.Verify(ev => ev.ShowDialog(),Times.Once);
+            editViewMock.Verify(ev => ev.ShowDialog(), Times.Once);
             editViewMock.VerifySet(ev => ev.Configuration = configurationToEdit, Times.Once);
             editViewMock.VerifySet(ev => ev.EditMode = EditMode.Edit, Times.Once);
         }
@@ -325,7 +368,7 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var editViewMock = new Mock<IEditView>();
-            
+
             var mainPresenter = new PMain(mainViewMock.Object, null, editViewMock.Object, modelMock.Object);
 
             //act
@@ -335,81 +378,53 @@ namespace UnitTests
             mainViewMock.Verify(
                 mv => mv.ShowMessage(
                     MessageType.Error,
-                    "Valor inválido",
-                    "Debe de seleccionar una configuración"), 
-                Times.Once());
-        }
+                    Language.InvalidConfigurationError_Tittle,
+                    Language.InvalidConfigurationError_Text),
+                Times.Once());}
 
         [Test]
-        public void EditConfig_WhenUserHitCancel_ShouldDoNothing()
+        public void NewConfig_ShouldDisplayEditDialog()
         {
             // arrange
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var editViewMock = new Mock<IEditView>();
-            var configToEdit = new EConfiguration(0,"test","test");
             var mainPresenter = new PMain(mainViewMock.Object, null, editViewMock.Object, modelMock.Object);
 
-            editViewMock.Setup(ev => ev.ShowDialog()).Returns(DialogResult.Cancel).Verifiable();
-            
             //act
-            mainPresenter.Edit(configToEdit);
-
-            //assert
-            editViewMock.Verify();
-            modelMock.Verify(mm => mm.AddConfig(configToEdit), Times.Never);
-        }
-
-        [Test]
-        public void EditConfig_WhenUserHitOk_ShouldSaveConfig()
-        {
-            // arrange
-            var mainViewMock = new Mock<IMainView>();
-            var modelMock = new Mock<IHostManager>();
-            var editViewMock = new Mock<IEditView>();
-            var configToEdit = new EConfiguration(0, "test", "test");
-            var mainPresenter = new PMain(mainViewMock.Object, null, editViewMock.Object, modelMock.Object);
-
-            editViewMock.Setup(ev => ev.ShowDialog()).Returns(DialogResult.OK).Verifiable();
-            editViewMock.Setup(ev => ev.Configuration).Returns(configToEdit).Verifiable();
-            //act
-            mainPresenter.Edit(configToEdit);
+            mainPresenter.New();
 
             //assert
             editViewMock.Verify(ev => ev.ShowDialog(), Times.Once);
-            editViewMock.VerifySet(ev => ev.Configuration = configToEdit, Times.Once);
-            editViewMock.VerifySet(ev => ev.EditMode = EditMode.Edit, Times.Once);
-            modelMock.Verify(mm => mm.AddConfig(configToEdit), Times.Once);
-
+            editViewMock.VerifySet(ev => ev.EditMode = EditMode.New, Times.Once);
         }
 
         [Test]
-        public void EditConfig_WhenUnexpectedExceptionIsThrow_ShouldDisplayError()
+        public void NewConfig_WhenResultIsTrue_ShouldRefreshView()
         {
-            // arrange
+            var configurations = new List<EConfiguration>()
+            {
+                new EConfiguration() {Name = "file", Content = "TestContent"},
+                new EConfiguration() {Name = "file2", Content = "TestContent"},
+                new EConfiguration() {Name = "file3", Content = "TestContent"}
+            };
             var mainViewMock = new Mock<IMainView>();
-            var modelMock = new Mock<IHostManager>();
             var editViewMock = new Mock<IEditView>();
-            var configToEdit = new EConfiguration(0, "test", "test");
+            var modelMock = new Mock<IHostManager>();
             var mainPresenter = new PMain(mainViewMock.Object, null, editViewMock.Object, modelMock.Object);
+            modelMock.Setup(mm => mm.GetAll()).Returns(configurations).Verifiable();
+            mainViewMock.SetupSet(mv => mv.Configurations = configurations).Verifiable();
+            editViewMock.Setup(ev => ev.ShowDialog()).Returns(DialogResult.OK);
+            // act
+            mainPresenter.New();
 
-            editViewMock.Setup(ev => ev.ShowDialog()).Returns(DialogResult.OK).Verifiable();
-            editViewMock.Setup(ev => ev.Configuration).Returns(configToEdit).Verifiable();
-            modelMock.Setup(mm => mm.AddConfig(configToEdit)).Throws(new Exception("Error desconocido"));
-            //act
-            mainPresenter.Edit(configToEdit);
-
-            //assert
-            editViewMock.Verify(ev => ev.ShowDialog(), Times.Once);
-            editViewMock.VerifySet(ev => ev.Configuration = configToEdit, Times.Once);
-            editViewMock.VerifySet(ev => ev.EditMode = EditMode.Edit, Times.Once);
-            mainViewMock.Verify(
-                mv => mv.ShowMessage(
-                    MessageType.Error,
-                    "Error Inesperado",
-                    "Ocurrio un error inesperado: Error desconocido"));
-            modelMock.Verify(mm => mm.AddConfig(configToEdit), Times.Once);
+            // assert
+            mainViewMock.Verify();
+            modelMock.Verify();
         }
 
+        // TODO: Implementar importación de la configuración actual al cargar la applicación.
+        // TODO: Implementar importación de la configuración inicial del equipo
+        // TODO: Implementar firstRun
     }
 }

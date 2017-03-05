@@ -61,6 +61,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WinFormsSyntaxHighlighter">
+      <HintPath>..\packages\WindowsFormsSyntaxHighlighter\lib\WinFormsSyntaxHighlighter.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="About.cs">

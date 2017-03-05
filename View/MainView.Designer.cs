@@ -31,10 +31,12 @@ namespace View
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
-            this.listBoxConfiguration = new System.Windows.Forms.ListBox();
-            this.btnSetConfig = new System.Windows.Forms.Button();
-            this.btnImportConfig = new System.Windows.Forms.Button();
+            this.btnNew = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.btnImportConfig = new System.Windows.Forms.Button();
+            this.btnSetConfig = new System.Windows.Forms.Button();
+            this.listBoxConfiguration = new System.Windows.Forms.ListBox();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,9 +48,58 @@ namespace View
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnEdit = new System.Windows.Forms.Button();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // btnNew
+            // 
+            this.btnNew.Location = new System.Drawing.Point(223, 42);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(92, 23);
+            this.btnNew.TabIndex = 6;
+            this.btnNew.Text = "Interface_NewCommand";
+            this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Location = new System.Drawing.Point(223, 71);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(92, 23);
+            this.btnEdit.TabIndex = 5;
+            this.btnEdit.Text = "Interface_EditCommand";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.EditClick);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(223, 158);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(92, 23);
+            this.btnDelete.TabIndex = 3;
+            this.btnDelete.Text = "Interface_DeleteCommand";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.DeleteConfigClick);
+            // 
+            // btnImportConfig
+            // 
+            this.btnImportConfig.Location = new System.Drawing.Point(223, 129);
+            this.btnImportConfig.Name = "btnImportConfig";
+            this.btnImportConfig.Size = new System.Drawing.Size(92, 23);
+            this.btnImportConfig.TabIndex = 2;
+            this.btnImportConfig.Text = "Interface_ImportCommand";
+            this.btnImportConfig.UseVisualStyleBackColor = true;
+            this.btnImportConfig.Click += new System.EventHandler(this.ImportConfigClick);
+            // 
+            // btnSetConfig
+            // 
+            this.btnSetConfig.Location = new System.Drawing.Point(223, 100);
+            this.btnSetConfig.Name = "btnSetConfig";
+            this.btnSetConfig.Size = new System.Drawing.Size(92, 23);
+            this.btnSetConfig.TabIndex = 1;
+            this.btnSetConfig.Text = "Interface_SetCommand";
+            this.btnSetConfig.UseVisualStyleBackColor = true;
+            this.btnSetConfig.Click += new System.EventHandler(this.SetConfigConfigClick);
             // 
             // listBoxConfiguration
             // 
@@ -57,36 +108,6 @@ namespace View
             this.listBoxConfiguration.Name = "listBoxConfiguration";
             this.listBoxConfiguration.Size = new System.Drawing.Size(205, 186);
             this.listBoxConfiguration.TabIndex = 0;
-            // 
-            // btnSetConfig
-            // 
-            this.btnSetConfig.Location = new System.Drawing.Point(223, 39);
-            this.btnSetConfig.Name = "btnSetConfig";
-            this.btnSetConfig.Size = new System.Drawing.Size(92, 23);
-            this.btnSetConfig.TabIndex = 1;
-            this.btnSetConfig.Text = "Interface_SetCommand";
-            this.btnSetConfig.UseVisualStyleBackColor = true;
-            this.btnSetConfig.Click += new System.EventHandler(this.SetConfigConfigClick);
-            // 
-            // btnImportConfig
-            // 
-            this.btnImportConfig.Location = new System.Drawing.Point(223, 68);
-            this.btnImportConfig.Name = "btnImportConfig";
-            this.btnImportConfig.Size = new System.Drawing.Size(92, 23);
-            this.btnImportConfig.TabIndex = 2;
-            this.btnImportConfig.Text = "Interface_ImportCommand";
-            this.btnImportConfig.UseVisualStyleBackColor = true;
-            this.btnImportConfig.Click += new System.EventHandler(this.ImportConfigClick);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(223, 126);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(92, 23);
-            this.btnDelete.TabIndex = 3;
-            this.btnDelete.Text = "Interface_DeleteCommand";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.DeleteConfigClick);
             // 
             // menuStripMain
             // 
@@ -175,21 +196,12 @@ namespace View
             this.menuAbout.Text = "Interface_AboutMenuItem";
             this.menuAbout.Click += new System.EventHandler(this.AboutClick);
             // 
-            // btnEdit
-            // 
-            this.btnEdit.Location = new System.Drawing.Point(223, 97);
-            this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(92, 23);
-            this.btnEdit.TabIndex = 5;
-            this.btnEdit.Text = "Interface_EditCommand";
-            this.btnEdit.UseVisualStyleBackColor = true;
-            this.btnEdit.Click += new System.EventHandler(this.EditClick);
-            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(323, 261);
+            this.Controls.Add(this.btnNew);
             this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnImportConfig);
@@ -228,6 +240,7 @@ namespace View
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.ToolStripMenuItem menuEditCommand;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.Button btnNew;
     }
 }
 

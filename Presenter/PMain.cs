@@ -3,26 +3,21 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
-using Model;
 
 namespace Presenter
 {
-    public class PMain
+    public class PMain : PresenterBase
     {
-        private readonly IMainView _view;
         private readonly IImportFileView _importFileView;
         private readonly IEditView _editView;
-        private readonly IHostManager _model;
 
-
-        public PMain(IMainView view, IImportFileView importFileView, IEditView editView ,IHostManager model)
+        public PMain(IMainView view, IImportFileView importFileView, IEditView editView, IHostManager model)
         {
             _view = view;
             _importFileView = importFileView;
             _editView = editView;
             _model = model;
-
-            LocalizableStringHelper.SetCulture("es");
+            //LocalizableStringHelper.SetCulture("es"); // comentado para usar cultura neutral en lo que se finaliza la applicación
         }
 
         public void UpdateView()
@@ -35,13 +30,13 @@ namespace Presenter
             }
             catch (Exception exception)
             {
-                _view.ShowMessage(MessageType.Error, LocalizableStringHelper.GetLocalizableString("UnexpectedError_Tittle"), LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text") + exception.Message);
+                ShowExceptionErrorMessage(exception);
             }
 
             if (configurationList == null || configurationList.Count == 0)
                 _view.ShowMessage(MessageType.Error, LocalizableStringHelper.GetLocalizableString("NoConfigurationFoundError_Tittle"), LocalizableStringHelper.GetLocalizableString("NoConfigurationFoundError_Text"));
 
-            _view.Configurations = configurationList;
+           ((IMainView)_view).Configurations = configurationList;
         }
 
         public void SetConfig(EConfiguration configuration)
@@ -71,30 +66,30 @@ namespace Presenter
             }
         }
 
-        private void ShowExceptionErrorMessage(Exception exception)
-        {
-            _view.ShowMessage(MessageType.Error,
-                LocalizableStringHelper.GetLocalizableString("UnexpectedError_Tittle"),
-                LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text")
-                + exception.Message);
-        }
-
         public void Delete(EConfiguration configuration)
         {
-            if (configuration == null)
-                _view.ShowMessage(MessageType.Error,
-                    LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Tittle"),
-                    LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Text"));
-            else
+
+            try
             {
-                DialogResult result = _view.ShowMessage(MessageType.YesNo,
-                    LocalizableStringHelper.GetLocalizableString("Warning_Tittle"),
-                    LocalizableStringHelper.GetLocalizableString("DeleteConfirmation_Text"));
-                if (result == DialogResult.Yes)
+                if (configuration == null)
+                    _view.ShowMessage(MessageType.Error,
+                        LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Tittle"),
+                        LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Text"));
+                else
                 {
-                    _model.DeleteConfig(configuration);
-                    UpdateView();
+                    DialogResult result = _view.ShowMessage(MessageType.YesNo,
+                        LocalizableStringHelper.GetLocalizableString("Warning_Tittle"),
+                        LocalizableStringHelper.GetLocalizableString("DeleteConfirmation_Text"));
+                    if (result == DialogResult.Yes)
+                    {
+                        _model.DeleteConfig(configuration);
+                        UpdateView();
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                ShowExceptionErrorMessage(exception);
             }
         }
 
@@ -104,23 +99,19 @@ namespace Presenter
             {
                 _editView.Configuration = configuration;
                 _editView.EditMode = EditMode.Edit;
-                if (_editView.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        _model.AddConfig(_editView.Configuration);
-                    }
-                    catch (Exception exception)
-                    {
-                        ShowExceptionErrorMessage(exception);
-                    }
-                }
+                _editView.ShowDialog();
             }
             else
                 _view.ShowMessage(MessageType.Error,
                     LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Tittle"),
                     LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Text"));
 
+        }
+
+        public void New()
+        {
+            _editView.EditMode = EditMode.New;
+            if (_editView.ShowDialog() == DialogResult.OK) UpdateView();
         }
     }
 }

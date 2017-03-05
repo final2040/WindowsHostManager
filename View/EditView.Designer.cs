@@ -32,8 +32,8 @@
             this.lblContent = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.txtContent = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
+            this.txtContent = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // lblName
@@ -66,24 +66,13 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(613, 420);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Interface_Edit_CancelBtn";
             this.btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // txtContent
-            // 
-            this.txtContent.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtContent.Location = new System.Drawing.Point(12, 75);
-            this.txtContent.Multiline = true;
-            this.txtContent.Name = "txtContent";
-            this.txtContent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtContent.Size = new System.Drawing.Size(676, 339);
-            this.txtContent.TabIndex = 4;
-            this.txtContent.Validating += new System.ComponentModel.CancelEventHandler(this.txtContent_Validating);
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // txtName
             // 
@@ -91,14 +80,24 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(676, 20);
             this.txtName.TabIndex = 5;
-            this.txtName.Validating += new System.ComponentModel.CancelEventHandler(this.txtName_Validating);
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
+            // 
+            // txtContent
+            // 
+            this.txtContent.AcceptsTab = true;
+            this.txtContent.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContent.Location = new System.Drawing.Point(12, 75);
+            this.txtContent.Name = "txtContent";
+            this.txtContent.Size = new System.Drawing.Size(676, 339);
+            this.txtContent.TabIndex = 6;
+            this.txtContent.Text = "";
+            this.txtContent.TextChanged += new System.EventHandler(this.txtContent_TextChanged);
             // 
             // EditView
             // 
-            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(700, 455);
-            this.Controls.Add(this.txtName);
             this.Controls.Add(this.txtContent);
+            this.Controls.Add(this.txtName);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.lblContent);
@@ -121,7 +120,7 @@
         private System.Windows.Forms.Label lblContent;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.TextBox txtContent;
         private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.RichTextBox txtContent;
     }
 }

@@ -48,6 +48,7 @@ namespace View
             menuHelp.Text = LocalizableStringHelper.GetLocalizableString("Interface_HelpMenuItem");
             menuAbout.Text = LocalizableStringHelper.GetLocalizableString("Interface_AboutMenuItem");
             btnEdit.Text = LocalizableStringHelper.GetLocalizableString("Interface_EditCommand");
+            btnNew.Text = LocalizableStringHelper.GetLocalizableString("Interface_NewCommand");
         }
 
         public List<EConfiguration> Configurations
@@ -84,6 +85,11 @@ namespace View
         private void EditClick(object sender, EventArgs e)
         {
             _presenter.Edit((EConfiguration)listBoxConfiguration.SelectedItem);
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            _presenter.New();
         }
     }
 }

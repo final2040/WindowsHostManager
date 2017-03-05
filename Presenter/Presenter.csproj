@@ -51,6 +51,7 @@
     <Compile Include="PEdit.cs" />
     <Compile Include="PImport.cs" />
     <Compile Include="PMain.cs" />
+    <Compile Include="PresenterBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
