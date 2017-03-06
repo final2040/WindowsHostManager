@@ -59,7 +59,7 @@ namespace UnitTests
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
-                    "El contenido de la configuración no puede estar vacio\r\n"),
+                    "El contenido de la configuración no puede estar vacio"),
                 Times.Once);
         }
 
@@ -79,7 +79,7 @@ namespace UnitTests
                 vm => vm.ShowMessage(
                     MessageType.Error,
                     "Datos Inválidos",
-                    "El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo\r\n"),
+                    "El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo"),
                 Times.Once);
         }
 
@@ -100,7 +100,7 @@ namespace UnitTests
                     MessageType.Error,
                     "Datos Inválidos",
                     "El nombre de la configuración es requerido\r\n" +
-                    "El contenido de la configuración no puede estar vacio\r\n"),
+                    "El contenido de la configuración no puede estar vacio"),
                 Times.Once);
         }
 

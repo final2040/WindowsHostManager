@@ -45,7 +45,7 @@ namespace Presenter
         private void InitializeValidator()
         {
             _validator.AddRule(new RequiredRule("Name", _messageTable["EmptyText"], true));
-            _validator.AddRule(new RequiredRule("Content", _messageTable["EmptyText"], true));
+            _validator.AddRule(new RequiredRule("Content", _messageTable["EmptyContent"], true));
             _validator.AddRule(new RegexRule("Name", _messageTable["InvalidFormat"], "^[a-zA-Z0-9-_áéíóúÁÉÍÓÚ ]+$", true));
             _validator.AddRule(new MaxLengthRule("Name", 25, _messageTable["NameTooLong"]));
         }
