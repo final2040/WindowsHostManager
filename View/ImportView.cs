@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
+using Microsoft.Practices.Unity;
 using Model;
 using Presenter;
 
@@ -16,7 +17,7 @@ namespace View
 {
     public partial class ImportView : ViewBase, IImportFileView
     {
-        private readonly PImport _presenter;
+        private PImport _presenter;
 
         #region Properties
         public string ConfigName
@@ -33,9 +34,18 @@ namespace View
         public ImportView()
         {
             InitializeComponent();
-            _presenter = new PImport(this, new HostManagerFileDal());
+            InitializePresenter();
             InitializeLanguage();
         }
+
+        private void InitializePresenter()
+        {
+            UnityContainer unityContainer = new UnityContainer();
+            unityContainer.RegisterInstance<IImportFileView>(this);
+            unityContainer.RegisterType<IHostManager, HostManagerFileDal>();
+            _presenter = unityContainer.Resolve<PImport>();
+        }
+
         private void InitializeLanguage()
         {
             lblName.Text = LocalizableStringHelper.GetLocalizableString("Interface_Import_NameLabel");

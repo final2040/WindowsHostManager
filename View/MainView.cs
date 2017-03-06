@@ -28,8 +28,7 @@ namespace View
         {
             UnityContainer container = new UnityContainer();
             container.RegisterInstance<IMainView>(this);
-            container.RegisterType<IImportFileView, ImportView>();
-            container.RegisterType<IEditView, EditView>();
+            container.RegisterType<IViewFactory, ViewFactory>();
             container.RegisterType<IHostManager, HostManagerFileDal>();
             _presenter = container.Resolve<PMain>();
         }

@@ -7,12 +7,13 @@ using Presenter;
 using WinFormsSyntaxHighlighter;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using Microsoft.Practices.Unity;
 
 namespace View
 {
     public partial class EditView : ViewBase, IEditView
     {
-        private readonly PEdit _presenter;
+        private PEdit _presenter;
         private readonly string _commentPattern = "(^#.*$)|(#.*$)";
         private readonly string _ipPattern = @"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b";
         private SyntaxHighlighter _highlighter;
@@ -20,9 +21,17 @@ namespace View
         public EditView()
         {
             InitializeComponent();
+            InitializePresenter();
             InitializeLanguage();
             InitializeSyntaxHighLight();
-            _presenter = new PEdit(this, new HostManagerFileDal());
+        }
+
+        private void InitializePresenter()
+        {
+            UnityContainer unityContainer = new UnityContainer();
+            unityContainer.RegisterInstance<IEditView>(this);
+            unityContainer.RegisterType<IHostManager, HostManagerFileDal>();
+            _presenter = unityContainer.Resolve<PEdit>();
         }
 
         private void InitializeSyntaxHighLight()

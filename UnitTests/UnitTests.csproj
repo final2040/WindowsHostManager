@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EditPresenterTests.cs" />
+    <Compile Include="FactoryTests.cs" />
     <Compile Include="ImportPresenterTests.cs" />
     <Compile Include="ModelTests.cs" />
     <Compile Include="PresenterTests.cs" />

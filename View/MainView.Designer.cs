@@ -203,6 +203,7 @@ namespace View
             this.menuNewCommand.Name = "menuNewCommand";
             this.menuNewCommand.Size = new System.Drawing.Size(221, 22);
             this.menuNewCommand.Text = "Interface_NewCommand";
+            this.menuNewCommand.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // menuEditCommand
             // 

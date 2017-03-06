@@ -8,14 +8,13 @@ namespace Presenter
 {
     public class PMain : PresenterBase
     {
-        private readonly IImportFileView _importFileView;
-        private readonly IEditView _editView;
+        private readonly IViewFactory _viewFactory;
 
-        public PMain(IMainView view, IImportFileView importFileView, IEditView editView, IHostManager model)
+
+        public PMain(IMainView view, IViewFactory viewFactory, IHostManager model)
         {
+            _viewFactory = viewFactory;
             _view = view;
-            _importFileView = importFileView;
-            _editView = editView;
             _model = model;
             //LocalizableStringHelper.SetCulture("es"); // comentado para usar cultura neutral en lo que se finaliza la applicación
         }
@@ -36,7 +35,7 @@ namespace Presenter
             if (configurationList == null || configurationList.Count == 0)
                 _view.ShowMessage(MessageType.Error, LocalizableStringHelper.GetLocalizableString("NoConfigurationFoundError_Tittle"), LocalizableStringHelper.GetLocalizableString("NoConfigurationFoundError_Text"));
 
-           ((IMainView)_view).Configurations = configurationList;
+            ((IMainView)_view).Configurations = configurationList;
         }
 
         public void SetConfig(EConfiguration configuration)
@@ -60,7 +59,8 @@ namespace Presenter
 
         public void ImportConfig()
         {
-            if (_importFileView.ShowDialog() == DialogResult.OK)
+            IImportFileView importView = (IImportFileView)_viewFactory.Create("ImportView");
+            if (importView.ShowDialog() == DialogResult.OK)
             {
                 UpdateView();
             }
@@ -95,11 +95,12 @@ namespace Presenter
 
         public void Edit(EConfiguration configuration)
         {
+            IEditView editView = (IEditView)_viewFactory.Create("EditView");
             if (configuration != null)
             {
-                _editView.Configuration = configuration;
-                _editView.EditMode = EditMode.Edit;
-                _editView.ShowDialog();
+                editView.Configuration = configuration;
+                editView.EditMode = EditMode.Edit;
+                editView.ShowDialog();
             }
             else
                 _view.ShowMessage(MessageType.Error,
@@ -110,8 +111,9 @@ namespace Presenter
 
         public void New()
         {
-            _editView.EditMode = EditMode.New;
-            if (_editView.ShowDialog() == DialogResult.OK) UpdateView();
+            IEditView editView = (IEditView)_viewFactory.Create("EditView");
+            editView.EditMode = EditMode.New;
+            if (editView.ShowDialog() == DialogResult.OK) UpdateView();
         }
 
         public void BackupConfig(bool showSuccessMessage)
@@ -130,7 +132,7 @@ namespace Presenter
             catch (Exception exception)
             {
                 _view.ShowMessage(
-                    MessageType.Error, 
+                    MessageType.Error,
                     LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text"),
                     String.Format(LocalizableStringHelper.GetLocalizableString("BackupError_Text"), exception.Message));
             }

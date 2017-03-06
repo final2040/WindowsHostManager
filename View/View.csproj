@@ -96,6 +96,7 @@
     <Compile Include="ViewBase.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ViewFactory.cs" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
