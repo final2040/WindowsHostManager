@@ -12,20 +12,26 @@ namespace View
     public partial class MainView : ViewBase, IMainView
     {
         // TODO: Crear un mecanismo para deshabilitar botones de borrado actualizado y edición cuando no hay items
-        private readonly PMain _presenter;
+        private PMain _presenter;
         private readonly About _about = new About();
         public MainView()
         {
             InitializeComponent();
-            UnityContainer container  = new UnityContainer();
+            InitializePresenter();
+            InitializeLanguaje();
+            listBoxConfiguration.DisplayMember = "Name";
+            _presenter.BackupConfig(false);
+            UpdateView();
+        }
+
+        private void InitializePresenter()
+        {
+            UnityContainer container = new UnityContainer();
             container.RegisterInstance<IMainView>(this);
             container.RegisterType<IImportFileView, ImportView>();
             container.RegisterType<IEditView, EditView>();
             container.RegisterType<IHostManager, HostManagerFileDal>();
             _presenter = container.Resolve<PMain>();
-            listBoxConfiguration.DisplayMember = "Name";
-            InitializeLanguaje();
-            UpdateView();
         }
 
         private void UpdateView()
@@ -50,6 +56,7 @@ namespace View
             btnEdit.Text = LocalizableStringHelper.GetLocalizableString("Interface_EditCommand");
             btnNew.Text = LocalizableStringHelper.GetLocalizableString("Interface_NewCommand");
             menuNewCommand.Text = LocalizableStringHelper.GetLocalizableString("Interface_NewCommand");
+            menuBackup.Text = LocalizableStringHelper.GetLocalizableString("Interface_BackupCommand");
         }
 
         public List<EConfiguration> Configurations
@@ -99,6 +106,11 @@ namespace View
             if (listbox.SelectedItem != null)
                 _presenter.Edit((EConfiguration)listbox.SelectedItem);
            
+        }
+
+        private void menuBackup_Click(object sender, EventArgs e)
+        {
+            _presenter.BackupConfig(true);
         }
     }
 }

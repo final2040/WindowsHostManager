@@ -36,7 +36,7 @@ namespace UnitTests
             mainViewMock.Verify();
             modelMock.Verify();
         }
-
+        
         [Test]
         public void UpdateView_WhenThereIsNotConfigToLoad_ShouldThrowErrorMessage()
         {
@@ -423,8 +423,87 @@ namespace UnitTests
             modelMock.Verify();
         }
 
+        [Test]
+        public void BackupConfig_ShouldBackupCurrentSystemConfig()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
+            var configurationMock = new Mock<EConfiguration>();
+            var systemConfigPath = Path.Combine(Environment.SystemDirectory, "drivers\\etc\\hosts");
+            modelMock.Setup(mm => mm.ReadExternalConfig(systemConfigPath)).Returns(configurationMock.Object).Verifiable();
+            modelMock.Setup(mm => mm.HostsFilePath).Returns(systemConfigPath);
+            configurationMock.Setup(cm => cm.Name).Returns("test");
+            configurationMock.Setup(cm => cm.Content).Returns("test");
+            configurationMock.Setup(cm => cm.Id).Returns(0);
+
+            // act
+            mainPresenter.BackupConfig(false);
+
+            // assert
+            configurationMock.VerifySet(cm => cm.Name = "Current", Times.Once);
+            modelMock.Setup(mm => mm.AddConfig(configurationMock.Object));
+
+        }
+
+        [Test]
+        public void BackupConfig_WhenShowSuccessIsTrue_ShouldShowSuccessMessage()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
+            var configurationMock = new Mock<EConfiguration>();
+            var systemConfigPath = Path.Combine(Environment.SystemDirectory, "drivers\\etc\\hosts");
+            modelMock.Setup(mm => mm.ReadExternalConfig(systemConfigPath)).Returns(configurationMock.Object).Verifiable();
+            modelMock.Setup(mm => mm.HostsFilePath).Returns(systemConfigPath);
+            configurationMock.Setup(cm => cm.Name).Returns("test");
+            configurationMock.Setup(cm => cm.Content).Returns("test");
+            configurationMock.Setup(cm => cm.Id).Returns(0);
+
+            // act
+            mainPresenter.BackupConfig(true);
+
+            // assert
+            configurationMock.VerifySet(cm => cm.Name = "Current", Times.Once);
+            modelMock.Verify(mm => mm.AddConfig(configurationMock.Object),Times.Once);
+            mainViewMock.Verify(
+                mv => mv.ShowMessage(
+                    MessageType.Info, 
+                    Language.Success_Tittle,
+                    Language.BackupSuccess_Text),
+                Times.Once);
+
+        }
+
+        [Test]
+        public void BackupConfig_WhenUnexpectedExceptionThrown_ShouldDisplayErrorMessage()
+        {
+            // arrange
+            var mainViewMock = new Mock<IMainView>();
+            var modelMock = new Mock<IHostManager>();
+            var mainPresenter = new PMain(mainViewMock.Object, null, null, modelMock.Object);
+            var exception = new Exception("Unknown error");
+            modelMock.Setup(mm => mm.ReadExternalConfig(It.IsAny<string>())).Throws(exception);
+
+
+            // act
+            mainPresenter.BackupConfig(false);
+
+            // assert
+            mainViewMock.Verify(
+                mv => mv.ShowMessage(
+                    MessageType.Error, 
+                    Language.UnexpectedError_Text,
+                    string.Format(Language.BackupError_Text, exception.Message)),
+                Times.Once);
+
+        }
+
         // TODO: Implementar importación de la configuración actual al cargar la applicación.
         // TODO: Implementar importación de la configuración inicial del equipo
         // TODO: Implementar firstRun
     }
+
 }

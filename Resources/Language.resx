@@ -293,4 +293,16 @@
     <value>Advertencia</value>
     <comment>Message when a warning is thrown</comment>
   </data>
+  <data name="BackupError_Text" xml:space="preserve">
+    <value>Ha ocurrido un error al respaldar la configuración actual del equipo: {0}</value>
+    <comment>Message when backup configuration fails</comment>
+  </data>
+  <data name="Interface_BackupCommand" xml:space="preserve">
+    <value>Guardar Configuración Actual</value>
+    <comment>Backup config control text</comment>
+  </data>
+  <data name="BackupSuccess_Text" xml:space="preserve">
+    <value>Configuración respaldada con exito.</value>
+    <comment>Message when backup is success</comment>
+  </data>
 </root>

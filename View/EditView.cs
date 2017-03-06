@@ -50,7 +50,6 @@ namespace View
 
         private void EditView_Load(object sender, EventArgs e)
         {
-            IsDirty = false;
             if (EditMode == EditMode.Edit)
             {
                 txtName.Enabled = false;
@@ -63,6 +62,7 @@ namespace View
             txtName.Text = Configuration.Name;
             txtContent.Text = Configuration.Content;
             _highlighter.ReHighlight();
+            IsDirty = false;
         }
 
         private void btnSave_Click(object sender, EventArgs e)

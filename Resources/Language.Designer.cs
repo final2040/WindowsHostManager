@@ -61,6 +61,24 @@ namespace AppResources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Ha ocurrido un error al respaldar la configuración actual del equipo: {0}.
+        /// </summary>
+        public static string BackupError_Text {
+            get {
+                return ResourceManager.GetString("BackupError_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Configuración respaldada con exito..
+        /// </summary>
+        public static string BackupSuccess_Text {
+            get {
+                return ResourceManager.GetString("BackupSuccess_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?.
         /// </summary>
         public static string DeleteConfirmation_Text {
@@ -156,6 +174,15 @@ namespace AppResources {
         public static string Interface_AboutMenuItem {
             get {
                 return ResourceManager.GetString("Interface_AboutMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Guardar Configuración Actual.
+        /// </summary>
+        public static string Interface_BackupCommand {
+            get {
+                return ResourceManager.GetString("Interface_BackupCommand", resourceCulture);
             }
         }
         

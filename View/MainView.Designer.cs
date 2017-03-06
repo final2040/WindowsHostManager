@@ -47,6 +47,8 @@ namespace View
             this.menuNewCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuBackup = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMain.SuspendLayout();
@@ -55,10 +57,10 @@ namespace View
             // btnNew
             // 
             this.btnNew.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.Image")));
-            this.btnNew.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnNew.Location = new System.Drawing.Point(246, 71);
+            this.btnNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNew.Location = new System.Drawing.Point(246, 74);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(122, 23);
+            this.btnNew.Size = new System.Drawing.Size(149, 29);
             this.btnNew.TabIndex = 6;
             this.btnNew.Text = "Interface_NewCommand";
             this.btnNew.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -69,10 +71,10 @@ namespace View
             // btnEdit
             // 
             this.btnEdit.Image = global::View.Properties.Resources.cog_edit1;
-            this.btnEdit.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnEdit.Location = new System.Drawing.Point(246, 100);
+            this.btnEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEdit.Location = new System.Drawing.Point(246, 109);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(122, 23);
+            this.btnEdit.Size = new System.Drawing.Size(149, 29);
             this.btnEdit.TabIndex = 5;
             this.btnEdit.Text = "Interface_EditCommand";
             this.btnEdit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -83,10 +85,10 @@ namespace View
             // btnDelete
             // 
             this.btnDelete.Image = global::View.Properties.Resources.cog_delete;
-            this.btnDelete.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnDelete.Location = new System.Drawing.Point(246, 158);
+            this.btnDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDelete.Location = new System.Drawing.Point(246, 179);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(122, 23);
+            this.btnDelete.Size = new System.Drawing.Size(149, 29);
             this.btnDelete.TabIndex = 3;
             this.btnDelete.Text = "Interface_DeleteCommand";
             this.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -97,10 +99,10 @@ namespace View
             // btnImportConfig
             // 
             this.btnImportConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnImportConfig.Image")));
-            this.btnImportConfig.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnImportConfig.Location = new System.Drawing.Point(246, 129);
+            this.btnImportConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnImportConfig.Location = new System.Drawing.Point(246, 144);
             this.btnImportConfig.Name = "btnImportConfig";
-            this.btnImportConfig.Size = new System.Drawing.Size(122, 23);
+            this.btnImportConfig.Size = new System.Drawing.Size(149, 29);
             this.btnImportConfig.TabIndex = 2;
             this.btnImportConfig.Text = "Interface_ImportCommand";
             this.btnImportConfig.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -111,10 +113,10 @@ namespace View
             // btnSetConfig
             // 
             this.btnSetConfig.Image = global::View.Properties.Resources.cog_go;
-            this.btnSetConfig.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnSetConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSetConfig.Location = new System.Drawing.Point(246, 39);
             this.btnSetConfig.Name = "btnSetConfig";
-            this.btnSetConfig.Size = new System.Drawing.Size(122, 23);
+            this.btnSetConfig.Size = new System.Drawing.Size(149, 29);
             this.btnSetConfig.TabIndex = 1;
             this.btnSetConfig.Text = "Interface_SetCommand";
             this.btnSetConfig.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -127,7 +129,7 @@ namespace View
             this.listBoxConfiguration.FormattingEnabled = true;
             this.listBoxConfiguration.Location = new System.Drawing.Point(12, 39);
             this.listBoxConfiguration.Name = "listBoxConfiguration";
-            this.listBoxConfiguration.Size = new System.Drawing.Size(228, 186);
+            this.listBoxConfiguration.Size = new System.Drawing.Size(228, 225);
             this.listBoxConfiguration.TabIndex = 0;
             this.listBoxConfiguration.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxConfiguration_MouseDoubleClick);
             // 
@@ -139,7 +141,7 @@ namespace View
             this.menuHelp});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(380, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(407, 24);
             this.menuStripMain.TabIndex = 4;
             this.menuStripMain.Text = "Main Menú";
             // 
@@ -167,7 +169,9 @@ namespace View
             this.toolStripSeparator1,
             this.menuNewCommand,
             this.menuEditCommand,
-            this.menuDelete});
+            this.menuDelete,
+            this.toolStripSeparator2,
+            this.menuBackup});
             this.menuEdit.Name = "menuEdit";
             this.menuEdit.Size = new System.Drawing.Size(145, 20);
             this.menuEdit.Text = "Interface_EditMenuItem";
@@ -176,7 +180,7 @@ namespace View
             // 
             this.menuSet.Image = global::View.Properties.Resources.cog_go;
             this.menuSet.Name = "menuSet";
-            this.menuSet.Size = new System.Drawing.Size(218, 22);
+            this.menuSet.Size = new System.Drawing.Size(221, 22);
             this.menuSet.Text = "Interface_SetCommand";
             this.menuSet.Click += new System.EventHandler(this.SetConfigConfigClick);
             // 
@@ -184,27 +188,27 @@ namespace View
             // 
             this.menuImport.Image = ((System.Drawing.Image)(resources.GetObject("menuImport.Image")));
             this.menuImport.Name = "menuImport";
-            this.menuImport.Size = new System.Drawing.Size(218, 22);
+            this.menuImport.Size = new System.Drawing.Size(221, 22);
             this.menuImport.Text = "Interface_ImportCommand";
             this.menuImport.Click += new System.EventHandler(this.ImportConfigClick);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(218, 6);
             // 
             // menuNewCommand
             // 
             this.menuNewCommand.Image = ((System.Drawing.Image)(resources.GetObject("menuNewCommand.Image")));
             this.menuNewCommand.Name = "menuNewCommand";
-            this.menuNewCommand.Size = new System.Drawing.Size(218, 22);
+            this.menuNewCommand.Size = new System.Drawing.Size(221, 22);
             this.menuNewCommand.Text = "Interface_NewCommand";
             // 
             // menuEditCommand
             // 
             this.menuEditCommand.Image = global::View.Properties.Resources.cog_edit1;
             this.menuEditCommand.Name = "menuEditCommand";
-            this.menuEditCommand.Size = new System.Drawing.Size(218, 22);
+            this.menuEditCommand.Size = new System.Drawing.Size(221, 22);
             this.menuEditCommand.Text = "Interface_EditCommand";
             this.menuEditCommand.Click += new System.EventHandler(this.EditClick);
             // 
@@ -212,9 +216,22 @@ namespace View
             // 
             this.menuDelete.Image = global::View.Properties.Resources.cog_delete;
             this.menuDelete.Name = "menuDelete";
-            this.menuDelete.Size = new System.Drawing.Size(218, 22);
+            this.menuDelete.Size = new System.Drawing.Size(221, 22);
             this.menuDelete.Text = "Interface_DeleteCommand";
             this.menuDelete.Click += new System.EventHandler(this.DeleteConfigClick);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(218, 6);
+            // 
+            // menuBackup
+            // 
+            this.menuBackup.Image = global::View.Properties.Resources.cog_error;
+            this.menuBackup.Name = "menuBackup";
+            this.menuBackup.Size = new System.Drawing.Size(221, 22);
+            this.menuBackup.Text = "Interface_BackupCommand";
+            this.menuBackup.Click += new System.EventHandler(this.menuBackup_Click);
             // 
             // menuHelp
             // 
@@ -235,7 +252,7 @@ namespace View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 237);
+            this.ClientSize = new System.Drawing.Size(407, 269);
             this.Controls.Add(this.btnNew);
             this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnDelete);
@@ -277,6 +294,8 @@ namespace View
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.ToolStripMenuItem menuNewCommand;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem menuBackup;
     }
 }
 

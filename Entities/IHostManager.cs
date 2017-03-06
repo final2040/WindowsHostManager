@@ -4,6 +4,7 @@ namespace Entities
 {
     public interface IHostManager
     {
+        string HostsFilePath { get; }
         void LoadConfig(EConfiguration configuration);
         List<EConfiguration> GetAll();
         EConfiguration ReadExternalConfig(string path);

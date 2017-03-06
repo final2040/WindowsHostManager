@@ -15,7 +15,6 @@ namespace Presenter
 
         private readonly Dictionary<string, string> _messageTable = new Dictionary<string, string>();
         private readonly IImportFileView _importView;
-        private readonly IHostManager _model;
         private readonly Validator<IImportFileView> _validator = new Validator<IImportFileView>();
 
         public PImport(IImportFileView view, IHostManager model)

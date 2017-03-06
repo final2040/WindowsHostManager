@@ -113,5 +113,27 @@ namespace Presenter
             _editView.EditMode = EditMode.New;
             if (_editView.ShowDialog() == DialogResult.OK) UpdateView();
         }
+
+        public void BackupConfig(bool showSuccessMessage)
+        {
+
+            try
+            {
+                EConfiguration currentConfiguration = _model.ReadExternalConfig(_model.HostsFilePath);
+                currentConfiguration.Name = "Current";
+                _model.AddConfig(currentConfiguration);
+                UpdateView();
+                if (showSuccessMessage)
+                    _view.ShowMessage(MessageType.Info, LocalizableStringHelper.GetLocalizableString("Success_Tittle"),
+                        LocalizableStringHelper.GetLocalizableString("BackupSuccess_Text"));
+            }
+            catch (Exception exception)
+            {
+                _view.ShowMessage(
+                    MessageType.Error, 
+                    LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text"),
+                    String.Format(LocalizableStringHelper.GetLocalizableString("BackupError_Text"), exception.Message));
+            }
+        }
     }
 }

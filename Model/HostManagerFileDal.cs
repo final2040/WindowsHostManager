@@ -9,9 +9,10 @@ namespace Model
     public class HostManagerFileDal : IHostManager
     {
         protected IFileHelper FileHelper;
-        private readonly string _hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers\\etc\\hosts");
         private readonly string _programBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         private readonly string _extension = ".host";
+
+        public string HostsFilePath { get; } = Path.Combine(Environment.SystemDirectory, "drivers\\etc\\hosts");
 
         public HostManagerFileDal()
         {
@@ -22,7 +23,7 @@ namespace Model
         public void LoadConfig(EConfiguration configuration)
         {
             if (configuration == null)
-                throw new ArgumentNullException("configuration", "La configuración no puede ser nula");
+                throw new ArgumentNullException(nameof(configuration), "La configuración no puede ser nula");
             if (string.IsNullOrWhiteSpace(configuration.Name))
                 throw new ArgumentException("Se debe especificar" +
                                                 " un nombre para la nueva " +
@@ -30,7 +31,7 @@ namespace Model
             if (string.IsNullOrWhiteSpace(configuration.Content))
                 throw new ArgumentException("El contenido de la configuración no puede ser nulo", "configuration");
 
-            FileHelper.WriteAllText(_hostsFilePath,
+            FileHelper.WriteAllText(HostsFilePath,
                 configuration.Content);
         }
 
