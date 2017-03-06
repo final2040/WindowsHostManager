@@ -13,11 +13,11 @@ namespace View
         public About()
         {
             InitializeComponent();
-            this.Text = String.Format("Acerca de {0}", "Windows Host Name");
-            this.labelProductName.Text = "Windows Host Name";
-            this.labelVersion.Text = String.Format("Versión {0}", AssemblyVersion);
-            this.labelCopyright.Text = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.";
-            this.labelCompanyName.Text = "DreamSoft";
+            this.Text = $"Acerca de: {AssemblyTitle}";
+            this.labelProductName.Text = $"Nombre del producto: {AssemblyProduct}";
+            this.labelVersion.Text = $"Versión: {AssemblyVersion}";
+            this.labelCopyright.Text = $"Copyright: {AssemblyCopyright}";
+            this.labelCompanyName.Text = $"Nombre de la compañia: {AssemblyCompany}";
             this.textBoxDescription.Text = System.IO.File.ReadAllText("license.txt");
         }
 

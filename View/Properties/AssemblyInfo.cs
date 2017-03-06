@@ -6,13 +6,13 @@ using System.Runtime.InteropServices;
 // La información general de un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
-[assembly: AssemblyTitle("View")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Windows Host Manager")]
+[assembly: AssemblyDescription("A simple windows hosts configuration manager")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("View")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("TemiquiSoft")]
+[assembly: AssemblyProduct("Windows Host Manager")]
+[assembly: AssemblyCopyright("Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License 2017 René Emmanuel Zamorano Flores")]
+[assembly: AssemblyTrademark("TemiquiSoft")]
 [assembly: AssemblyCulture("")]
 
 // Si establece ComVisible en false, los tipos de este ensamblado no estarán visibles 
@@ -33,7 +33,6 @@ using System.Runtime.InteropServices;
 // Puede especificar todos los valores o usar los valores predeterminados de número de compilación y de revisión 
 // mediante el carácter '*', como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.3.*")]
 [assembly: NeutralResourcesLanguage("es")]
 
