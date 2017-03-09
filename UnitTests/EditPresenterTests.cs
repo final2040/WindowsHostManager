@@ -58,8 +58,8 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
-                    "Datos Inválidos",
-                    "El contenido de la configuración no puede estar vacio"),
+                    Language.Error_Data_Tittle,
+                    Language.Error_EmptyContent_Text),
                 Times.Once);
         }
 
@@ -78,8 +78,8 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
-                    "Datos Inválidos",
-                    "El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo"),
+                    Language.Error_Data_Tittle,
+                    Language.Error_InvalidNameFormat_Text),
                 Times.Once);
         }
 
@@ -98,9 +98,9 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
-                    "Datos Inválidos",
-                    "El nombre de la configuración es requerido\r\n" +
-                    "El contenido de la configuración no puede estar vacio"),
+                    Language.Error_Data_Tittle,
+                    Language.Error_EmptyName_Text+ Environment.NewLine +
+                    Language.Error_EmptyContent_Text),
                 Times.Once);
         }
 

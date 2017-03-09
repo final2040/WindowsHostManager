@@ -58,7 +58,7 @@ namespace UnitTests
             };
             
             fileManagerMoq.Setup(
-                fm => fm.WriteAllText(It.Is<string>(s => s == "C:\\Windows\\system32\\drivers\\etc\\hosts"),
+                fm => fm.WriteAllText(It.Is<string>(s => s.ToLower() == "C:\\Windows\\system32\\drivers\\etc\\hosts".ToLower()),
                 It.Is<string>(s => s == configuration.Content)))
                 .Verifiable();
 

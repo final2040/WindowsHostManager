@@ -265,8 +265,8 @@ namespace UnitTests
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.YesNo,
-                    "Advertencia",
-                    "Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?"))
+                    Language.Warning_Tittle,
+                    Language.DeleteConfirmation_Text))
                     .Returns(DialogResult.Yes)
                     .Verifiable();
 
@@ -292,8 +292,8 @@ namespace UnitTests
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.YesNo,
-                    "Advertencia",
-                    "Está a punto de eliminar un archivo de configuración, esta acción no se puede deshacer. ¿Desea continuar?"))
+                    Language.Warning_Tittle,
+                    Language.DeleteConfirmation_Text))
                     .Returns(DialogResult.No)
                     .Verifiable();
 
@@ -525,8 +525,6 @@ namespace UnitTests
                 Times.Once);
 
         }
-
-        // TODO: Implementar importación de la configuración actual al cargar la applicación.
         // TODO: Implementar importación de la configuración inicial del equipo
         // TODO: Implementar firstRun
     }

@@ -31,8 +31,8 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
-                    "Datos Inválidos",
-                    "El nombre de la configuración es requerido"), Times.Once);
+                    Language.Error_Data_Tittle,
+                    Language.Error_EmptyName_Text), Times.Once);
         }
 
         [Test]
@@ -51,8 +51,8 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error, 
-                    "Datos Inválidos", 
-                    "La ruta del archivo es requerida"), Times.Once);
+                    Language.Error_Data_Tittle, 
+                    Language.Error_EmptyPath_Text), Times.Once);
         }
 
         [Test]
@@ -71,9 +71,9 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error, 
-                    "Datos Inválidos", 
-                    "El nombre de la configuración es requerido\r\n" +
-                    "La ruta del archivo es requerida"),
+                    Language.Error_Data_Tittle, 
+                    Language.Error_EmptyName_Text + Environment.NewLine +
+                    Language.Error_EmptyPath_Text),
                 Times.Once);
         }
 
@@ -93,8 +93,8 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Error,
-                    "Datos Inválidos",
-                    "El nombre contiene caracteres inválidos, el nombre solo puede contener carácteres alfanumericos, guión medio y gión bajo"),
+                    Language.Error_Data_Tittle,
+                    Language.Error_InvalidNameFormat_Text),
                 Times.Once);
         }
         
@@ -170,8 +170,8 @@ namespace UnitTests
             _viewMock.Verify(
                 vm => vm.ShowMessage(
                     MessageType.Info,
-                    "Exito",
-                    "Se ha importado la configuración satisfactoriamente"
+                    Language.Success_Tittle,
+                    Language.SuccessImport_Text
                     ));
         }
 
@@ -194,8 +194,10 @@ namespace UnitTests
             // assert
             _viewMock.Verify(
                 mv =>
-                    mv.ShowMessage(MessageType.YesNo, "Confirmación",
-                        "Ya existe una configuración con ese nombre ¿Desea sobreescribirla?")
+                    mv.ShowMessage(
+                        MessageType.YesNo,
+                        Language.OverwriteMessage_Tittle,
+                        Language.OverWriteMessage_Text)
                 );
         }
 
@@ -210,8 +212,8 @@ namespace UnitTests
             _viewMock.Setup(vm => vm.ConfigName).Returns("test");
             _viewMock.Setup(vm => vm.Path).Returns("C:\\test.host");
             _viewMock.Setup(mv =>
-                mv.ShowMessage(MessageType.YesNo, "Confirmación",
-                    "Ya existe una configuración con ese nombre ¿Desea sobreescribirla?"))
+                mv.ShowMessage(MessageType.YesNo, Language.OverwriteMessage_Tittle,
+                    Language.OverWriteMessage_Text))
                 .Returns(DialogResult.Yes);
             _modelMock.Setup(mm => mm.Exists(configToImport)).Returns(true);
             _modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.host")).Returns(configToImport);
@@ -236,8 +238,8 @@ namespace UnitTests
             _viewMock.Setup(vm => vm.ConfigName).Returns("test");
             _viewMock.Setup(vm => vm.Path).Returns("C:\\test.host");
             _viewMock.Setup(mv =>
-                mv.ShowMessage(MessageType.YesNo, "Confirmación",
-                    "Ya existe una configuración con ese nombre ¿Desea sobreescribirla?"))
+                mv.ShowMessage(MessageType.YesNo, Language.OverwriteMessage_Tittle,
+                    Language.OverWriteMessage_Text))
                 .Returns(DialogResult.No);
             _modelMock.Setup(mm => mm.Exists(configToImport)).Returns(true);
             _modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.host")).Returns(configToImport);
