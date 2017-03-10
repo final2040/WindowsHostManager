@@ -98,9 +98,9 @@ namespace UnitTests
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             modelMock.Setup(mm => mm.LoadConfig(configToLoad)).Verifiable();
-
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             // Act
-            mainPresenter.SetConfig(configToLoad);
+            mainPresenter.SetConfig();
 
             // assert
             modelMock.Verify();
@@ -120,13 +120,14 @@ namespace UnitTests
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             modelMock.Setup(mm => mm.LoadConfig(configToLoad)).Verifiable();
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             mainViewMock.Setup(
                 mv =>
                     mv.ShowMessage(MessageType.Info, Language.Success_Tittle,
                        string.Format(Language.SuccessSetConfiguration_Text, configToLoad.Name)))
                        .Verifiable();
             // Act
-            mainPresenter.SetConfig(configToLoad);
+            mainPresenter.SetConfig();
 
             // assert
             modelMock.Verify();
@@ -142,13 +143,14 @@ namespace UnitTests
             EConfiguration configToLoad = null;
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.Error,
                     Language.InvalidConfigurationError_Tittle,
                     Language.InvalidConfigurationError_Text)).Verifiable();
             // Act
-            mainPresenter.SetConfig(configToLoad);
+            mainPresenter.SetConfig();
 
             // assert
             mainViewMock.Verify();
@@ -163,12 +165,13 @@ namespace UnitTests
             EConfiguration configToLoad = new EConfiguration();
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.Error, Language.InvalidConfigurationError_Tittle,
                     Language.InvalidConfigurationError_Text)).Verifiable();
             // Act
-            mainPresenter.SetConfig(configToLoad);
+            mainPresenter.SetConfig();
 
             // assert
             mainViewMock.Verify();
@@ -187,6 +190,7 @@ namespace UnitTests
 
             modelMock.Setup(mm => mm.LoadConfig(configToLoad))
                .Throws(exceptionToThrow);
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.Error,
@@ -195,7 +199,7 @@ namespace UnitTests
                     .Verifiable();
            
             // Act
-            mainPresenter.SetConfig(configToLoad);
+            mainPresenter.SetConfig();
 
             // assert
             mainViewMock.Verify();
@@ -235,6 +239,7 @@ namespace UnitTests
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
 
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToDelete);
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.YesNo,
@@ -243,7 +248,7 @@ namespace UnitTests
                     .Verifiable();
 
             // act
-            mainPresenter.Delete(configToDelete);
+            mainPresenter.Delete();
 
             // assert
             mainViewMock.Verify();
@@ -261,6 +266,7 @@ namespace UnitTests
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
 
             modelMock.Setup(mm => mm.DeleteConfig(configToDelete)).Verifiable();
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToDelete);
 
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
@@ -271,7 +277,7 @@ namespace UnitTests
                     .Verifiable();
 
             // act
-            mainPresenter.Delete(configToDelete);
+            mainPresenter.Delete();
 
             // assert
             modelMock.Verify();
@@ -288,7 +294,8 @@ namespace UnitTests
             EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
-            
+
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToDelete);
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
                     MessageType.YesNo,
@@ -298,7 +305,7 @@ namespace UnitTests
                     .Verifiable();
 
             // act
-            mainPresenter.Delete(configToDelete);
+            mainPresenter.Delete();
 
             // assert
             modelMock.Verify(mm => mm.DeleteConfig(configToDelete), Times.Never);
@@ -322,7 +329,7 @@ namespace UnitTests
                     Language.InvalidConfigurationError_Text)).Verifiable();
 
             // act
-            mainPresenter.Delete(null);
+            mainPresenter.Delete();
 
             // assert
             mainViewMock.Verify();
@@ -339,22 +346,24 @@ namespace UnitTests
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             modelMock.Setup(mm => mm.DeleteConfig(It.IsAny<EConfiguration>())).Throws(exceptionToThrow);
+
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(new EConfiguration(0,"nombre","contenido"));
             mainViewMock.Setup(mv => mv.ShowMessage(
                 MessageType.YesNo,
                 It.IsAny<string>(),
                 It.IsAny<string>()))
                 .Returns(DialogResult.Yes);
             // act
-            mainPresenter.Delete(new EConfiguration());
+            mainPresenter.Delete();
 
             // assert
             mainViewMock.Verify(
                 mv => mv.ShowMessage(
                     MessageType.Error,
                     Language.UnexpectedError_Tittle,
-                    string.Format(Language.UnexpectedError_Text, exceptionToThrow.Message)), 
+                    string.Format(Language.UnexpectedError_Text, exceptionToThrow.Message)),
                 Times.Once);
-                    
+
         }
 
         [Test]
@@ -367,10 +376,12 @@ namespace UnitTests
             var configurationToEdit = new EConfiguration(0, "Test", "Test");
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
-            factoryMock.Setup(fm => fm.Create("EditView")).Returns(editViewMock.Object).Verifiable();
 
+            mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configurationToEdit);
+            factoryMock.Setup(fm => fm.Create("EditView")).Returns(editViewMock.Object).Verifiable();
+            
             //act
-            mainPresenter.Edit(configurationToEdit);
+            mainPresenter.Edit();
 
             //assert
             editViewMock.Verify(ev => ev.ShowDialog(), Times.Once);
@@ -388,9 +399,10 @@ namespace UnitTests
 
             var factoryMock = new Mock<IViewFactory>();
             var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            
             factoryMock.Setup(fm => fm.Create("EditView")).Returns(editViewMock.Object).Verifiable();
             //act
-            mainPresenter.Edit(null);
+            mainPresenter.Edit();
 
             //assert
             mainViewMock.Verify(

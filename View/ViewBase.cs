@@ -1,9 +1,11 @@
-﻿using System.Windows.Forms;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using Entities;
 
 namespace View
 {
-    public class ViewBase:Form, IView
+    public class ViewBase:Form, IView, INotifyPropertyChanged
     {
 
         public virtual DialogResult ShowMessage(MessageType type, string title, string message)
@@ -34,6 +36,13 @@ namespace View
             this.Name = "ViewBase";
             this.ResumeLayout(false);
 
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

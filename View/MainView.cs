@@ -12,16 +12,35 @@ namespace View
     public partial class MainView : ViewBase, IMainView
     {
         // TODO: Crear un mecanismo para deshabilitar botones de borrado actualizado y edición cuando no hay items
+
+        #region Fields
+
         private PMain _presenter;
         private readonly About _about = new About();
+        private List<EConfiguration> _configurations;
+        private EConfiguration _selectedConfiguration;
+
+        #endregion
+
+
+        #region InitializeView
+
         public MainView()
         {
             InitializeComponent();
             InitializePresenter();
             InitializeLanguaje();
-            listBoxConfiguration.DisplayMember = "Name";
+            BindControls();
             _presenter.BackupConfig(false);
-            UpdateView();
+        }
+
+        private void BindControls()
+        {
+            listBoxConfiguration.DisplayMember = "Name";
+            listBoxConfiguration.DataBindings.Add("DataSource", this, "Configurations", false,
+                DataSourceUpdateMode.OnPropertyChanged);
+            listBoxConfiguration.DataBindings.Add("SelectedItem", this, "SelectedConfiguration", false,
+                DataSourceUpdateMode.OnValidation);
         }
 
         private void InitializePresenter()
@@ -33,40 +52,65 @@ namespace View
             _presenter = container.Resolve<PMain>();
         }
 
-        private void UpdateView()
-        {
-            _presenter.UpdateView();
-        }
-
         private void InitializeLanguaje()
         {
-            btnSetConfig.Text = LocalizableStringHelper.GetLocalizableString("Interface_SetCommand");
-            btnImportConfig.Text = LocalizableStringHelper.GetLocalizableString("Interface_ImportCommand");
-            btnDelete.Text = LocalizableStringHelper.GetLocalizableString("Interface_DeleteCommand");
-            menuFile.Text = LocalizableStringHelper.GetLocalizableString("Interface_FileMenuItem");
-            menuExit.Text = LocalizableStringHelper.GetLocalizableString("Interface_ExitMenuItem");
-            menuEdit.Text = LocalizableStringHelper.GetLocalizableString("Interface_EditMenuItem");
-            menuEditCommand.Text = LocalizableStringHelper.GetLocalizableString("Interface_EditCommand");
-            menuSet.Text = LocalizableStringHelper.GetLocalizableString("Interface_SetCommand");
-            menuImport.Text = LocalizableStringHelper.GetLocalizableString("Interface_ImportCommand");
-            menuDelete.Text = LocalizableStringHelper.GetLocalizableString("Interface_DeleteCommand");
-            menuHelp.Text = LocalizableStringHelper.GetLocalizableString("Interface_HelpMenuItem");
-            menuAbout.Text = LocalizableStringHelper.GetLocalizableString("Interface_AboutMenuItem");
-            btnEdit.Text = LocalizableStringHelper.GetLocalizableString("Interface_EditCommand");
-            btnNew.Text = LocalizableStringHelper.GetLocalizableString("Interface_NewCommand");
-            menuNewCommand.Text = LocalizableStringHelper.GetLocalizableString("Interface_NewCommand");
-            menuBackup.Text = LocalizableStringHelper.GetLocalizableString("Interface_BackupCommand");
+            btnSetConfig.Text = LocalizableStringHelper.GetLocalizableString(btnSetConfig.Text);
+            btnImportConfig.Text = LocalizableStringHelper.GetLocalizableString(btnImportConfig.Text);
+            btnDelete.Text = LocalizableStringHelper.GetLocalizableString(btnDelete.Text);
+            menuFile.Text = LocalizableStringHelper.GetLocalizableString(menuFile.Text);
+            menuExit.Text = LocalizableStringHelper.GetLocalizableString(menuExit.Text);
+            menuEdit.Text = LocalizableStringHelper.GetLocalizableString(menuEdit.Text);
+            menuEditCommand.Text = LocalizableStringHelper.GetLocalizableString(menuEditCommand.Text);
+            menuSet.Text = LocalizableStringHelper.GetLocalizableString(menuSet.Text);
+            menuImport.Text = LocalizableStringHelper.GetLocalizableString(menuImport.Text);
+            menuDelete.Text = LocalizableStringHelper.GetLocalizableString(menuDelete.Text);
+            menuHelp.Text = LocalizableStringHelper.GetLocalizableString(menuHelp.Text);
+            menuAbout.Text = LocalizableStringHelper.GetLocalizableString(menuAbout.Text);
+            btnEdit.Text = LocalizableStringHelper.GetLocalizableString(btnEdit.Text);
+            btnNew.Text = LocalizableStringHelper.GetLocalizableString(btnNew.Text);
+            menuNewCommand.Text = LocalizableStringHelper.GetLocalizableString(menuNewCommand.Text);
+            menuBackup.Text = LocalizableStringHelper.GetLocalizableString(menuBackup.Text);
         }
+
+        #endregion
+
+
+        #region Properties
 
         public List<EConfiguration> Configurations
         {
-            get { return listBoxConfiguration.DataSource as List<EConfiguration>; }
-            set { listBoxConfiguration.DataSource = value; }
+            get { return _configurations; }
+            set
+            {
+                if (_configurations != value)
+                {
+                    _configurations = value;
+                    NotifyPropertyChanged();
+                }
+            }
         }
+
+        public EConfiguration SelectedConfiguration
+        {
+            get { return _selectedConfiguration; }
+            set
+            {
+                if (_selectedConfiguration != value)
+                {
+                    _selectedConfiguration = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region Methods
 
         private void SetConfigConfigClick(object sender, EventArgs e)
         {
-            _presenter.SetConfig((EConfiguration)listBoxConfiguration.SelectedItem);
+            _presenter.SetConfig();
         }
 
         private void ImportConfigClick(object sender, EventArgs e)
@@ -76,7 +120,7 @@ namespace View
 
         private void DeleteConfigClick(object sender, EventArgs e)
         {
-            _presenter.Delete((EConfiguration)listBoxConfiguration.SelectedItem);
+            _presenter.Delete();
         }
 
         private void ExitClick(object sender, EventArgs e)
@@ -91,7 +135,7 @@ namespace View
 
         private void EditClick(object sender, EventArgs e)
         {
-            _presenter.Edit((EConfiguration)listBoxConfiguration.SelectedItem);
+            _presenter.Edit();
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -103,13 +147,23 @@ namespace View
         {
             ListBox listbox = (ListBox) sender;
             if (listbox.SelectedItem != null)
-                _presenter.Edit((EConfiguration)listbox.SelectedItem);
-           
+                _presenter.Edit();
+
         }
 
         private void menuBackup_Click(object sender, EventArgs e)
         {
             _presenter.BackupConfig(true);
         }
+
+        // fix for binding property - selected index only change when control lost focus
+        // so is necesary update bindings when user change index
+        private void listBoxConfiguration_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ((ListBox) sender).DataBindings["SelectedItem"]?.WriteValue();
+        }
+
+        #endregion
+
     }
 }

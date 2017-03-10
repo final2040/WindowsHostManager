@@ -250,7 +250,7 @@ namespace AppResources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Editar....
+        ///   Busca una cadena traducida similar a Editar.
         /// </summary>
         public static string Interface_EditMenuItem {
             get {

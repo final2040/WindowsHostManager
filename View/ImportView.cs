@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
@@ -18,16 +11,35 @@ namespace View
     public partial class ImportView : ViewBase, IImportFileView
     {
         private PImport _presenter;
+        private string _configName;
+        private string _path;
 
         #region Properties
+
         public string ConfigName
         {
-            get { return txtName.Text; }
+            get { return _configName; }
+            set {
+                if (_configName != value)
+                {
+                    _configName = value;
+                    NotifyPropertyChanged();
+                }
+            }
         }
+
         public string Path
         {
-            get { return txtPath.Text; }
+            get { return _path; }
+            set {
+                if (_path != value)
+                {
+                    _path = value;
+                    NotifyPropertyChanged();
+                }
+            }
         }
+
         #endregion
 
         #region Initialize
@@ -36,6 +48,13 @@ namespace View
             InitializeComponent();
             InitializePresenter();
             InitializeLanguage();
+            InitializeBindings();
+        }
+
+        private void InitializeBindings()
+        {
+            txtName.DataBindings.Add("Text", this, "ConfigName", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtPath.DataBindings.Add("Text", this, "Path", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitializePresenter()
@@ -48,12 +67,12 @@ namespace View
 
         private void InitializeLanguage()
         {
-            lblName.Text = LocalizableStringHelper.GetLocalizableString("Interface_Import_NameLabel");
-            lblPath.Text = LocalizableStringHelper.GetLocalizableString("Interface_Import_PathLabel");
-            btnBrowse.Text = LocalizableStringHelper.GetLocalizableString("Interface_Impot_BrowseCommand");
-            btnCancel.Text = LocalizableStringHelper.GetLocalizableString("Interface_Impot_CancelCommand");
-            btnOk.Text = LocalizableStringHelper.GetLocalizableString("Interface_Impot_OkCommand");
-            Text = LocalizableStringHelper.GetLocalizableString("Interface_Import_WindowTittle");
+            lblName.Text = LocalizableStringHelper.GetLocalizableString(lblName.Text);
+            lblPath.Text = LocalizableStringHelper.GetLocalizableString(lblPath.Text);
+            btnBrowse.Text = LocalizableStringHelper.GetLocalizableString(btnBrowse.Text);
+            btnCancel.Text = LocalizableStringHelper.GetLocalizableString(btnCancel.Text);
+            btnOk.Text = LocalizableStringHelper.GetLocalizableString(btnOk.Text);
+            Text = LocalizableStringHelper.GetLocalizableString(Text);
 
         }
         #endregion
@@ -62,8 +81,6 @@ namespace View
 
         private void ImportView_Load(object sender, EventArgs e)
         {
-            txtName.Text = "";
-            txtPath.Text = "";
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -75,9 +92,9 @@ namespace View
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                txtPath.Text = openFileDialog.FileName;
-                if (string.IsNullOrWhiteSpace(txtName.Text))
-                    txtName.Text = System.IO.Path.GetFileNameWithoutExtension(txtPath.Text);
+                Path = openFileDialog.FileName;
+                if (string.IsNullOrWhiteSpace(ConfigName))
+                    ConfigName = System.IO.Path.GetFileNameWithoutExtension(Path);
             }
         }
 

@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using AppResources;
 
 namespace Entities
 {
-    public class EConfiguration
+    public class EConfiguration:INotifyPropertyChanged
     {
+        private uint _id;
+        private string _name = "";
+        private string _content = "";
 
         public EConfiguration()
         {
@@ -19,9 +24,41 @@ namespace Entities
             Content = content;
         }
 
-        public virtual uint Id { get; set; }
-        public virtual string Name { get; set; } = "";
-        public virtual string Content { get; set; } = "";
+        public virtual uint Id
+        {
+            get { return _id; }
+            set {
+                if (_id != value)
+                {
+                    _id = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public virtual string Name
+        {
+            get { return _name; }
+            set {
+                if (_name != value)
+                {
+                    _name = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public virtual string Content
+        {
+            get { return _content; }
+            set {
+                if (_name != value)
+                {
+                    _content = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public override bool Equals(object obj)
         {
@@ -37,6 +74,13 @@ namespace Entities
         public override int GetHashCode()
         {
             return Id.GetHashCode()^ Name.GetHashCode() ^ Content.GetHashCode();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

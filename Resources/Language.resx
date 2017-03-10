@@ -174,7 +174,7 @@
     <comment>Text of MainView Edit Button</comment>
   </data>
   <data name="Interface_EditMenuItem" xml:space="preserve">
-    <value>Editar...</value>
+    <value>Editar</value>
     <comment>Edit Menu Item Text</comment>
   </data>
   <data name="Interface_Edit_CancelBtn" xml:space="preserve">

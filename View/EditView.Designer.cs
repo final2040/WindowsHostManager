@@ -80,7 +80,6 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(676, 20);
             this.txtName.TabIndex = 5;
-            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
             // txtContent
             // 
@@ -91,7 +90,6 @@
             this.txtContent.Size = new System.Drawing.Size(676, 339);
             this.txtContent.TabIndex = 6;
             this.txtContent.Text = "";
-            this.txtContent.TextChanged += new System.EventHandler(this.txtContent_TextChanged);
             // 
             // EditView
             // 

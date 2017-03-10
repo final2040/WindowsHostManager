@@ -9,7 +9,7 @@ namespace Presenter
     public class PMain : PresenterBase
     {
         private readonly IViewFactory _viewFactory;
-
+        
 
         public PMain(IMainView view, IViewFactory viewFactory, IHostManager model)
         {
@@ -38,18 +38,20 @@ namespace Presenter
             ((IMainView)_view).Configurations = configurationList;
         }
 
-        public void SetConfig(EConfiguration configuration)
+        public void SetConfig()
         {
-            if (configuration == null || string.IsNullOrWhiteSpace(configuration.Name) || string.IsNullOrWhiteSpace(configuration.Content))
+            if (((IMainView)_view).SelectedConfiguration == null 
+                || string.IsNullOrWhiteSpace(((IMainView)_view).SelectedConfiguration.Name) 
+                || string.IsNullOrWhiteSpace(((IMainView)_view).SelectedConfiguration.Content))
                 _view.ShowMessage(MessageType.Error, LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Tittle"), LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Text"));
             else
                 try
                 {
-                    _model.LoadConfig(configuration);
+                    _model.LoadConfig(((IMainView)_view).SelectedConfiguration);
                     _view.ShowMessage(MessageType.Info,
                         LocalizableStringHelper.GetLocalizableString("Success_Tittle"),
                         string.Format(LocalizableStringHelper.GetLocalizableString("SuccessSetConfiguration_Text"),
-                            configuration.Name));
+                            ((IMainView)_view).SelectedConfiguration.Name));
                 }
                 catch (Exception exception)
                 {
@@ -66,12 +68,12 @@ namespace Presenter
             }
         }
 
-        public void Delete(EConfiguration configuration)
+        public void Delete()
         {
 
             try
             {
-                if (configuration == null)
+                if (((IMainView)_view).SelectedConfiguration == null)
                     _view.ShowMessage(MessageType.Error,
                         LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Tittle"),
                         LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Text"));
@@ -82,7 +84,7 @@ namespace Presenter
                         LocalizableStringHelper.GetLocalizableString("DeleteConfirmation_Text"));
                     if (result == DialogResult.Yes)
                     {
-                        _model.DeleteConfig(configuration);
+                        _model.DeleteConfig(((IMainView)_view).SelectedConfiguration);
                         UpdateView();
                     }
                 }
@@ -93,12 +95,12 @@ namespace Presenter
             }
         }
 
-        public void Edit(EConfiguration configuration)
+        public void Edit()
         {
             IEditView editView = (IEditView)_viewFactory.Create("EditView");
-            if (configuration != null)
+            if (((IMainView)_view).SelectedConfiguration != null)
             {
-                editView.Configuration = configuration;
+                editView.Configuration = ((IMainView)_view).SelectedConfiguration;
                 editView.EditMode = EditMode.Edit;
                 editView.ShowDialog();
             }
@@ -134,7 +136,7 @@ namespace Presenter
                 _view.ShowMessage(
                     MessageType.Error,
                     LocalizableStringHelper.GetLocalizableString("UnexpectedError_Text"),
-                    String.Format(LocalizableStringHelper.GetLocalizableString("BackupError_Text"), exception.Message));
+                    string.Format(LocalizableStringHelper.GetLocalizableString("BackupError_Text"), exception.Message));
             }
         }
     }

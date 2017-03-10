@@ -131,6 +131,7 @@ namespace View
             this.listBoxConfiguration.Name = "listBoxConfiguration";
             this.listBoxConfiguration.Size = new System.Drawing.Size(228, 225);
             this.listBoxConfiguration.TabIndex = 0;
+            this.listBoxConfiguration.SelectedIndexChanged += new System.EventHandler(this.listBoxConfiguration_SelectedIndexChanged);
             this.listBoxConfiguration.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxConfiguration_MouseDoubleClick);
             // 
             // menuStripMain

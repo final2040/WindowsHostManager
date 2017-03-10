@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
@@ -17,6 +18,10 @@ namespace View
         private readonly string _commentPattern = "(^#.*$)|(#.*$)";
         private readonly string _ipPattern = @"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b";
         private SyntaxHighlighter _highlighter;
+        private EConfiguration _configuration = new EConfiguration();
+
+
+        #region InitializeView
 
         public EditView()
         {
@@ -52,26 +57,33 @@ namespace View
             Text = LocalizableStringHelper.GetLocalizableString(Text);
         }
 
-        public EConfiguration Configuration { get; set; }
-        public string Content { get; set; }
+        #endregion
+
+
+        #region Properties
+
+        public EConfiguration Configuration
+        {
+            get { return _configuration; }
+            set { _configuration = value; }
+        }
+
         public EditMode EditMode { get; set; }
         public bool IsDirty { get; set; }
 
+        #endregion
+
+        #region Methods
+
         private void EditView_Load(object sender, EventArgs e)
         {
-            if (EditMode == EditMode.Edit)
-            {
-                txtName.Enabled = false;
-            }
-            else
-            {
-                txtName.Enabled = true;
-                Configuration = new EConfiguration();
-            }
-            txtName.Text = Configuration.Name;
-            txtContent.Text = Configuration.Content;
-            _highlighter.ReHighlight();
-            IsDirty = false;
+            txtName.Enabled = EditMode != EditMode.Edit;
+            BindView();
+        }
+
+        private void ConfigurationOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            IsDirty = true;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -79,29 +91,19 @@ namespace View
             _presenter.Save();
         }
 
-        private void txtName_TextChanged(object sender, EventArgs e)
-        {
-            TextBox controlSender = (TextBox)sender;
-            if (Configuration.Name != controlSender.Text)
-            {
-                Configuration.Name = controlSender.Text;
-                IsDirty = true;
-            }
-        }
-
-        private void txtContent_TextChanged(object sender, EventArgs e)
-        {
-            RichTextBox controlSender = (RichTextBox)sender;
-            if (Configuration.Content != controlSender.Text)
-            {
-                Configuration.Content = controlSender.Text;
-                IsDirty = true;
-            }
-        }
-
         private void btnCancel_Click(object sender, EventArgs e)
         {
             _presenter.Cancel();
         }
+
+        private void BindView()
+        {
+            txtName.DataBindings.Add("Text", Configuration, "Name", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtContent.DataBindings.Add("Text", Configuration, "Content", false, DataSourceUpdateMode.OnPropertyChanged);
+            Configuration.PropertyChanged += ConfigurationOnPropertyChanged;
+        }
+
+        #endregion
+
     }
 }
