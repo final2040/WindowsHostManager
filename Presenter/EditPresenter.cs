@@ -10,14 +10,14 @@ using ObjectValidator.Rules;
 
 namespace Presenter
 {
-    public class PEdit : PresenterBase
+    public class EditPresenter : PresenterBase
     {
         private readonly Dictionary<string, string> _messageTable = new Dictionary<string, string>();
         private readonly Validator<EConfiguration> _validator = new Validator<EConfiguration>();
         private IEditView _editview;
 
 
-        public PEdit(IEditView view, IHostManager model)
+        public EditPresenter(IEditView view, IHostManager model)
         {
             _view = view;
             _editview = (IEditView)_view;

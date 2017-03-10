@@ -10,7 +10,7 @@ namespace View
 {
     public partial class ImportView : ViewBase, IImportFileView
     {
-        private PImport _presenter;
+        private ImportPresenter _presenter;
         private string _configName;
         private string _path;
 
@@ -62,7 +62,7 @@ namespace View
             UnityContainer unityContainer = new UnityContainer();
             unityContainer.RegisterInstance<IImportFileView>(this);
             unityContainer.RegisterType<IHostManager, HostManagerFileDal>();
-            _presenter = unityContainer.Resolve<PImport>();
+            _presenter = unityContainer.Resolve<ImportPresenter>();
         }
 
         private void InitializeLanguage()

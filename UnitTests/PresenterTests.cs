@@ -26,7 +26,7 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             
             modelMock.Setup(mm => mm.GetAll()).Returns(configurations).Verifiable();
             mainViewMock.SetupSet(mv => mv.Configurations = configurations).Verifiable();
@@ -47,7 +47,7 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             modelMock.Setup(mm => mm.GetAll()).Returns(configurations).Verifiable();
             mainViewMock.Setup(
                 mv =>
@@ -69,7 +69,7 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             modelMock.Setup(mm => mm.GetAll()).Throws(new IOException("Acceso Denegado")).Verifiable();
             mainViewMock.Setup(
                 mv =>
@@ -96,7 +96,7 @@ namespace UnitTests
                 Content = "#Example\r\n127.0.0.1\tlocalhost"
             };
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             modelMock.Setup(mm => mm.LoadConfig(configToLoad)).Verifiable();
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             // Act
@@ -118,7 +118,7 @@ namespace UnitTests
                 Content = "#Example\r\n127.0.0.1\tlocalhost"
             };
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             modelMock.Setup(mm => mm.LoadConfig(configToLoad)).Verifiable();
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             mainViewMock.Setup(
@@ -142,7 +142,7 @@ namespace UnitTests
             var modelMock = new Mock<IHostManager>();
             EConfiguration configToLoad = null;
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
@@ -164,7 +164,7 @@ namespace UnitTests
             var modelMock = new Mock<IHostManager>();
             EConfiguration configToLoad = new EConfiguration();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToLoad);
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
@@ -186,7 +186,7 @@ namespace UnitTests
             var exceptionToThrow = new ArgumentNullException("configuration", "La configuración no puede ser nula");
             var configToLoad = new EConfiguration() { Name = "Test", Content = "test" };
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
 
             modelMock.Setup(mm => mm.LoadConfig(configToLoad))
                .Throws(exceptionToThrow);
@@ -215,7 +215,7 @@ namespace UnitTests
             EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
 
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             factoryMock.Setup(fm => fm.Create("ImportView")).Returns(importViewDialog.Object).Verifiable();
             modelMock.Setup(mm => mm.ReadExternalConfig("C:\\test.txt")).Returns(configToImport).Verifiable();
 
@@ -237,7 +237,7 @@ namespace UnitTests
 
             EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
 
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToDelete);
             mainViewMock.Setup(
@@ -263,7 +263,7 @@ namespace UnitTests
 
             EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
 
             modelMock.Setup(mm => mm.DeleteConfig(configToDelete)).Verifiable();
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToDelete);
@@ -293,7 +293,7 @@ namespace UnitTests
 
             EConfiguration configToDelete = new EConfiguration() { Name = "Test", Content = "test" };
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
 
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configToDelete);
             mainViewMock.Setup(
@@ -320,7 +320,7 @@ namespace UnitTests
             var modelMock = new Mock<IHostManager>();
 
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             
             mainViewMock.Setup(
                 mv => mv.ShowMessage(
@@ -344,7 +344,7 @@ namespace UnitTests
             var exceptionToThrow = new Exception("Error Desconocido");
 
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             modelMock.Setup(mm => mm.DeleteConfig(It.IsAny<EConfiguration>())).Throws(exceptionToThrow);
 
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(new EConfiguration(0,"nombre","contenido"));
@@ -375,7 +375,7 @@ namespace UnitTests
             var editViewMock = new Mock<IEditView>();
             var configurationToEdit = new EConfiguration(0, "Test", "Test");
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
 
             mainViewMock.Setup(mv => mv.SelectedConfiguration).Returns(configurationToEdit);
             factoryMock.Setup(fm => fm.Create("EditView")).Returns(editViewMock.Object).Verifiable();
@@ -398,7 +398,7 @@ namespace UnitTests
             var editViewMock = new Mock<IEditView>();
 
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             
             factoryMock.Setup(fm => fm.Create("EditView")).Returns(editViewMock.Object).Verifiable();
             //act
@@ -420,7 +420,7 @@ namespace UnitTests
             var modelMock = new Mock<IHostManager>();
             var editViewMock = new Mock<IEditView>();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             factoryMock.Setup(fm => fm.Create("EditView")).Returns(editViewMock.Object).Verifiable();
 
             //act
@@ -444,7 +444,7 @@ namespace UnitTests
             var editViewMock = new Mock<IEditView>();
             var modelMock = new Mock<IHostManager>();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             factoryMock.Setup(fm => fm.Create("EditView")).Returns(editViewMock.Object).Verifiable();
             modelMock.Setup(mm => mm.GetAll()).Returns(configurations).Verifiable();
             mainViewMock.SetupSet(mv => mv.Configurations = configurations).Verifiable();
@@ -464,7 +464,7 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             var configurationMock = new Mock<EConfiguration>();
             var systemConfigPath = Path.Combine(Environment.SystemDirectory, "drivers\\etc\\hosts");
             modelMock.Setup(mm => mm.ReadExternalConfig(systemConfigPath)).Returns(configurationMock.Object).Verifiable();
@@ -489,7 +489,7 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             var configurationMock = new Mock<EConfiguration>();
             var systemConfigPath = Path.Combine(Environment.SystemDirectory, "drivers\\etc\\hosts");
             modelMock.Setup(mm => mm.ReadExternalConfig(systemConfigPath)).Returns(configurationMock.Object).Verifiable();
@@ -520,7 +520,7 @@ namespace UnitTests
             var mainViewMock = new Mock<IMainView>();
             var modelMock = new Mock<IHostManager>();
             var factoryMock = new Mock<IViewFactory>();
-            var mainPresenter = new PMain(mainViewMock.Object, factoryMock.Object, modelMock.Object);
+            var mainPresenter = new MainPresenter(mainViewMock.Object, factoryMock.Object, modelMock.Object);
             var exception = new Exception("Unknown error");
             modelMock.Setup(mm => mm.ReadExternalConfig(It.IsAny<string>())).Throws(exception);
 

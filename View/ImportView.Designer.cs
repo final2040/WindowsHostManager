@@ -1,11 +1,14 @@
-﻿namespace View
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace View
 {
     partial class ImportView
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -134,13 +137,13 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.TextBox txtPath;
-        private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label lblPath;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnOk;
-        private System.Windows.Forms.Button btnBrowse;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private TextBox txtName;
+        private TextBox txtPath;
+        private Label lblName;
+        private Label lblPath;
+        private Button btnCancel;
+        private Button btnOk;
+        private Button btnBrowse;
+        private OpenFileDialog openFileDialog;
     }
 }

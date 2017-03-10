@@ -15,7 +15,7 @@ namespace View
 
         #region Fields
 
-        private PMain _presenter;
+        private MainPresenter _presenter;
         private readonly About _about = new About();
         private List<EConfiguration> _configurations;
         private EConfiguration _selectedConfiguration;
@@ -49,7 +49,7 @@ namespace View
             container.RegisterInstance<IMainView>(this);
             container.RegisterType<IViewFactory, ViewFactory>();
             container.RegisterType<IHostManager, HostManagerFileDal>();
-            _presenter = container.Resolve<PMain>();
+            _presenter = container.Resolve<MainPresenter>();
         }
 
         private void InitializeLanguaje()

@@ -10,14 +10,14 @@ using ObjectValidator.Rules;
 
 namespace Presenter
 {
-    public class PImport:PresenterBase
+    public class ImportPresenter:PresenterBase
     {
 
         private readonly Dictionary<string, string> _messageTable = new Dictionary<string, string>();
         private readonly IImportFileView _importView;
         private readonly Validator<IImportFileView> _validator = new Validator<IImportFileView>();
 
-        public PImport(IImportFileView view, IHostManager model)
+        public ImportPresenter(IImportFileView view, IHostManager model)
         {
             _view = view;
             _importView = view;

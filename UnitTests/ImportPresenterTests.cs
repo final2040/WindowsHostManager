@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
@@ -19,7 +18,7 @@ namespace UnitTests
         public void Save_WhenConfigurationNameIsEmpty_ShouldThrowErrorMessage()
         {
             // arrange
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("").Verifiable();
             _viewMock.Setup(vm => vm.Path).Returns("Test");
@@ -39,7 +38,7 @@ namespace UnitTests
         public void Save_WhenConfigurationPathIsEmpty_ShouldThrowErrorMessage()
         {
             // arrange
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("Test").Verifiable();
             _viewMock.Setup(vm => vm.Path).Returns("").Verifiable();
@@ -59,7 +58,7 @@ namespace UnitTests
         public void Save_WhenConfigurationNameAndPathIsEmpty_ShouldThrowBothErrorMessages()
         {
             // arrange
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("").Verifiable();
             _viewMock.Setup(vm => vm.Path).Returns("");
@@ -81,7 +80,7 @@ namespace UnitTests
         public void Save_WhenConfigurationContainsIlegalCharacteres_ShouldThrowErrorMessage()
         {
             // arrange
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("this\\is*a<bad>name").Verifiable();
             _viewMock.Setup(vm => vm.Path).Returns("test");
@@ -103,7 +102,7 @@ namespace UnitTests
         {
             // arrange
             var filePath = "C:\\test.host";
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
             var expectedConfiguration = new EConfiguration(0, "Test", "Test");
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("Test");
@@ -129,7 +128,7 @@ namespace UnitTests
         {
             // arrange
             var filePath = "C:\\test.host";
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
             var exceptionToThrow = new Exception("Error desconocido");
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("Test");
@@ -156,7 +155,7 @@ namespace UnitTests
         {
             // arrange
             var filePath = "C:\\test.host";
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
             var expectedConfiguration = new EConfiguration(0, "Test", "Test");
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("Test");
@@ -179,7 +178,7 @@ namespace UnitTests
         public void Save_WhenConfigurationExists_ShouldShowConfirmationMessage()
         {
             // arrange
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
             EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("test");
@@ -206,7 +205,7 @@ namespace UnitTests
         public void Save_OnExistingConfigWhenUserSelectYes_ShouldOverwriteConfiguration()
         {
             // arrange
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
             EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("test");
@@ -232,7 +231,7 @@ namespace UnitTests
         public void Save_OnExistingConfigWhenUserSelectNo_ShouldDoNothing()
         {
             // arrange
-            var importPresenter = new PImport(_viewMock.Object, _modelMock.Object);
+            var importPresenter = new ImportPresenter(_viewMock.Object, _modelMock.Object);
             EConfiguration configToImport = new EConfiguration() { Name = "Test", Content = "test" };
 
             _viewMock.Setup(vm => vm.ConfigName).Returns("test");

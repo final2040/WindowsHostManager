@@ -1,20 +1,20 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using AppResources;
 using Entities;
+using Microsoft.Practices.Unity;
 using Model;
 using Presenter;
 using WinFormsSyntaxHighlighter;
-using System.Drawing;
-using System.Text.RegularExpressions;
-using Microsoft.Practices.Unity;
 
 namespace View
 {
     public partial class EditView : ViewBase, IEditView
     {
-        private PEdit _presenter;
+        private EditPresenter _presenter;
         private readonly string _commentPattern = "(^#.*$)|(#.*$)";
         private readonly string _ipPattern = @"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b";
         private SyntaxHighlighter _highlighter;
@@ -36,7 +36,7 @@ namespace View
             UnityContainer unityContainer = new UnityContainer();
             unityContainer.RegisterInstance<IEditView>(this);
             unityContainer.RegisterType<IHostManager, HostManagerFileDal>();
-            _presenter = unityContainer.Resolve<PEdit>();
+            _presenter = unityContainer.Resolve<EditPresenter>();
         }
 
         private void InitializeSyntaxHighLight()

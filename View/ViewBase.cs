@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Entities;
@@ -32,7 +33,7 @@ namespace View
             // 
             // ViewBase
             // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new Size(284, 261);
             this.Name = "ViewBase";
             this.ResumeLayout(false);
 

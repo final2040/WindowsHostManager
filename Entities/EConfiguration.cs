@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using AppResources;
 
 namespace Entities
 {
     public class EConfiguration:INotifyPropertyChanged
     {
         private uint _id;
-        private string _name = "";
-        private string _content = "";
+        private string _name = string.Empty;
+        private string _content = string.Empty;
 
         public EConfiguration()
         {

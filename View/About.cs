@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -13,12 +9,12 @@ namespace View
         public About()
         {
             InitializeComponent();
-            this.Text = $"Acerca de: {AssemblyTitle}";
-            this.labelProductName.Text = $"Nombre del producto: {AssemblyProduct}";
-            this.labelVersion.Text = $"Versión: {AssemblyVersion}";
-            this.labelCopyright.Text = $"Copyright: {AssemblyCopyright}";
-            this.labelCompanyName.Text = $"Nombre de la compañia: {AssemblyCompany}";
-            this.textBoxDescription.Text = System.IO.File.ReadAllText("license.txt");
+            Text = $"Acerca de: {AssemblyTitle}";
+            labelProductName.Text = $"Nombre del producto: {AssemblyProduct}";
+            labelVersion.Text = $"Versión: {AssemblyVersion}";
+            labelCopyright.Text = $"Copyright: {AssemblyCopyright}";
+            labelCompanyName.Text = $"Nombre de la compañia: {AssemblyCompany}";
+            textBoxDescription.Text = File.ReadAllText("license.txt");
         }
 
         #region Descriptores de acceso de atributos de ensamblado
@@ -36,7 +32,7 @@ namespace View
                         return titleAttribute.Title;
                     }
                 }
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
             }
         }
 

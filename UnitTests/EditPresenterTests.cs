@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Security.Policy;
 using System.Windows.Forms;
 using AppResources;
+using Entities;
 using Moq;
 using NUnit.Framework;
-using Entities;
 using Presenter;
 
 namespace UnitTests
@@ -26,7 +25,7 @@ namespace UnitTests
         public void Save_WhenNameIsEmpty_ShoulDisplayErrorMessage()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "", "Test");
             _viewMock.Setup(vm => vm.Configuration.Name).Returns("");
             _viewMock.Setup(vm => vm.Configuration.Content).Returns("Test");
@@ -47,7 +46,7 @@ namespace UnitTests
         public void Save_WhenContentIsEmpty_ShoulDisplayErrorMessage()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "");
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
 
@@ -67,7 +66,7 @@ namespace UnitTests
         public void Save_WhenNameContainsIlegalCharacters_ShoulDisplayErrorMessage()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, ">?te<st", "test");
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
 
@@ -87,7 +86,7 @@ namespace UnitTests
         public void Save_WhenContentIsEmptyAndNameIsEmpty_ShoulDisplayCombinedErrorMessage()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "", "");
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
 
@@ -108,7 +107,7 @@ namespace UnitTests
         public void Save_WhenConfigurationIsCorrectAndChangesAreMaded_ShouldSaveConfiguration()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -127,7 +126,7 @@ namespace UnitTests
         public void Save_WhenConfigurationIsSaved_ShouldDisplaySuccessMessage()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -151,7 +150,7 @@ namespace UnitTests
         public void Save_WhenConfigurationIsNotChanged_ShouldDoNothing()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -169,7 +168,7 @@ namespace UnitTests
         public void Cancel_ShouldCloseView()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -188,7 +187,7 @@ namespace UnitTests
         public void Cancel_WhenChangesAreMade_ShouldShowAConfirmationMessage()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -209,7 +208,7 @@ namespace UnitTests
         public void Cancel_WhenYesIsSelected_ShouldCloseView()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -228,7 +227,7 @@ namespace UnitTests
         public void Cancel_WhenNoIsSelected_ShouldDoNothing()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -247,7 +246,7 @@ namespace UnitTests
         public void Save_WhenUnexpectedExceptionIsThrown_ShouldDisplayError()
         {
             // arrange
-            var presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            var presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
             var exceptionToThrow = new Exception("Unknown Error");
 
@@ -272,7 +271,7 @@ namespace UnitTests
         public void Save_WhenNewConfigModeIsOn_ShouldCheckIfAnotherConfigurationWithTheSameNameExists()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -290,7 +289,7 @@ namespace UnitTests
         public void Save_WhenNewConfigAnotherConfigExists_ShouldDisplayConfirmationMessage()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -313,7 +312,7 @@ namespace UnitTests
         public void Save_WhenNewConfig_ShouldSaveConfiguration()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -333,7 +332,7 @@ namespace UnitTests
         public void Save_WhenNewConfigYesSelected_ShouldSaveConfig()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();
@@ -358,7 +357,7 @@ namespace UnitTests
         public void Save_WhenNewConfigNoSelected_ShouldDoNothing()
         {
             // arrange
-            PEdit presenter = new PEdit(_viewMock.Object, _modelMock.Object);
+            EditPresenter presenter = new EditPresenter(_viewMock.Object, _modelMock.Object);
             var editedConfiguration = new EConfiguration(0, "test", "Test");
 
             _viewMock.Setup(vm => vm.Configuration).Returns(editedConfiguration).Verifiable();

@@ -6,12 +6,12 @@ using Entities;
 
 namespace Presenter
 {
-    public class PMain : PresenterBase
+    public class MainPresenter : PresenterBase
     {
         private readonly IViewFactory _viewFactory;
         
 
-        public PMain(IMainView view, IViewFactory viewFactory, IHostManager model)
+        public MainPresenter(IMainView view, IViewFactory viewFactory, IHostManager model)
         {
             _viewFactory = viewFactory;
             _view = view;
