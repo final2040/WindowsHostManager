@@ -4,10 +4,12 @@ using Entities;
 
 namespace Presenter
 {
-    public class PresenterBase
+    public class PresenterBase<T, T2> 
+        where T:IView
+        where T2:IHostManager
     {
-        protected IHostManager _model;
-        protected IView _view;
+        protected T2 _model;
+        protected T _view;
         protected void ShowExceptionErrorMessage(Exception exception)
         {
             _view.ShowMessage(MessageType.Error,

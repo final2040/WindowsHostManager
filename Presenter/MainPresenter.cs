@@ -6,7 +6,7 @@ using Entities;
 
 namespace Presenter
 {
-    public class MainPresenter : PresenterBase
+    public class MainPresenter : PresenterBase<IMainView, IHostManager>
     {
         private readonly IViewFactory _viewFactory;
         
@@ -35,23 +35,23 @@ namespace Presenter
             if (configurationList == null || configurationList.Count == 0)
                 _view.ShowMessage(MessageType.Error, LocalizableStringHelper.GetLocalizableString("NoConfigurationFoundError_Tittle"), LocalizableStringHelper.GetLocalizableString("NoConfigurationFoundError_Text"));
 
-            ((IMainView)_view).Configurations = configurationList;
+            _view.Configurations = configurationList;
         }
 
         public void SetConfig()
         {
-            if (((IMainView)_view).SelectedConfiguration == null 
-                || string.IsNullOrWhiteSpace(((IMainView)_view).SelectedConfiguration.Name) 
-                || string.IsNullOrWhiteSpace(((IMainView)_view).SelectedConfiguration.Content))
+            if (_view.SelectedConfiguration == null 
+                || string.IsNullOrWhiteSpace(_view.SelectedConfiguration.Name) 
+                || string.IsNullOrWhiteSpace(_view.SelectedConfiguration.Content))
                 _view.ShowMessage(MessageType.Error, LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Tittle"), LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Text"));
             else
                 try
                 {
-                    _model.LoadConfig(((IMainView)_view).SelectedConfiguration);
+                    _model.LoadConfig(_view.SelectedConfiguration);
                     _view.ShowMessage(MessageType.Info,
                         LocalizableStringHelper.GetLocalizableString("Success_Tittle"),
                         string.Format(LocalizableStringHelper.GetLocalizableString("SuccessSetConfiguration_Text"),
-                            ((IMainView)_view).SelectedConfiguration.Name));
+                            _view.SelectedConfiguration.Name));
                 }
                 catch (Exception exception)
                 {
@@ -73,7 +73,7 @@ namespace Presenter
 
             try
             {
-                if (((IMainView)_view).SelectedConfiguration == null)
+                if (_view.SelectedConfiguration == null)
                     _view.ShowMessage(MessageType.Error,
                         LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Tittle"),
                         LocalizableStringHelper.GetLocalizableString("InvalidConfigurationError_Text"));
@@ -84,7 +84,7 @@ namespace Presenter
                         LocalizableStringHelper.GetLocalizableString("DeleteConfirmation_Text"));
                     if (result == DialogResult.Yes)
                     {
-                        _model.DeleteConfig(((IMainView)_view).SelectedConfiguration);
+                        _model.DeleteConfig(_view.SelectedConfiguration);
                         UpdateView();
                     }
                 }
@@ -98,9 +98,9 @@ namespace Presenter
         public void Edit()
         {
             IEditView editView = (IEditView)_viewFactory.Create("EditView");
-            if (((IMainView)_view).SelectedConfiguration != null)
+            if (_view.SelectedConfiguration != null)
             {
-                editView.Configuration = ((IMainView)_view).SelectedConfiguration;
+                editView.Configuration = _view.SelectedConfiguration;
                 editView.EditMode = EditMode.Edit;
                 editView.ShowDialog();
             }

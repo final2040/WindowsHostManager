@@ -10,17 +10,14 @@ using ObjectValidator.Rules;
 
 namespace Presenter
 {
-    public class EditPresenter : PresenterBase
+    public class EditPresenter : PresenterBase<IEditView, IHostManager>
     {
         private readonly Dictionary<string, string> _messageTable = new Dictionary<string, string>();
         private readonly Validator<EConfiguration> _validator = new Validator<EConfiguration>();
-        private IEditView _editview;
-
 
         public EditPresenter(IEditView view, IHostManager model)
         {
             _view = view;
-            _editview = (IEditView)_view;
             _model = model;
             InitializeLanguage();
             InitializeValidator();
@@ -54,11 +51,11 @@ namespace Presenter
             try
             {
                 List<ValidationError> errors = new List<ValidationError>();
-                if (_validator.TryValidate(_editview.Configuration, errors))
+                if (_validator.TryValidate(_view.Configuration, errors))
                 {
-                    if (_editview.IsDirty)
+                    if (_view.IsDirty)
                     {
-                        if (_editview.EditMode == EditMode.New)
+                        if (_view.EditMode == EditMode.New)
                             SaveNewConfig();
                         else
                             SaveConfig();
@@ -81,7 +78,7 @@ namespace Presenter
 
         private void SaveNewConfig()
         {
-            if (_model.Exists(_editview.Configuration))
+            if (_model.Exists(_view.Configuration))
             {
                 if (_view.ShowMessage(MessageType.YesNo, _messageTable["RewriteCaption"],
                     _messageTable["RewriteMessage"]) == DialogResult.Yes)
@@ -93,8 +90,8 @@ namespace Presenter
 
         private void SaveConfig()
         {
-            _model.AddConfig(_editview.Configuration);
-            _editview.ShowMessage(MessageType.Info, _messageTable["Success"],
+            _model.AddConfig(_view.Configuration);
+            _view.ShowMessage(MessageType.Info, _messageTable["Success"],
                 _messageTable["SuccessSave"]);
             _view.DialogResult = DialogResult.OK;
             _view.Close();
@@ -103,7 +100,7 @@ namespace Presenter
 
         public void Cancel()
         {
-            if (_editview.IsDirty)
+            if (_view.IsDirty)
             {
                 if (_view.ShowMessage(MessageType.YesNo, _messageTable["Warning"],
                     _messageTable["CancelConfirm"]) == DialogResult.Yes)

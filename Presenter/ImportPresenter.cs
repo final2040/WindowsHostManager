@@ -10,19 +10,16 @@ using ObjectValidator.Rules;
 
 namespace Presenter
 {
-    public class ImportPresenter:PresenterBase
+    public class ImportPresenter:PresenterBase<IImportFileView, IHostManager>
     {
 
         private readonly Dictionary<string, string> _messageTable = new Dictionary<string, string>();
-        private readonly IImportFileView _importView;
         private readonly Validator<IImportFileView> _validator = new Validator<IImportFileView>();
 
         public ImportPresenter(IImportFileView view, IHostManager model)
         {
             _view = view;
-            _importView = view;
             _model = model;
-            _importView = view;
             InitializeMessageTable();
             InitializeValidator();
         }
@@ -55,9 +52,9 @@ namespace Presenter
             List<ValidationError> errors = new List<ValidationError>();
             try
             {
-                if (!_validator.TryValidate(_importView, errors))
+                if (!_validator.TryValidate(_view, errors))
                 {
-                    _importView.ShowMessage(MessageType.Error, _messageTable["ErrorCaption"],
+                    _view.ShowMessage(MessageType.Error, _messageTable["ErrorCaption"],
                         string.Join(Environment.NewLine, errors.Select(e => e.ErrorMessage)));
                 }
                 else
@@ -66,7 +63,7 @@ namespace Presenter
                     EConfiguration config = GetConfig();
                     if (_model.Exists(config))
                     {
-                        if (_importView.ShowMessage(MessageType.YesNo, _messageTable["RewriteCaption"], _messageTable["RewriteMessage"]) == DialogResult.Yes)
+                        if (_view.ShowMessage(MessageType.YesNo, _messageTable["RewriteCaption"], _messageTable["RewriteMessage"]) == DialogResult.Yes)
                         {
                             SaveConfig(config);
                         }
@@ -87,17 +84,17 @@ namespace Presenter
         private void SaveConfig(EConfiguration config)
         {
             _model.AddConfig(config);
-            _importView.ShowMessage(MessageType.Info,
+            _view.ShowMessage(MessageType.Info,
                 _messageTable["SuccessImportCaption"],
                 _messageTable["SuccessImportMessage"]);
-            _importView.DialogResult = DialogResult.OK;
-            _importView.Close();
+            _view.DialogResult = DialogResult.OK;
+            _view.Close();
         }
 
         private EConfiguration GetConfig()
         {
-            EConfiguration config = _model.ReadExternalConfig(_importView.Path);
-            config.Name = _importView.ConfigName;
+            EConfiguration config = _model.ReadExternalConfig(_view.Path);
+            config.Name = _view.ConfigName;
             return config;
         }
     }

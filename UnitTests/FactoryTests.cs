@@ -19,7 +19,7 @@ namespace UnitTests
             // assert
             Assert.IsInstanceOf<EditView>(result);
         }
-
+        
         [Test]
         public void ShouldCreateImportView()
         {

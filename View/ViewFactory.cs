@@ -13,6 +13,8 @@ namespace View
             _viewTable.Add("EditView", typeof(EditView));
             _viewTable.Add("ImportView", typeof(ImportView));
         }
+
+        [Obsolete("Use Generic Method Create<T> instead.")]
         public IView Create(string viewName)
         {
             if(string.IsNullOrWhiteSpace(viewName)) throw new ArgumentNullException(nameof(viewName), "Cannot be null or empty");
